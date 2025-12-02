@@ -1,0 +1,9 @@
+[package]
+name = "rhexis-kernel"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../rhexis-core" }
+serde_json.workspace = true
+blake3.workspace = true
