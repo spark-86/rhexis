@@ -1,0 +1,7 @@
+{
+    "name": "Console shim for macOS on Apple Silicon",
+    "capability": "io.console.write",
+    "version": "0.1.0",
+    "requires": ["host.macos.apple"],
+    "bin_format": "native"
+}

@@ -1,0 +1,11 @@
+[package]
+name = "rhp"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap.workspace = true
+serde_json.workspace = true
+serde_cbor.workspace = true
+rhexis-core = { path = "../../rhexis-core" }
+blake3.workspace = true

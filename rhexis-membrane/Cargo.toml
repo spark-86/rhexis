@@ -1,0 +1,10 @@
+[package]
+name = "rhexis-membrane"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../rhexis-core" }
+anyhow.workspace = true
+hex.workspace = true
+libloading.workspace = true
