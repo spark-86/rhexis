@@ -3,10 +3,10 @@ use std::collections::HashMap;
 use crate::json_path::JsonPathExt;
 use rhexis_core::{
     flux::{item::FluxItem, payload::FluxPayload},
-    transform::{pattern::TransformPattern, signature::TransformSignature},
+    rhp::descriptor::{PatternDescriptor, TransformDescriptor},
 };
 
-pub fn score_pattern(pattern: &TransformPattern, flux_item: &FluxItem) -> usize {
+pub fn score_pattern(pattern: &PatternDescriptor, flux_item: &FluxItem) -> usize {
     let mut score: usize = 0;
 
     if pattern.key.is_some() {
@@ -17,7 +17,7 @@ pub fn score_pattern(pattern: &TransformPattern, flux_item: &FluxItem) -> usize 
         }
     }
     if pattern.schema.is_some() {
-        if flux_item.schema != pattern.schema.clone().unwrap() {
+        if flux_item.schema != pattern.schema.clone() {
             return 0;
         } else {
             score += 1000;
@@ -45,12 +45,12 @@ fn all_required_present(req: &[String], flux: &FluxItem) -> bool {
 }
 
 pub fn score_transform(
-    transform_sig: &TransformSignature,
+    transform_desc: &TransformDescriptor,
     flux_pond: &HashMap<String, FluxItem>,
 ) -> (usize, Vec<String>, Vec<String>) {
     let mut score: usize = 0;
     let mut consume_used = Vec::new();
-    for consumed in transform_sig.consumes.iter() {
+    for consumed in transform_desc.consumes.iter() {
         let mut pattern_score = 0;
         let mut used_name = "".to_string();
         for flux_item in flux_pond.values() {
@@ -72,7 +72,7 @@ pub fn score_transform(
     }
     let mut observe_used = Vec::new();
 
-    for observed in transform_sig.observes.iter() {
+    for observed in transform_desc.observes.iter() {
         let mut pattern_score = 0;
         let mut used_name = "".to_string();
         for flux_item in flux_pond.values() {

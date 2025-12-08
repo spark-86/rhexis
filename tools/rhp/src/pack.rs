@@ -1,114 +1,143 @@
 use crate::Pack;
-use rhexis_core::rhp::descriptor::{BinaryFormat, HpcDescriptor, TransformDescriptor};
+use rhexis_core::{
+    flux::payload::PayloadType,
+    rhp::descriptor::{
+        BinaryFormat, HpcDescriptor, PatternDescriptor, RhpDescriptor, TransformDescriptor,
+    },
+};
 use std::io::Write;
 
 pub fn pack(args: Pack) {
     if args.plugin_type != "transform" && args.plugin_type != "hpc" {
         panic!("Invalid plugin type");
     }
-    let code = std::fs::read(args.code_path).unwrap();
-    let descriptor = std::fs::read(args.descriptor_path).unwrap();
-    let desc_json = serde_json::from_slice::<serde_json::Value>(&descriptor).unwrap();
-    let mut hpc_desc = HpcDescriptor {
-        name: String::new(),
-        capability: String::new(),
-        version: String::new(),
-        requires: Vec::new(),
-        bin_format: BinaryFormat::Native,
-        blake3: [0; 32],
-    };
-    let mut transform_desc = TransformDescriptor {
-        name: String::new(),
-        version: String::new(),
-        requires: Vec::new(),
-        observes: Vec::new(),
-        consumes: Vec::new(),
-        emits: Vec::new(),
-        proposes: Vec::new(),
-        bin_format: BinaryFormat::Native,
-        blake3: [0; 32],
+
+    let code = std::fs::read(&args.code_path).unwrap();
+    let descriptor_bytes = std::fs::read(&args.descriptor_path).unwrap();
+    let desc_json = serde_json::from_slice::<serde_json::Value>(&descriptor_bytes).unwrap();
+
+    let package = if args.plugin_type == "hpc" {
+        build_hpc(&code, &desc_json)
+    } else {
+        build_transform(&code, &desc_json)
     };
 
-    if args.plugin_type == "hpc" {
-        hpc_desc.name = desc_json["name"].as_str().unwrap().to_string();
-        hpc_desc.capability = desc_json["capability"].as_str().unwrap().to_string();
-        hpc_desc.version = desc_json["version"].as_str().unwrap().to_string();
-        hpc_desc.requires = desc_json["requires"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .map(|x| x.as_str().unwrap().to_string())
-            .collect();
-        if desc_json["bin_format"].as_str().unwrap() == "wasm" {
-            hpc_desc.bin_format = BinaryFormat::Wasm;
-        }
-    } else {
-        transform_desc.name = desc_json["name"].as_str().unwrap().to_string();
-        transform_desc.version = desc_json["version"].as_str().unwrap().to_string();
-        transform_desc.requires = desc_json["requires"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .map(|x| x.as_str().unwrap().to_string())
-            .collect();
-        transform_desc.observes = desc_json["observes"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .map(|x| {
-                let key = x["key"].as_str();
-                let mut key_str = None;
-                let schema = x["schema"].as_str();
-                let mut schema_str = None;
-                let payload_type = x["payload_type"].as_str();
-                let required_fields = x["required_fields"]
-                    .as_array()
-                    .unwrap()
-                    .iter()
-                    .map(|x| x.as_str().unwrap().to_string())
-                    .collect();
-                if key.is_some() {
-                    key_str = Some(key.unwrap().to_string());
-                }
-                if schema.is_some() {
-                    schema_str = Some(schema.unwrap().to_string());
-                }
-                rhexis_core::rhp::descriptor::PatternDescriptor {
-                    key: key_str,
-                    schema: schema_str,
-                    payload_type: payload_type.unwrap().to_string(),
-                    required_fields: Some(required_fields),
-                }
-            })
-            .collect();
-    }
-
-    let mut hasher = blake3::Hasher::new();
-    hasher.update(&code);
-    if args.plugin_type == "hpc" {
-        hpc_desc.blake3 = hasher.finalize().into();
-    } else {
-        transform_desc.blake3 = hasher.finalize().into();
-    }
-
-    let outfile = std::fs::File::create(args.output_path).unwrap();
+    let outfile = std::fs::File::create(&args.output_path).unwrap();
     let mut writer = std::io::BufWriter::new(outfile);
+    writer
+        .write_all(&serde_cbor::to_vec(&package).unwrap())
+        .unwrap();
+}
 
-    if args.plugin_type == "hpc" {
-        let hpc_package = rhexis_core::rhp::package::RhpPackage {
-            kind: rhexis_core::rhp::kind::RhpKind::Hpc,
-            descriptor: rhexis_core::rhp::descriptor::RhpDescriptor::Hpc(hpc_desc),
-            binary: code,
-        };
-        let serialized = serde_cbor::to_vec(&hpc_package).unwrap();
-        writer.write_all(&serialized).unwrap();
-    } else {
-        let transform_package = rhexis_core::rhp::package::RhpPackage {
-            kind: rhexis_core::rhp::kind::RhpKind::Transform,
-            descriptor: rhexis_core::rhp::descriptor::RhpDescriptor::Transform(transform_desc),
-            binary: code,
-        };
-        let serialized = serde_cbor::to_vec(&transform_package).unwrap();
-        writer.write_all(&serialized).unwrap();
+//
+// ──────────────────────────────────────────────────────────────────────────
+//   HPC BUILDER
+// ──────────────────────────────────────────────────────────────────────────
+//
+
+fn build_hpc(code: &[u8], json: &serde_json::Value) -> rhexis_core::rhp::package::RhpPackage {
+    let mut desc = HpcDescriptor {
+        name: json["name"].as_str().unwrap().to_owned(),
+        capability: json["capability"].as_str().unwrap().to_owned(),
+        version: json["version"].as_str().unwrap().to_owned(),
+        requires: json["requires"]
+            .as_array()
+            .unwrap_or(&vec![])
+            .iter()
+            .map(|x| x.as_str().unwrap().to_owned())
+            .collect(),
+        bin_format: match json["bin_format"].as_str() {
+            Some("wasm") => BinaryFormat::Wasm,
+            _ => BinaryFormat::Native,
+        },
+        blake3: [0; 32],
+    };
+
+    desc.blake3 = blake3::hash(code).into();
+
+    rhexis_core::rhp::package::RhpPackage {
+        kind: rhexis_core::rhp::kind::RhpKind::Hpc,
+        descriptor: RhpDescriptor::Hpc(desc),
+        binary: code.to_vec(),
     }
+}
+
+//
+// ──────────────────────────────────────────────────────────────────────────
+//   TRANSFORM BUILDER
+// ──────────────────────────────────────────────────────────────────────────
+//
+
+fn build_transform(code: &[u8], json: &serde_json::Value) -> rhexis_core::rhp::package::RhpPackage {
+    let mut desc = TransformDescriptor {
+        name: json["name"].as_str().unwrap().to_owned(),
+        version: json["version"].as_str().unwrap().to_owned(),
+        requires: json["requires"]
+            .as_array()
+            .unwrap_or(&vec![])
+            .iter()
+            .map(|x| x.as_str().unwrap().to_owned())
+            .collect(),
+        observes: load_patterns(json.get("observes")),
+        consumes: load_patterns(json.get("consumes")),
+        emits: load_patterns(json.get("emits")),
+        proposes: load_patterns(json.get("proposes")),
+        bin_format: match json["bin_format"].as_str() {
+            Some("wasm") => BinaryFormat::Wasm,
+            _ => BinaryFormat::Native,
+        },
+        blake3: [0; 32],
+    };
+
+    desc.blake3 = blake3::hash(code).into();
+
+    rhexis_core::rhp::package::RhpPackage {
+        kind: rhexis_core::rhp::kind::RhpKind::Transform,
+        descriptor: RhpDescriptor::Transform(desc),
+        binary: code.to_vec(),
+    }
+}
+
+//
+// ──────────────────────────────────────────────────────────────────────────
+//   PATTERN PARSER
+// ──────────────────────────────────────────────────────────────────────────
+//
+
+fn load_patterns(node: Option<&serde_json::Value>) -> Vec<PatternDescriptor> {
+    let Some(arr) = node.and_then(|v| v.as_array()) else {
+        return vec![];
+    };
+
+    arr.iter()
+        .map(|item| {
+            let key = item
+                .get("key")
+                .and_then(|x| x.as_str())
+                .map(|s| s.to_owned());
+            let schema = item
+                .get("schema")
+                .and_then(|x| x.as_str())
+                .map(|s| s.to_owned());
+            let payload_type = item["payload_type"].as_str().unwrap().to_owned();
+            let payload_type = match payload_type.as_str() {
+                "json" => PayloadType::Json,
+                "binary" => PayloadType::Binary,
+                "mixed" => PayloadType::Mixed,
+                "none" => PayloadType::None,
+                _ => PayloadType::Any,
+            };
+            let required_fields = item
+                .get("required_fields")
+                .and_then(|x| x.as_array())
+                .map(|arr| arr.iter().map(|v| v.as_str().unwrap().to_owned()).collect());
+
+            PatternDescriptor {
+                key,
+                schema,
+                payload_type,
+                required_fields,
+            }
+        })
+        .collect()
 }

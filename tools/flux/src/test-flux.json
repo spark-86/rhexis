@@ -1,0 +1,46 @@
+[
+    {
+        "name": "test",
+        "schema": null,
+        "payload": {
+            "kind": "json",
+            "value": {
+                "user": "foo",
+                "name": "Foo Bar",
+                "userId": 1234567890
+            }
+        },
+        "meta": {
+            "creator": "user.login",
+            "timestamp": 0
+        }
+    },
+    {
+        "name": "test2",
+        "schema": "rhex://schema/test",
+        "payload": {
+            "kind": "json",
+            "value": {
+                "imaginary": "friend",
+                "named": "Sqweegie Beau"
+            }
+        },
+        "meta": {
+            "creator": "user.login",
+            "timestamp": 0
+        }
+    },
+    {
+        "name": "console.write",
+        "schema": "rhex://schema/console.write",
+        "payload": {
+            "kind": "binary",
+            "encoding": "base64",
+            "data": "VGhpcyBpcyBhIGNvbnNvbGUud3JpdGU="
+        },
+        "meta": {
+            "creator": "user.login",
+            "timestamp": 0
+        }
+    }
+]

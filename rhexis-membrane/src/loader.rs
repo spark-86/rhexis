@@ -1,9 +1,10 @@
 use libloading::{Library, Symbol};
+use rhexis_core::transform::entry::TransformEntry;
 use std::fs;
 use std::path::PathBuf;
 
 use rhexis_core::hpc::entry::HpcEntry;
-use rhexis_core::rhp::descriptor::{HpcDescriptor, RhpDescriptor};
+use rhexis_core::rhp::descriptor::{HpcDescriptor, RhpDescriptor, TransformDescriptor};
 use rhexis_core::rhp::package::RhpPackage;
 
 /// Loads a native HPC from an RHP package, writes the binary to disk cache,
@@ -43,6 +44,43 @@ pub fn load_hpc_entry(
 
     // Safety: symbol points into the loaded library which we are returning.
     let entry_ref: &'static HpcEntry = unsafe { &**symbol };
+
+    // --- 6. Return descriptor + reference + library ---
+    Ok((desc, entry_ref, lib))
+}
+
+pub fn load_transform_entry(
+    pkg: &RhpPackage,
+    cache_dir: &PathBuf,
+) -> anyhow::Result<(TransformDescriptor, &'static TransformEntry, Library)> {
+    // --- 1. Validate package kind ---
+    let desc = match &pkg.descriptor {
+        RhpDescriptor::Transform(h) => h.clone(),
+        _ => anyhow::bail!("Attempted to load a non-Trasnform package as Transform"),
+    };
+
+    // --- 2. Compute hash
+    let hash_hex = hex::encode(desc.blake3);
+    let mut path = cache_dir.clone();
+    path.push(format!("{}.dylib", hash_hex));
+
+    // --- 3. Write binary to cache if missing ---
+    if !path.exists() {
+        fs::create_dir_all(cache_dir)?;
+        fs::write(&path, &pkg.binary)?;
+    }
+
+    // --- 4. dlopen the library ---
+    let lib = unsafe { Library::new(&path) }?;
+
+    // --- 5. Load the single Transform entry symbol ---
+    //
+    // extern "C" { pub static RHEX_TRANSFORM: HpcEntry; }
+    //
+    let symbol: Symbol<*const TransformEntry> = unsafe { lib.get(b"RHEX_TRANSFORM")? };
+
+    // Safety: symbol points into the loaded library which we are returning.
+    let entry_ref: &'static TransformEntry = unsafe { &**symbol };
 
     // --- 6. Return descriptor + reference + library ---
     Ok((desc, entry_ref, lib))

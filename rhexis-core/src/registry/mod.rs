@@ -1,10 +1,11 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::Arc};
 
-use libloading::Library;
-use rhexis_core::{
+use crate::{
     hpc::entry::HpcEntry,
     rhp::descriptor::{HpcDescriptor, TransformDescriptor},
+    transform::entry::TransformEntry,
 };
+use libloading::Library;
 
 pub struct LoadedHpc {
     pub descriptor: HpcDescriptor,
@@ -14,9 +15,11 @@ pub struct LoadedHpc {
 
 pub struct LoadedTransform {
     pub descriptor: TransformDescriptor,
+    pub entry: &'static TransformEntry,
+    pub library: Library,
 }
 
 pub struct MembraneRegistry {
-    pub transforms: HashMap<String, LoadedTransform>,
+    pub transforms: Vec<Arc<LoadedTransform>>,
     pub hpcs: HashMap<String, LoadedHpc>,
 }

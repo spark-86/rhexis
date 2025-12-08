@@ -1,0 +1,28 @@
+{
+    "name": "io.console.write",
+    "version": "0.1.0",
+    "requires": "io.console.write",
+    "observes": [],
+    "consumes": [
+        {
+            "key": "console.write",
+            "schema": null,
+            "payload_type": "Binary",
+            "required_fields": null
+        }
+    ],
+    "emits": [
+        {
+            "key": "_console.write",
+            "schema": null,
+            "payload_type": "Binary",
+            "required_fields": null
+        }
+    ],
+    "proposes": [],
+    "bin_format": "Native",
+    "blake3": [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0
+    ]
+}
