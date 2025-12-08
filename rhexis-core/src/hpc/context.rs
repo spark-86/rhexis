@@ -1,11 +1,16 @@
-use crate::flux::item::FluxItem;
+use serde::{Deserialize, Serialize};
+
+use crate::{flux::item::FluxItem, hpc::directive::KernelDirective};
 
 pub struct HpcContext<'a> {
     pub input: &'a [u8],
-    pub flux_out: &'a mut Vec<FluxItem>,
-    pub diag: &'a mut DiagSink,
+    pub output: &'a mut Vec<FluxItem>,
+    pub directives: &'a mut Vec<KernelDirective>,
+    pub diag: &'a mut Vec<Fault>,
 }
 
-pub struct DiagSink {
-    pub debug: Vec<String>,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Fault {
+    pub kind: String,
+    pub message: String,
 }

@@ -1,12 +1,11 @@
 [package]
-name = "hpc_console_write-macos_apple-v1"
+name = "hpc_net_socket_open-macos_apple-v1"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
 rhexis-core = { path = "../../../rhexis-core" }
-serde_cbor.workspace = true
-serde.workspace = true
+
 
 [lib]
 crate-type = ["cdylib"]

@@ -1,21 +1,23 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::Arc};
 
-use rhexis_core::{flux::item::FluxItem, membrane::Membrane, transform::Transform};
+use rhexis_core::{
+    flux::item::FluxItem, registry::LoadedTransform, transform::context::TransformContext,
+};
 
 pub mod json_path;
 pub mod scoring;
 
 pub struct Kernel {
     pub flux_pond: HashMap<String, FluxItem>,
-    pub transform_registry: HashMap<String, (Box<dyn Transform>, [u8; 32])>,
-    membrane: Box<dyn Membrane>,
+    pub hpc_symbols: Vec<String>,
+    pub transform_registry: HashMap<String, Arc<LoadedTransform>>,
 }
 
 impl Kernel {
     pub fn new(
         inital_flux: Vec<FluxItem>,
-        inital_transforms: Vec<(Box<dyn Transform>, [u8; 32])>,
-        membrane: Box<dyn Membrane>,
+        hpc_symbols: Vec<String>,
+        inital_transforms: &[Arc<LoadedTransform>],
     ) -> Self {
         let mut pond = HashMap::new();
         for flux_item in inital_flux {
@@ -23,15 +25,12 @@ impl Kernel {
         }
         let mut registry = HashMap::new();
         for transform in inital_transforms {
-            registry.insert(
-                transform.0.signature().id.to_string(),
-                (transform.0, transform.1),
-            );
+            registry.insert(transform.descriptor.name.to_string(), transform.clone());
         }
         Self {
             flux_pond: pond,
+            hpc_symbols,
             transform_registry: registry,
-            membrane,
         }
     }
 
@@ -62,15 +61,17 @@ impl Kernel {
 
         let mut consumed_master = Vec::new();
         let mut collapse_map = HashMap::new();
+        let mut diag_master = Vec::new();
+        let mut directives_master = Vec::new();
 
-        for (transform, hash) in self.transform_registry.values() {
+        for transform in self.transform_registry.values() {
             let (score, observed, consumed) =
-                scoring::score_transform(&transform.signature(), &self.flux_pond);
+                scoring::score_transform(&transform.descriptor, &self.flux_pond);
             if score == 0 {
                 continue;
             }
             score_map.insert(
-                transform.signature().id.to_string(),
+                transform.descriptor.name.to_string(),
                 (score, observed.clone(), consumed.clone()),
             );
             for flux_name in consumed {
@@ -81,8 +82,7 @@ impl Kernel {
         }
         for transform_id in score_map.keys() {
             let (score, observed, consumed) = score_map.get(transform_id).unwrap();
-            let (transform, hash) = self.transform_registry.get(transform_id).unwrap();
-            let membrane = &self.membrane;
+            let transform = self.transform_registry.get(transform_id).unwrap();
             let observed_flux: Vec<&FluxItem> = observed
                 .iter()
                 .map(|name| self.flux_pond.get(name).unwrap())
@@ -91,25 +91,32 @@ impl Kernel {
                 .iter()
                 .map(|name| self.flux_pond.get(name).unwrap())
                 .collect();
-            let results = transform.run(observed_flux, consumed_flux, membrane);
-            if results.is_ok() {
-                let results = results.unwrap();
-                if results.is_some() {
-                    let results = results.unwrap();
-                    if results.len() > 0 {
-                        for flux_item in results.clone() {
-                            if let Some((_, old_score)) = collapse_map.get(&flux_item.name) {
-                                if score > old_score {
-                                    collapse_map.insert(
-                                        flux_item.name.clone(),
-                                        (flux_item.clone(), *score),
-                                    );
-                                }
-                            }
-                            collapse_map.insert(flux_item.name.clone(), (flux_item, *score));
+            let mut total_flux = Vec::new();
+            for flux_item in observed_flux.iter().chain(consumed_flux.iter()) {
+                total_flux.push((*flux_item).clone());
+            }
+            let mut out_vec = Vec::new();
+            let mut diag = Vec::new();
+            let mut directives = Vec::new();
+            let mut ctx = TransformContext {
+                input: &total_flux,
+                output: &mut out_vec,
+                diag: &mut diag,
+                directives: &mut directives,
+                hpc_calls: &mut vec![],
+            };
+            let results = (transform.entry.entry)(&mut ctx);
+            if results == 0 {
+                for flux_item in out_vec {
+                    if let Some((_, old_score)) = collapse_map.get(&flux_item.name) {
+                        if score > old_score {
+                            collapse_map
+                                .insert(flux_item.name.clone(), (flux_item.clone(), *score));
                         }
                     }
                 }
+                diag_master.append(&mut diag);
+                directives_master.append(&mut directives);
             }
         }
         let after = self.hash_flux();

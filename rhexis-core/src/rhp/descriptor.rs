@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::flux::payload::PayloadType;
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HpcDescriptor {
     pub name: String,
@@ -27,7 +29,7 @@ pub struct TransformDescriptor {
 pub struct PatternDescriptor {
     pub key: Option<String>,
     pub schema: Option<String>,
-    pub payload_type: String,
+    pub payload_type: PayloadType,
     pub required_fields: Option<Vec<String>>,
 }
 

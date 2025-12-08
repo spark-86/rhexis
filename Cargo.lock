@@ -71,6 +71,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7c02d123df017efcdfbd739ef81735b36c5ba83ec3c59c80a9d7ecc718f92e50"
 
 [[package]]
+name = "base64"
+version = "0.22.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
+
+[[package]]
 name = "blake3"
 version = "1.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -158,6 +164,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3a3076410a55c90011c298b04d0cfa770b00fa04e1e3c97d3f6c9de105a03844"
 
 [[package]]
+name = "flux"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "rhexis-core",
+ "serde",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
 name = "half"
 version = "1.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -177,6 +195,15 @@ checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
 
 [[package]]
 name = "hpc_console_write-macos_apple-v1"
+version = "0.1.0"
+dependencies = [
+ "rhexis-core",
+ "serde",
+ "serde_cbor",
+]
+
+[[package]]
+name = "hpc_net_socket_open-macos_apple-v1"
 version = "0.1.0"
 dependencies = [
  "rhexis-core",
@@ -243,6 +270,9 @@ name = "rhexis-core"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "base64",
+ "hex",
+ "libloading",
  "serde",
  "serde_cbor",
  "serde_json",
@@ -265,6 +295,8 @@ dependencies = [
  "hex",
  "libloading",
  "rhexis-core",
+ "rhexis-kernel",
+ "serde_json",
 ]
 
 [[package]]
@@ -380,6 +412,15 @@ name = "time-unix-now_ms"
 version = "0.1.0"
 dependencies = [
  "rhexis-core",
+]
+
+[[package]]
+name = "transform_console_write"
+version = "0.1.0"
+dependencies = [
+ "rhexis-core",
+ "serde",
+ "serde_cbor",
 ]
 
 [[package]]

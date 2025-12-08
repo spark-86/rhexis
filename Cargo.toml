@@ -7,7 +7,11 @@ members = [
     "rhexis-collections",
     "rhexis-ux", 
     "tools/rhp", 
-    "packages/hpcs/time-unix-now_ms", "packages/hpcs/hpc_console_write-macos_apple-v1", 
+    "packages/hpcs/time-unix-now_ms", 
+    "packages/hpcs/hpc_console_write-macos_apple-v1", 
+    "packages/hpcs/hpc_net_socket_open-macos_apple-v1", 
+    "packages/transforms/transform_console_write", 
+    "tools/flux", 
 ]
 
 resolver = "3"
@@ -21,3 +25,4 @@ serde_cbor = "0.11.2"
 clap = { version = "4.5.53", features=["derive"] }
 hex = "0.4.3"
 libloading = "0.9.0"
+base64 = "0.22.1"

@@ -5,6 +5,8 @@ edition = "2024"
 
 [dependencies]
 rhexis-core = { path = "../rhexis-core" }
+rhexis-kernel = { path = "../rhexis-kernel" }
+serde_json.workspace = true
 anyhow.workspace = true
 hex.workspace = true
 libloading.workspace = true
