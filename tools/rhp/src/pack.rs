@@ -119,6 +119,7 @@ fn load_patterns(node: Option<&serde_json::Value>) -> Vec<PatternDescriptor> {
                 .get("schema")
                 .and_then(|x| x.as_str())
                 .map(|s| s.to_owned());
+            println!("{:?}", item);
             let payload_type = item["payload_type"].as_str().unwrap().to_owned();
             let payload_type = match payload_type.as_str() {
                 "json" => PayloadType::Json,

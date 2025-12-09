@@ -1,7 +1,7 @@
 {
     "name": "io.console.write",
     "version": "0.1.0",
-    "requires": "io.console.write",
+    "requires": ["io.console.write"],
     "observes": [],
     "consumes": [
         {

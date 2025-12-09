@@ -1,0 +1,18 @@
+{
+    "name": "transform.crypto.hash.blake3",
+    "version": "0.1.0",
+    "requires": ["hpc.crypto.hash.blake3"],
+    "observes": [],
+    "consumes": [
+        {
+            "key": "blake3.hash_me",
+            "schema": null,
+            "payload_type": "Binary",
+            "required_fields": null
+        }
+    ],
+    "emits": [],
+    "proposes": [],
+    "bin_format": "Native",
+    "blake3": []
+}

@@ -28,3 +28,4 @@ target
 # So we aren't sticking a bunch of binaries in the repo
 *.dylib
 *.rhp
+*.flux

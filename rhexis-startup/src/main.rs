@@ -8,9 +8,7 @@ use rhexis_core::rhp::{kind::RhpKind, package::RhpPackage};
 #[derive(Parser, Debug)]
 struct Args {
     #[arg(short, long)]
-    plugin_script: String,
-    #[arg(short, long)]
-    flux_store: String,
+    startup_script: String,
 }
 
 fn main() {
@@ -20,18 +18,22 @@ fn main() {
 
     // Load plugin script JSON
     let script = serde_json::from_str::<serde_json::Value>(
-        &std::fs::read_to_string(&args.plugin_script).unwrap(),
+        &std::fs::read_to_string(&args.startup_script).unwrap(),
     )
     .unwrap();
 
+    let flux_store = script.get("flux").unwrap().as_str().unwrap();
+
     // Load frozen flux state
-    let flux_path = PathBuf::from_str(&args.flux_store).unwrap();
+    let flux_path = PathBuf::from_str(&flux_store).unwrap();
     let flux_bin = std::fs::read(flux_path).unwrap();
     let flux = serde_cbor::from_slice::<Vec<FluxItem>>(&flux_bin).unwrap();
+    println!("Loaded flux state... {} items.", flux.len());
+
+    println!("Loading plugins...");
 
     // Extract plugin RHP list
     let rhp_list = script.get("plugins").unwrap().as_array().unwrap();
-
     for rhp in rhp_list {
         let filename = rhp.as_str().unwrap();
         let rhp_bin = std::fs::read(filename).unwrap();
@@ -71,9 +73,12 @@ fn main() {
         }
     }
 
+    println!("Loaded {} HPCs", hpc_vec.len());
+    println!("Loaded {} transforms", transform_vec.len());
     // Construct membrane from the loaded transforms and HPCs
-    let membrane = rhexis_membrane::Membrane::new(transform_vec, hpc_vec);
+    let mut membrane = rhexis_membrane::MacOSMembrane::new(transform_vec, hpc_vec);
 
+    println!("Membrane constructed");
     // Spin the kernel using the hydrated flux
     let _ = membrane.spin_kernel(&flux);
 }

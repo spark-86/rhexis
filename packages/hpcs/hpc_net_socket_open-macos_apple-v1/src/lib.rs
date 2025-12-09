@@ -1,7 +1,7 @@
 use rhexis_core::hpc::{context::HpcContext, entry::HpcEntry};
 
 #[unsafe(no_mangle)]
-extern "C" fn hpc_entry(ctx: &mut HpcContext) -> i32 {
+extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     let _ = ctx;
     0
 }
