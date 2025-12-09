@@ -1,32 +1,25 @@
 [
     {
-        "name": "test",
+        "name": "math.left",
         "schema": null,
         "payload": {
             "kind": "json",
-            "value": {
-                "user": "foo",
-                "name": "Foo Bar",
-                "userId": 1234567890
-            }
+            "value": 1
         },
         "meta": {
-            "creator": "user.login",
+            "creator": "user.startup",
             "timestamp": 0
         }
     },
     {
-        "name": "test2",
-        "schema": "rhex://schema/test",
+        "name": "math.right",
+        "schema": null,
         "payload": {
             "kind": "json",
-            "value": {
-                "imaginary": "friend",
-                "named": "Sqweegie Beau"
-            }
+            "value": 2
         },
         "meta": {
-            "creator": "user.login",
+            "creator": "user.startup",
             "timestamp": 0
         }
     },
@@ -36,10 +29,23 @@
         "payload": {
             "kind": "binary",
             "encoding": "base64",
-            "data": "VGhpcyBpcyBhIGNvbnNvbGUud3JpdGU="
+            "data": "U2t3ZWV6eSBKaWJicw=="
         },
         "meta": {
             "creator": "user.login",
+            "timestamp": 0
+        }
+    },
+    {
+        "name": "blake3.hash_me",
+        "schema": null,
+        "payload": {
+            "kind": "binary",
+            "encoding": "base64",
+            "data": "dGhpcyBpcyBoYXNoZWQ="
+        },
+        "meta": {
+            "creator": "user.startup",
             "timestamp": 0
         }
     }

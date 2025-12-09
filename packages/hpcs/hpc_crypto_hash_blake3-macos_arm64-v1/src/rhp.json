@@ -1,0 +1,7 @@
+{
+    "name": "hpc.crypto.hash.blake3",
+    "capability": "crypto.hash.blake3",
+    "version": "0.1.0",
+    "requires": ["host.macos.apple"],
+    "bin_format": "native"
+}

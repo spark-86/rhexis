@@ -10,23 +10,45 @@ mod write;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ConsoleWrite {
-    pub bytes: String,
+    pub bytes: Vec<u8>,
 }
 
 #[unsafe(no_mangle)]
-extern "C" fn hpc_entry(ctx: &mut HpcContext) -> i32 {
-    let input: ConsoleWrite = serde_cbor::from_slice(ctx.input).unwrap();
-    let s = std::str::from_utf8(&input.bytes.as_bytes()).unwrap();
-    let _ = console_write(s);
+pub unsafe extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
+    let ctx = unsafe { &mut *ctx };
+
+    // 1. Decode the CBOR into the correct shape
+    let input: ConsoleWrite = match serde_cbor::from_slice(ctx.input) {
+        Ok(v) => v,
+        Err(e) => {
+            // TODO: record diag / emit error flux instead of just returning
+            eprintln!("hpc.console.write decode error: {e}");
+            return 1; // non-zero = failure
+        }
+    };
+
+    // 2. Turn the bytes into a string for macOS stdout
+    let s = match String::from_utf8(input.bytes) {
+        Ok(s) => s,
+        Err(e) => {
+            eprintln!("hpc.console.write utf8 error: {e}");
+            return 1;
+        }
+    };
+
+    let _ = console_write(&s);
+
+    // 3. Emit flux (you can keep echoing ctx.input, that’s fine)
     ctx.output.push(rhexis_core::flux::item::FluxItem {
         name: "_console.write".to_string(),
         schema: None,
         payload: FluxPayload::Binary(ctx.input.to_vec()),
         meta: FluxMeta {
-            creator: "hpc.console.write-macos_apple-v1".to_string(),
+            creator: "hpc.console.write-macos_arm64-v1".to_string(),
             timestamp: 0,
         },
     });
+
     0
 }
 

@@ -1,0 +1,25 @@
+{
+    "name": "math.result.to.binary",
+    "version": "0.1.0",
+    "requires": [],
+    "observes": [],
+    "consumes": [
+        {
+            "key": "math.result",
+            "schema": null,
+            "payload_type": "json",
+            "required_fields": "value"
+        }
+    ],
+    "emits": [
+        {
+            "key": "console.write",
+            "schema": null,
+            "payload_type": "binary",
+            "required_fields": null
+        }
+    ],
+    "proposes": [],
+    "bin_format": "Native",
+    "blake3": []
+}

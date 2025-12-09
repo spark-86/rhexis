@@ -1,0 +1,11 @@
+[package]
+name = "transform_crypto_hash_blake3-macos_arm64-v1"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+serde_json.workspace = true
+
+[lib]
+crate-type = ["cdylib"]

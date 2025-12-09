@@ -1,10 +1,12 @@
 [package]
-name = "time-unix-now_ms"
+name = "transform_convert_math_to_binary"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
 rhexis-core = { path = "../../../rhexis-core" }
+serde_json.workspace = true
+
 
 [lib]
 crate-type = ["cdylib"]
