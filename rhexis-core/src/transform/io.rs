@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{flux::item::FluxItem, hpc::directive::KernelDirective};
+use crate::flux::item::FluxItem;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct TransformInput {
@@ -11,7 +11,6 @@ pub struct TransformInput {
 pub struct TransformOutput {
     pub ok: bool,
     pub flux_out: Vec<FluxItem>,
-    pub directives: Vec<KernelDirective>,
     pub faults: Vec<Fault>,
 }
 

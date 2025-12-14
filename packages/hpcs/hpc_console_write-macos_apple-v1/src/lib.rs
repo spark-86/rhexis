@@ -1,5 +1,5 @@
 use rhexis_core::{
-    flux::{meta::FluxMeta, payload::FluxPayload},
+    flux::{availability::FluxAvailability, item::FluxItem, meta::FluxMeta, payload::FluxPayload},
     hpc::{context::HpcContext, entry::HpcEntry},
 };
 use serde::{Deserialize, Serialize};
@@ -37,17 +37,19 @@ pub unsafe extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     };
 
     let _ = console_write(&s);
-
-    // 3. Emit flux (you can keep echoing ctx.input, that’s fine)
-    ctx.output.push(rhexis_core::flux::item::FluxItem {
+    let out_flux = FluxItem {
         name: "_console.write".to_string(),
+        availability: FluxAvailability::Now,
         schema: None,
         payload: FluxPayload::Binary(ctx.input.to_vec()),
         meta: FluxMeta {
             creator: "hpc.console.write-macos_arm64-v1".to_string(),
             timestamp: 0,
         },
-    });
+    };
+
+    // 3. Emit flux (you can keep echoing ctx.input, that’s fine)
+    *ctx.output = Some(serde_cbor::to_vec(&out_flux).unwrap());
 
     0
 }

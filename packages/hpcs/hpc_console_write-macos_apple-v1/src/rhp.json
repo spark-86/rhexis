@@ -1,4 +1,5 @@
 {
+    "descriptor": 1,
     "name": "Console shim for macOS on Apple Silicon",
     "capability": "io.console.write",
     "version": "0.1.0",

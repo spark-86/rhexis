@@ -1,51 +1,28 @@
 [
     {
-        "name": "math.left",
-        "schema": null,
+        "name": "data.put.random_hex_value_here",
+        "availability": "now",
+        "schema": "rhex://schema.data.put",
         "payload": {
-            "kind": "json",
-            "value": 1
+            "kind": "mixed",
+            "meta": {
+                "constraints": ["disk"]
+            },
+            "data": [
+                {
+                    "kind": "binary",
+                    "encoding": "base64",
+                    "data": "ZnVja21l"
+                },
+                {
+                    "kind": "binary",
+                    "encoding": "base64",
+                    "data": "dGhpcyBpcyBoYXNoZWQ="
+                }
+            ]
         },
         "meta": {
-            "creator": "user.startup",
-            "timestamp": 0
-        }
-    },
-    {
-        "name": "math.right",
-        "schema": null,
-        "payload": {
-            "kind": "json",
-            "value": 2
-        },
-        "meta": {
-            "creator": "user.startup",
-            "timestamp": 0
-        }
-    },
-    {
-        "name": "console.write",
-        "schema": "rhex://schema/console.write",
-        "payload": {
-            "kind": "binary",
-            "encoding": "base64",
-            "data": "U2t3ZWV6eSBKaWJicw=="
-        },
-        "meta": {
-            "creator": "user.login",
-            "timestamp": 0
-        }
-    },
-    {
-        "name": "blake3.hash_me",
-        "schema": null,
-        "payload": {
-            "kind": "binary",
-            "encoding": "base64",
-            "data": "dGhpcyBpcyBoYXNoZWQ="
-        },
-        "meta": {
-            "creator": "user.startup",
+            "creator": "fuck.i.dunno",
             "timestamp": 0
         }
     }

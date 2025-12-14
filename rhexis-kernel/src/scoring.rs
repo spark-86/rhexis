@@ -49,50 +49,59 @@ pub fn score_transform(
     flux_pond: &HashMap<String, FluxItem>,
 ) -> (usize, Vec<String>, Vec<String>) {
     let mut score: usize = 0;
-    let mut consume_used = Vec::new();
-    for consumed in transform_desc.consumes.iter() {
-        let mut pattern_score = 0;
-        let mut used_name = "".to_string();
+
+    // Flux that have been matched already (any role)
+    let mut used_flux: Vec<String> = Vec::new();
+
+    // Ordered list of matched flux, same order as interacts[]
+    let mut matched_flux: Vec<String> = Vec::new();
+
+    // Subset: which of the matched flux were consumed
+    let mut consumed_flux: Vec<String> = Vec::new();
+
+    for interaction in transform_desc.interacts.iter() {
+        let is_required = interaction.flags.iter().any(|f| f == "required");
+        let is_consumed = interaction.flags.iter().any(|f| f == "consumed");
+
+        let mut best_score = 0;
+        let mut best_name: Option<String> = None;
+
         for flux_item in flux_pond.values() {
-            if consume_used.contains(&flux_item.name.to_string()) {
+            if used_flux.contains(&flux_item.name) {
                 continue;
             }
 
-            let flux_score = score_pattern(&consumed, flux_item);
-            if flux_score > pattern_score {
-                pattern_score = flux_score;
-                used_name = flux_item.name.to_string();
+            let flux_score = score_pattern(&interaction, flux_item);
+            if flux_score > best_score {
+                best_score = flux_score;
+                best_name = Some(flux_item.name.clone());
             }
         }
-        if pattern_score == 0 {
-            return (0, vec![], vec![]);
-        }
-        score += pattern_score * 10;
-        consume_used.push(used_name);
-    }
-    let mut observe_used = Vec::new();
 
-    for observed in transform_desc.observes.iter() {
-        let mut pattern_score = 0;
-        let mut used_name = "".to_string();
-        for flux_item in flux_pond.values() {
-            if consume_used.contains(&flux_item.name.to_string())
-                || observe_used.contains(&flux_item.name.to_string())
-            {
+        // Required interaction not satisfied → reject transform
+        if best_score == 0 {
+            if is_required {
+                return (0, vec![], vec![]);
+            } else {
+                // Optional interaction missing: preserve positional intent
+                // (push nothing, score nothing)
                 continue;
             }
+        }
 
-            let flux_score = score_pattern(&observed, flux_item);
-            if flux_score > pattern_score {
-                pattern_score = flux_score;
-                used_name = flux_item.name.to_string();
-            }
+        let flux_name = best_name.unwrap();
+
+        // Weighting stays the same as before
+        if is_consumed {
+            score += best_score * 10;
+            consumed_flux.push(flux_name.clone());
+        } else {
+            score += best_score;
         }
-        if pattern_score == 0 {
-            return (0, vec![], vec![]);
-        }
-        score += pattern_score;
-        observe_used.push(used_name);
+
+        used_flux.push(flux_name.clone());
+        matched_flux.push(flux_name);
     }
-    (score, observe_used, consume_used)
+
+    (score, matched_flux, consumed_flux)
 }

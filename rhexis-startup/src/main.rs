@@ -12,6 +12,9 @@ struct Args {
 }
 
 fn main() {
+    println!("*************************************************");
+    println!("*  RHEXIS ENGINE                                *");
+    println!("*************************************************");
     let args = Args::parse();
     let mut hpc_vec = Vec::new();
     let mut transform_vec: Vec<Arc<LoadedTransform>> = Vec::new();

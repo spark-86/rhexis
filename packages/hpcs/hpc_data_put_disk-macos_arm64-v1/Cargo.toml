@@ -1,0 +1,14 @@
+[package]
+name = "hpc_data_put_disk-macos_arm64-v1"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+serde_json.workspace = true
+serde_cbor.workspace = true
+serde.workspace = true
+hex.workspace = true
+
+[lib]
+crate-type = ["cdylib"]

@@ -1,18 +1,28 @@
-use crate::flux::{json::JsonFluxItem, meta::FluxMeta, payload::FluxPayload};
+use crate::flux::{
+    availability::FluxAvailability, json::JsonFluxItem, meta::FluxMeta, payload::FluxPayload,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FluxItem {
     pub name: String,
+    pub availability: FluxAvailability,
     pub schema: Option<String>,
     pub payload: FluxPayload,
     pub meta: FluxMeta,
 }
 
 impl FluxItem {
-    pub fn new(name: String, schema: Option<String>, payload: FluxPayload, meta: FluxMeta) -> Self {
+    pub fn new(
+        name: String,
+        availability: FluxAvailability,
+        schema: Option<String>,
+        payload: FluxPayload,
+        meta: FluxMeta,
+    ) -> Self {
         Self {
             name,
+            availability,
             schema,
             payload,
             meta,
@@ -34,6 +44,7 @@ impl FluxItem {
         };
         Self {
             name: parsed.name,
+            availability: parsed.availability,
             schema: parsed.schema,
             payload,
             meta,

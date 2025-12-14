@@ -6,7 +6,7 @@ edition = "2024"
 [dependencies]
 rhexis-core = { path = "../../../rhexis-core" }
 serde_json.workspace = true
-
+serde_cbor.workspace = true
 
 [lib]
 crate-type = ["cdylib"]

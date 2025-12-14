@@ -5,6 +5,7 @@ pub struct TransformPattern {
     pub schema: Option<String>,
     pub payload_type: PayloadType,
     pub required_fields: Option<Vec<String>>,
+    pub flags: Vec<String>,
 }
 
 impl TransformPattern {
@@ -14,6 +15,7 @@ impl TransformPattern {
             schema: None,
             payload_type: PayloadType::Any,
             required_fields: None,
+            flags: vec![],
         }
     }
 }

@@ -37,6 +37,7 @@ pub fn pack(args: Pack) {
 
 fn build_hpc(code: &[u8], json: &serde_json::Value) -> rhexis_core::rhp::package::RhpPackage {
     let mut desc = HpcDescriptor {
+        descriptor_ver: json["descriptor"].as_u64().unwrap() as u32,
         name: json["name"].as_str().unwrap().to_owned(),
         capability: json["capability"].as_str().unwrap().to_owned(),
         version: json["version"].as_str().unwrap().to_owned(),
@@ -70,6 +71,7 @@ fn build_hpc(code: &[u8], json: &serde_json::Value) -> rhexis_core::rhp::package
 
 fn build_transform(code: &[u8], json: &serde_json::Value) -> rhexis_core::rhp::package::RhpPackage {
     let mut desc = TransformDescriptor {
+        descriptor_ver: json["descriptor"].as_u64().unwrap() as u32,
         name: json["name"].as_str().unwrap().to_owned(),
         version: json["version"].as_str().unwrap().to_owned(),
         requires: json["requires"]
@@ -78,10 +80,8 @@ fn build_transform(code: &[u8], json: &serde_json::Value) -> rhexis_core::rhp::p
             .iter()
             .map(|x| x.as_str().unwrap().to_owned())
             .collect(),
-        observes: load_patterns(json.get("observes")),
-        consumes: load_patterns(json.get("consumes")),
-        emits: load_patterns(json.get("emits")),
-        proposes: load_patterns(json.get("proposes")),
+        interacts: load_patterns(json.get("interacts")),
+        effects: load_patterns(json.get("effects")),
         bin_format: match json["bin_format"].as_str() {
             Some("wasm") => BinaryFormat::Wasm,
             _ => BinaryFormat::Native,
@@ -132,12 +132,17 @@ fn load_patterns(node: Option<&serde_json::Value>) -> Vec<PatternDescriptor> {
                 .get("required_fields")
                 .and_then(|x| x.as_array())
                 .map(|arr| arr.iter().map(|v| v.as_str().unwrap().to_owned()).collect());
-
+            let flags = item
+                .get("flags")
+                .and_then(|x| x.as_array())
+                .map(|x| x.iter().map(|v| v.as_str().unwrap().to_owned()).collect())
+                .unwrap_or(vec![]);
             PatternDescriptor {
                 key,
                 schema,
                 payload_type,
                 required_fields,
+                flags,
             }
         })
         .collect()

@@ -4,6 +4,7 @@ use crate::flux::payload::PayloadType;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HpcDescriptor {
+    pub descriptor_ver: u32,
     pub name: String,
     pub capability: String,
     pub version: String,
@@ -14,13 +15,12 @@ pub struct HpcDescriptor {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransformDescriptor {
+    pub descriptor_ver: u32,
     pub name: String,
     pub version: String,
     pub requires: Vec<String>,
-    pub observes: Vec<PatternDescriptor>,
-    pub consumes: Vec<PatternDescriptor>,
-    pub emits: Vec<PatternDescriptor>,
-    pub proposes: Vec<PatternDescriptor>,
+    pub interacts: Vec<PatternDescriptor>,
+    pub effects: Vec<PatternDescriptor>,
     pub bin_format: BinaryFormat,
     pub blake3: [u8; 32],
 }
@@ -31,6 +31,7 @@ pub struct PatternDescriptor {
     pub schema: Option<String>,
     pub payload_type: PayloadType,
     pub required_fields: Option<Vec<String>>,
+    pub flags: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -1,30 +1,31 @@
 {
+    "descriptor": 1,
     "name": "math.add",
     "version": "0.1.0",
-    "requires": [],
-    "observes": [],
-    "consumes": [
+    "interacts": [
         {
             "key": "math.left",
             "schema": null,
             "payload_type": "json",
-            "required_fields": "value"
+            "required_fields": "value",
+            "flags": ["required", "consumed"]
         },
         {
             "key": "math.right",
             "schema": null,
             "payload_type": "json",
-            "required_fields": "value"
+            "required_fields": "value",
+            "flags": ["required", "consumed"]
         }
     ],
-    "emits": [
+    "effects": [
         {
             "key": "math.result",
             "schema": null,
             "payload_type": "json",
-            "required_fields": "value"
+            "required_fields": "value",
+            "flags": ["produce", "guaranteed"]
         }
     ],
-    "proposes": [],
     "bin_format": "Native"
 }

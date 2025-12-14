@@ -1,11 +1,9 @@
 {
     "plugins": [
-        "./hpc_console_write-macos_arm64-v1.rhp",
-        "./transform_console_write-macos_arm64-v1.rhp",
-        "./transform_math_add-macos_arm64-v1.rhp",
-        "./transform_convert_math_to_binary-macos_arm64-v1.rhp",
-        "./hpc_crypto_hash_blake3-macos_arm64-v1.rhp",
-        "./transform_crypto_hash_blake3-macos_arm64-v1.rhp"
+        "./hpc_data_put_disk-macos_arm64-v1.rhp",
+        "./transform_data_put-macos_arm64-v1.rhp",
+        "./transform_data_put_disk-macos_arm64-v1.rhp",
+        "./transform_system_membrane_watch-macos_arm64-v1.rhp"
     ],
     "flux": "./test.flux"
 }

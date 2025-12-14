@@ -6,8 +6,9 @@ use serde_json::json;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
-    let input = unsafe { &(*ctx).input };
-
+    let ctx = unsafe { &mut *ctx };
+    let input = ctx.input;
+    let input: Vec<FluxItem> = serde_cbor::from_slice(&input).unwrap();
     let left = match &input[0].payload {
         FluxPayload::Json(v) => v,
         _ => return 1,
@@ -28,17 +29,18 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
 
     let sum = left_num + right_num;
 
-    unsafe {
-        (*ctx).output.push(FluxItem {
-            name: "math.result".to_string(),
-            schema: None,
-            payload: rhexis_core::flux::payload::FluxPayload::Json(json!({"value": sum})),
-            meta: FluxMeta {
-                creator: "transform.math.add".to_string(),
-                timestamp: 0,
-            },
-        });
-    };
+    let out_flux = vec![FluxItem {
+        name: "math.result".to_string(),
+        availability: rhexis_core::flux::availability::FluxAvailability::Now,
+        schema: None,
+        payload: rhexis_core::flux::payload::FluxPayload::Json(json!({"value": sum})),
+        meta: FluxMeta {
+            creator: "transform.math.add".to_string(),
+            timestamp: 0,
+        },
+    }];
+
+    *ctx.output = Some(serde_cbor::to_vec(&out_flux).unwrap());
 
     0
 }

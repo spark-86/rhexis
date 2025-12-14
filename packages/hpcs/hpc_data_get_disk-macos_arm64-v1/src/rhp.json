@@ -1,0 +1,8 @@
+{
+    "descriptor": 1,
+    "name": "hpc.data.get.disk",
+    "capability": "data.get.disk",
+    "version": "0.1.0",
+    "requires": ["host.macos.apple"],
+    "bin_format": "native"
+}

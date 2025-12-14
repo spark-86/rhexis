@@ -56,95 +56,112 @@ impl Kernel {
         hasher.finalize().into()
     }
 
-    pub fn resolve(&mut self) -> Vec<HpcCall> {
+    pub fn resolve(&mut self, system_flux: Vec<FluxItem>) -> Vec<HpcCall> {
+        // ---- process incoming flux from the membrane -------------------------
+        for flux in system_flux {
+            println!("Adding {} from the membrane...", &flux.name);
+            self.add_flux(flux.clone());
+        }
+
+        println!("Starting Flux: {:?}", &self.flux_pond);
         let mut score_map = HashMap::new();
 
-        let mut consumed_master = Vec::new();
+        let mut consumed_master: Vec<String> = Vec::new();
         let mut collapse_map = HashMap::new();
         let mut diag_master = Vec::new();
-        let mut directives_master = Vec::new();
         let mut hpc_calls_master = Vec::new();
 
+        // ---- scoring pass ----------------------------------------------------
         for transform in self.transform_registry.values() {
-            let (score, observed, consumed) =
+            let (score, matched, consumed) =
                 scoring::score_transform(&transform.descriptor, &self.flux_pond);
+
             if score == 0 {
                 continue;
             }
+
             score_map.insert(
-                transform.descriptor.name.to_string(),
-                (score, observed.clone(), consumed.clone()),
+                transform.descriptor.name.clone(),
+                (score, matched.clone(), consumed.clone()),
             );
+
             for flux_name in consumed {
                 if !consumed_master.contains(&flux_name) {
-                    consumed_master.push(flux_name.to_string());
+                    consumed_master.push(flux_name);
                 }
             }
+
             println!("{}: {}", transform.descriptor.name, score);
         }
-        for transform_id in score_map.keys() {
-            let (score, observed, consumed) = score_map.get(transform_id).unwrap();
+
+        // ---- execution pass --------------------------------------------------
+        for (transform_id, (score, matched, _)) in score_map.iter() {
             let transform = self.transform_registry.get(transform_id).unwrap();
-            let observed_flux: Vec<&FluxItem> = observed
+
+            // Preserve kernel-determined order
+            let total_flux: Vec<FluxItem> = matched
                 .iter()
-                .map(|name| self.flux_pond.get(name).unwrap())
+                .map(|name| self.flux_pond.get(name).unwrap().clone())
                 .collect();
-            let consumed_flux: Vec<&FluxItem> = consumed
-                .iter()
-                .map(|name| self.flux_pond.get(name).unwrap())
-                .collect();
-            let mut total_flux = Vec::new();
-            for flux_item in observed_flux.iter().chain(consumed_flux.iter()) {
-                total_flux.push((*flux_item).clone());
-            }
-            let mut out_vec = Vec::new();
-            let mut diag = Vec::new();
-            let mut directives = Vec::new();
-            let mut hpc_calls = Vec::new();
+
+            let mut out_blob: Option<Vec<u8>> = None;
+            let mut diag_blob: Option<Vec<u8>> = None;
+            let mut hpc_calls_blob: Option<Vec<u8>> = None;
+
             let mut ctx = TransformContext {
-                input: &total_flux,
-                output: &mut out_vec,
-                diag: &mut diag,
-                directives: &mut directives,
-                hpc_calls: &mut hpc_calls,
+                input: &serde_cbor::to_vec(&total_flux).unwrap(),
+                output: &mut out_blob,
+                diag: &mut diag_blob,
+                hpc_calls: &mut hpc_calls_blob,
             };
+
             println!("Before transform {} entry...", transform.descriptor.name);
-            let results = (transform.entry.entry)(&mut ctx);
-            println!("After transform entry. Result: {}", results);
-            if results == 0 {
-                for flux_item in out_vec {
-                    if let Some((_, old_score)) = collapse_map.get(&flux_item.name) {
-                        if score > old_score {
-                            collapse_map
-                                .insert(flux_item.name.clone(), (flux_item.clone(), *score));
+            let result = (transform.entry.entry)(&mut ctx);
+            println!("After transform entry. Result: {}", result);
+            let out_bin = ctx.output.clone();
+            if out_bin.is_some() {
+                let out_flux: Vec<FluxItem> = serde_cbor::from_slice(&out_bin.unwrap()).unwrap();
+                if result == 0 {
+                    for flux_item in out_flux {
+                        match collapse_map.get(&flux_item.name) {
+                            Some((_, old_score)) if score > old_score => {
+                                collapse_map
+                                    .insert(flux_item.name.clone(), (flux_item.clone(), *score));
+                            }
+                            None => {
+                                collapse_map
+                                    .insert(flux_item.name.clone(), (flux_item.clone(), *score));
+                            }
+                            _ => {}
                         }
-                    } else {
-                        collapse_map.insert(flux_item.name.clone(), (flux_item, 100));
+                    }
+                    if ctx.diag.is_some() {
+                        diag_master.append(&mut ctx.diag.as_mut().unwrap().to_owned());
+                    }
+                    if ctx.hpc_calls.is_some() {
+                        let mut hpc_call_exploded: Vec<HpcCall> =
+                            serde_cbor::from_slice(&ctx.hpc_calls.as_ref().unwrap()).unwrap();
+                        hpc_calls_master.append(&mut hpc_call_exploded);
                     }
                 }
-                diag_master.append(&mut diag);
-                directives_master.append(&mut directives);
-                for (name, input) in hpc_calls {
-                    hpc_calls_master.push(HpcCall { name, input });
-                }
             }
         }
+
         println!("Collapse Map: {:?}", collapse_map);
 
-        for item in consumed_master {
-            self.remove_flux(&item);
+        // ---- consume ---------------------------------------------------------
+        for name in consumed_master {
+            println!("Consumed {}", &name);
+            self.remove_flux(&name);
         }
 
-        for item in collapse_map.iter() {
-            let flux_item = self.flux_pond.get(&item.1.0.name);
-            if flux_item.is_none() {
-                self.add_flux(item.1.0.clone());
-            } else {
-                let working = self.flux_pond.get_mut(&item.1.0.name).unwrap();
-                *working = item.1.0.clone();
+        // ---- materialize outputs ---------------------------------------------
+        for (_, (flux_item, _)) in collapse_map.iter() {
+            match self.flux_pond.get_mut(&flux_item.name) {
+                Some(existing) => *existing = flux_item.clone(),
+                None => self.add_flux(flux_item.clone()),
             }
         }
-
         hpc_calls_master
     }
 }

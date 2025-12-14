@@ -1,11 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{flux::item::FluxItem, hpc::directive::KernelDirective};
-
 pub struct HpcContext<'a> {
     pub input: &'a [u8],
-    pub output: &'a mut Vec<FluxItem>,
-    pub directives: &'a mut Vec<KernelDirective>,
+    pub output: &'a mut Option<Vec<u8>>,
+    pub directives: &'a mut Option<Vec<u8>>,
     pub diag: &'a mut Vec<Fault>,
 }
 

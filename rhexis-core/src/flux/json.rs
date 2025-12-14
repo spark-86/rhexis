@@ -1,12 +1,13 @@
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
-use crate::flux::{meta::FluxMeta, payload::FluxPayload};
+use crate::flux::{availability::FluxAvailability, meta::FluxMeta, payload::FluxPayload};
 use base64::Engine;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct JsonFluxItem {
     pub name: String,
+    pub availability: FluxAvailability,
     pub schema: Option<String>,
     pub payload: JsonPayload,
     pub meta: FluxMeta,
@@ -26,8 +27,8 @@ pub enum JsonPayload {
     },
 
     Mixed {
-        json: serde_json::Value,
-        blobs: Vec<JsonBlob>,
+        meta: serde_json::Value,
+        data: Vec<JsonBlob>,
     },
 }
 
@@ -47,13 +48,13 @@ impl JsonPayload {
                 Ok(FluxPayload::Binary(bytes))
             }
 
-            Mixed { json, blobs } => {
-                let resolved = blobs
+            Mixed { meta, data } => {
+                let resolved = data
                     .into_iter()
                     .map(|b| decode_blob(b.encoding, b.data, b.path))
                     .collect::<Result<Vec<_>, _>>()?;
                 Ok(FluxPayload::Mixed {
-                    meta: json,
+                    meta,
                     data: resolved,
                 })
             }
