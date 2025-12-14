@@ -1,12 +1,6 @@
-use crate::{
-    flux::item::FluxItem,
-    hpc::{context::Fault, directive::KernelDirective},
-};
-
 pub struct TransformContext<'a> {
-    pub input: &'a [FluxItem],
-    pub output: &'a mut Vec<FluxItem>,
-    pub directives: &'a mut Vec<KernelDirective>,
-    pub diag: &'a mut Vec<Fault>,
-    pub hpc_calls: &'a mut Vec<(String, Vec<u8>)>,
+    pub input: &'a [u8],
+    pub output: &'a mut Option<Vec<u8>>,
+    pub diag: &'a mut Option<Vec<u8>>,
+    pub hpc_calls: &'a mut Option<Vec<u8>>,
 }

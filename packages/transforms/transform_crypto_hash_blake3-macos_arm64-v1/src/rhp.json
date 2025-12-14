@@ -1,18 +1,17 @@
 {
+    "descriptor": 1,
     "name": "transform.crypto.hash.blake3",
     "version": "0.1.0",
     "requires": ["hpc.crypto.hash.blake3"],
-    "observes": [],
-    "consumes": [
+    "interacts": [
         {
             "key": "blake3.hash_me",
             "schema": null,
             "payload_type": "Binary",
-            "required_fields": null
+            "required_fields": null,
+            "flags": ["required", "consumed"]
         }
     ],
-    "emits": [],
-    "proposes": [],
-    "bin_format": "Native",
-    "blake3": []
+    "effects": [],
+    "bin_format": "Native"
 }

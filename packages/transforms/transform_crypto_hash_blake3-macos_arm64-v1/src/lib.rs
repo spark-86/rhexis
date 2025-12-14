@@ -1,10 +1,23 @@
-use rhexis_core::transform::{context::TransformContext, entry::TransformEntry};
+use rhexis_core::{
+    flux::item::FluxItem,
+    membrane::HpcCall,
+    transform::{context::TransformContext, entry::TransformEntry},
+};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
-    let data = ctx.input[0].payload.as_bytes();
-    ctx.hpc_calls.push(("crypto.hash.blake3".to_string(), data));
+    let input: Vec<FluxItem> = serde_cbor::from_slice(&ctx.input).unwrap();
+    let data = input[0].payload.as_bytes();
+
+    let out_hpc = vec![HpcCall {
+        name: "crypto.hash.blake3".to_string(),
+        logical_id: None,
+        token: None,
+        input: data.clone(),
+        cause: None,
+    }];
+    *ctx.hpc_calls = Some(serde_cbor::to_vec(&out_hpc).unwrap());
     0
 }
 

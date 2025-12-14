@@ -8,13 +8,17 @@ members = [
     "rhexis-ux", 
     "tools/rhp", 
     "packages/hpcs/hpc_console_write-macos_apple-v1", 
-    "packages/hpcs/hpc_net_socket_open-macos_apple-v1", 
     "packages/transforms/transform_console_write", 
     "tools/flux", 
     "packages/transforms/transform_math_add", 
     "packages/transforms/transform_convert_math_to_binary", 
     "packages/hpcs/hpc_crypto_hash_blake3-macos_arm64-v1",
     "packages/transforms/transform_crypto_hash_blake3-macos_arm64-v1",
+    "rhex_types", 
+    "packages/hpcs/hpc_data_put_disk-macos_arm64-v1", 
+    "packages/hpcs/hpc_data_get_disk-macos_arm64-v1", 
+    "packages/transforms/transform_data_put-macos_arm64-v1", 
+    "packages/transforms/transform_data_put_disk-macos_arm64-v1", "packages/transforms/transform_system_membrane_watch-macos_arm64-v1", 
 ]
 
 resolver = "3"

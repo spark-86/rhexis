@@ -1,5 +1,5 @@
 use rhexis_core::{
-    flux::{item::FluxItem, meta::FluxMeta},
+    flux::{availability::FluxAvailability, item::FluxItem, meta::FluxMeta},
     hpc::{context::HpcContext, entry::HpcEntry},
 };
 
@@ -8,9 +8,9 @@ pub extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
     let mut hasher = blake3::Hasher::new();
     hasher.update(ctx.input);
-
-    ctx.output.push(FluxItem {
+    let out_flux = FluxItem {
         name: "hash.result".to_string(),
+        availability: FluxAvailability::Now,
         schema: Some("rhex://schema/blake3-hash@1".to_string()),
         payload: rhexis_core::flux::payload::FluxPayload::Binary(
             hasher.finalize().as_bytes().to_vec(),
@@ -19,8 +19,9 @@ pub extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
             creator: "hpc.crypto.hash.blake3".to_string(),
             timestamp: 0,
         },
-    });
+    };
 
+    *ctx.output = Some(serde_cbor::to_vec(&out_flux).unwrap());
     0
 }
 

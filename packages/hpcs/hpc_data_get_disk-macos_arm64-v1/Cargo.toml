@@ -1,11 +1,13 @@
 [package]
-name = "hpc_net_socket_open-macos_apple-v1"
+name = "hpc_data_get_disk-macos_arm64-v1"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
 rhexis-core = { path = "../../../rhexis-core" }
-
+serde_cbor.workspace = true
+serde.workspace = true
+hex.workspace = true
 
 [lib]
 crate-type = ["cdylib"]

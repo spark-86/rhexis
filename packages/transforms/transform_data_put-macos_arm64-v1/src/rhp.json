@@ -1,0 +1,32 @@
+{
+    "descriptor": 1,
+    "name": "transform.data.store",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "schema": "rhex://schema.data.put",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["required", "consumed", "now"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "schema": "rhex://schema.data.put.disk",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["optional", "soon"]
+        },
+        {
+            "key": null,
+            "schema": "rhex://schema.data.put.ram",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["optional", "soon"]
+        }
+    ],
+    "bin_format": "Native"
+}

@@ -1,0 +1,25 @@
+{
+    "descriptor": 1,
+    "name": "transform.system.membrane.watch",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": "system.membrane.actions",
+            "schema": null,
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["required", "consumed", "now"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "schema": "rhex://schema.membrane.action",
+            "payload_type": "mixed",
+            "required_fields": [],
+            "flags": ["produce"]
+        }
+    ],
+    "bin_format": "Native"
+}
