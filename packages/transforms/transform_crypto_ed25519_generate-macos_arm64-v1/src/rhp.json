@@ -1,0 +1,19 @@
+{
+    "descriptor": 1,
+    "name": "transform.crypto.ed25519.generate",
+    "version": "0.1.0",
+    "requires": ["crypto.ed25519.generate"],
+    "interacts": [
+        {
+            "alias": "crypto.ed25519.generate",
+            "key": null,
+            "thread": "test_crypto",
+            "schema": "rhex://schema.crypto.ed25519.generate",
+            "payload_type": "None",
+            "required_fields": null,
+            "flags": ["required", "consumed", "now"]
+        }
+    ],
+    "effects": [],
+    "bin_format": "Native"
+}

@@ -1,0 +1,8 @@
+{
+    "descriptor": 1,
+    "name": "hpc.crypto.ed25519.generate",
+    "capability": "crypto.ed25519.generate",
+    "version": "0.1.0",
+    "requires": ["crypto.ed25519"],
+    "bin_format": "native"
+}

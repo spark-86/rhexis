@@ -80,7 +80,14 @@ fn build_transform(code: &[u8], json: &serde_json::Value) -> rhexis_core::rhp::p
             .iter()
             .map(|x| x.as_str().unwrap().to_owned())
             .collect(),
+        views: json["views"]
+            .as_array()
+            .unwrap_or(&vec![])
+            .iter()
+            .map(|x| x.as_str().unwrap().to_owned())
+            .collect(),
         interacts: load_patterns(json.get("interacts")),
+        bind: load_binding(json.get("bind")),
         effects: load_patterns(json.get("effects")),
         bin_format: match json["bin_format"].as_str() {
             Some("wasm") => BinaryFormat::Wasm,
@@ -120,6 +127,7 @@ fn load_patterns(node: Option<&serde_json::Value>) -> Vec<PatternDescriptor> {
                 .and_then(|x| x.as_str())
                 .map(|s| s.to_owned());
             println!("{:?}", item);
+            let thread = item["thread"].as_str().unwrap().to_owned();
             let payload_type = item["payload_type"].as_str().unwrap().to_owned();
             let payload_type = match payload_type.as_str() {
                 "json" => PayloadType::Json,
@@ -139,6 +147,7 @@ fn load_patterns(node: Option<&serde_json::Value>) -> Vec<PatternDescriptor> {
                 .unwrap_or(vec![]);
             PatternDescriptor {
                 key,
+                thread,
                 schema,
                 payload_type,
                 required_fields,
@@ -146,4 +155,8 @@ fn load_patterns(node: Option<&serde_json::Value>) -> Vec<PatternDescriptor> {
             }
         })
         .collect()
+}
+
+fn load_binding(node: Option<&serde_json::Value>) -> Option<String> {
+    node.and_then(|v| v.as_str()).map(|s| s.to_string())
 }

@@ -1,25 +1,37 @@
 [
     {
         "name": "data.put.random_hex_value_here",
+        "thread": null,
         "availability": "now",
-        "schema": "rhex://schema.data.put",
-        "payload": {
-            "kind": "mixed",
-            "meta": {
-                "constraints": ["disk"]
+        "intent": {
+            "schema": {
+                "state": "Bound",
+                "value": "rhex://schema.data.put"
             },
-            "data": [
-                {
-                    "kind": "binary",
-                    "encoding": "base64",
-                    "data": "ZnVja21l"
-                },
-                {
-                    "kind": "binary",
-                    "encoding": "base64",
-                    "data": "dGhpcyBpcyBoYXNoZWQ="
+            "data": {
+                "kind": "Mixed",
+                "value": {
+                    "meta": {
+                        "constraints": ["disk"]
+                    },
+                    "data": [
+                        {
+                            "kind": "Binary",
+                            "value": {
+                                "encoding": "base64",
+                                "data": "ZnVja21l"
+                            }
+                        },
+                        {
+                            "kind": "Binary",
+                            "value": {
+                                "encoding": "base64",
+                                "data": "dGhpcyBpcyBoYXNoZWQ="
+                            }
+                        }
+                    ]
                 }
-            ]
+            }
         },
         "meta": {
             "creator": "fuck.i.dunno",

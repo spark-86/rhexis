@@ -1,6 +1,10 @@
 use rhexis_core::{
-    flux::{availability::FluxAvailability, item::FluxItem, meta::FluxMeta, payload::FluxPayload},
-    hpc::{context::HpcContext, entry::HpcEntry},
+    flux::{availability::FluxAvailability, item::FluxItem, meta::FluxMeta},
+    hpc::{context::HpcContext, entry::HpcEntry, envelope::HpcCallEnvelope},
+    rhex::{
+        intent::{Binding, RhexIntent},
+        payload::RhexPayload,
+    },
 };
 use serde::{Deserialize, Serialize};
 
@@ -18,7 +22,7 @@ pub unsafe extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
 
     // 1. Decode the CBOR into the correct shape
-    let input: ConsoleWrite = match serde_cbor::from_slice(ctx.input) {
+    let input: HpcCallEnvelope = match serde_cbor::from_slice(ctx.input) {
         Ok(v) => v,
         Err(e) => {
             // TODO: record diag / emit error flux instead of just returning
@@ -28,7 +32,7 @@ pub unsafe extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     };
 
     // 2. Turn the bytes into a string for macOS stdout
-    let s = match String::from_utf8(input.bytes) {
+    let s = match String::from_utf8(input.payload.try_into().unwrap()) {
         Ok(s) => s,
         Err(e) => {
             eprintln!("hpc.console.write utf8 error: {e}");
@@ -37,11 +41,17 @@ pub unsafe extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     };
 
     let _ = console_write(&s);
+    let mut intent = RhexIntent::new(RhexIntent::gen_nonce());
+    intent.schema = Binding::Unbound;
+    intent.data = RhexPayload::Binary {
+        data: ctx.input.to_vec(),
+    };
     let out_flux = FluxItem {
         name: "_console.write".to_string(),
+        thread: input.thread.clone(),
         availability: FluxAvailability::Now,
-        schema: None,
-        payload: FluxPayload::Binary(ctx.input.to_vec()),
+        intent,
+        correlation: None,
         meta: FluxMeta {
             creator: "hpc.console.write-macos_arm64-v1".to_string(),
             timestamp: 0,

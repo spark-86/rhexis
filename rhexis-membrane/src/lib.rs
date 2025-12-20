@@ -23,7 +23,8 @@ pub struct MacOSMembrane {
 impl Membrane for MacOSMembrane {
     fn execute_hpc_calls(&mut self, calls: Vec<HpcCall>) -> Vec<FluxItem> {
         let mut call_output: Vec<FluxItem> = Vec::new();
-        let mut membrane_dir_blobs: Vec<Vec<u8>> = Vec::new();
+        //let mut membrane_dir_blobs: Vec<Vec<u8>> = Vec::new();
+        let mut all_directives: Vec<MembraneDirective> = Vec::new();
 
         for call in calls {
             let hpc = self.registry.hpcs.get(&call.name).unwrap();
@@ -38,9 +39,12 @@ impl Membrane for MacOSMembrane {
                 }
             }
 
+            let corr = call.correlation;
+
             // ---- build envelope ----
             let envelope = HpcCallEnvelope {
                 logical_id: call.logical_id,
+                thread: call.thread.clone(),
                 token,
                 cause: call.cause,
                 backing,
@@ -67,27 +71,67 @@ impl Membrane for MacOSMembrane {
             // ---- decode flux output ----
             if let Some(blob) = flux_blob {
                 let mut flux_items: Vec<FluxItem> = serde_cbor::from_slice(&blob).unwrap();
-                call_output.append(&mut flux_items);
+
+                for flux in flux_items.iter_mut() {
+                    flux.thread = call.thread.clone();
+                    if flux.correlation.is_some() {
+                        flux.correlation = corr.clone();
+                    }
+                }
+
+                call_output.extend(flux_items);
             }
 
             // ---- collect directive blobs ----
             if let Some(blob) = directives_blob {
-                membrane_dir_blobs.push(blob);
+                let membrane_dirs: Vec<MembraneDirective> = serde_cbor::from_slice(&blob).unwrap();
+                for dir in membrane_dirs {
+                    let updated_dir = match dir {
+                        MembraneDirective::RegisterResource {
+                            logical_id,
+                            backing,
+                            token,
+                            cause,
+                            correlation: _,
+                        } => MembraneDirective::RegisterResource {
+                            logical_id,
+                            backing,
+                            token,
+                            cause,
+                            correlation: corr.clone(),
+                        },
+                        MembraneDirective::ReleaseResource {
+                            logical_id,
+                            correlation: _,
+                        } => MembraneDirective::ReleaseResource {
+                            logical_id,
+                            correlation: corr.clone(),
+                        },
+                        MembraneDirective::IoComplete {
+                            logical_id,
+                            bytes,
+                            correlation: _,
+                            cause,
+                        } => MembraneDirective::IoComplete {
+                            logical_id,
+                            bytes,
+                            correlation: corr.clone(),
+                            cause,
+                        },
+                    };
+                    all_directives.push(updated_dir.clone());
+                    //membrane_dir_blobs.push(serde_cbor::to_vec(&updated_dir).unwrap());
+                }
             }
-        }
-
-        // ---- explode all membrane directives ----
-        let mut all_directives: Vec<MembraneDirective> = Vec::new();
-        for blob in membrane_dir_blobs {
-            let mut decoded: Vec<MembraneDirective> = serde_cbor::from_slice(&blob).unwrap();
-            all_directives.append(&mut decoded);
         }
 
         // ---- process directives into membrane flux ----
         if let Some(membrane_flux) =
             directives::process_directives(&all_directives, &mut self.resource_table).unwrap()
         {
-            call_output.push(membrane_flux);
+            for flux in membrane_flux {
+                call_output.push(flux);
+            }
         }
 
         call_output
@@ -157,7 +201,7 @@ impl MacOSMembrane {
 
             let hpc_returns = self.execute_hpc_calls(hpc_calls);
 
-            println!("\nReturned: {:?}", hpc_returns);
+            println!("Returned: {:?}", hpc_returns);
             // Poll shit in here somewhere.
             system_flux = hpc_returns.clone();
             let after = kernel.hash_flux();

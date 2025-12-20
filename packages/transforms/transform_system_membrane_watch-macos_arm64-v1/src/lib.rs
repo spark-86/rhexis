@@ -1,6 +1,10 @@
 use rhexis_core::{
-    flux::{availability::FluxAvailability, item::FluxItem, meta::FluxMeta, payload::FluxPayload},
+    flux::{availability::FluxAvailability, item::FluxItem, meta::FluxMeta},
     membrane::{ActionType, MembraneAction},
+    rhex::{
+        intent::{Binding, RhexIntent},
+        payload::RhexPayload,
+    },
     transform::{context::TransformContext, entry::TransformEntry},
 };
 use serde_json::json;
@@ -21,8 +25,8 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
 
     let bucket = &input[0];
 
-    let payload_bytes = match &bucket.payload {
-        FluxPayload::Binary(b) => b,
+    let payload_bytes = match &bucket.intent.data {
+        RhexPayload::Binary { data: b } => b,
         _ => return -1,
     };
 
@@ -60,14 +64,18 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
                 "io_complete": ""
             }),
         };
+        let mut intent = RhexIntent::new(RhexIntent::gen_nonce());
+        intent.schema = Binding::Bound(schema);
+        intent.data = RhexPayload::Mixed {
+            meta,
+            data: vec![cause],
+        };
         flux_out.push(FluxItem {
             name,
+            thread: input[0].thread.clone(),
             availability: FluxAvailability::Now,
-            schema: Some(schema),
-            payload: FluxPayload::Mixed {
-                meta,
-                data: vec![cause],
-            },
+            intent,
+            correlation: input[0].correlation.clone(),
             meta: FluxMeta {
                 creator: "transform.membrane.fanout".to_string(),
                 timestamp: 0,

@@ -1,0 +1,24 @@
+[
+    {
+        "name": "rando.crypto.request",
+        "thread": "crypto",
+        "availability": "now",
+        "intent": {
+            "schema": {
+                "state": "Bound",
+                "value": "rhex://schema.crypto.ed25519.generate"
+            },
+            "data": {
+                "kind": "None"
+            }
+        },
+        "correlation": [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "meta": {
+            "creator": "fuck.i.dunno",
+            "timestamp": 0
+        }
+    }
+]

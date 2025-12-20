@@ -1,0 +1,17 @@
+[package]
+name = "hpc_crypto_ed25519_sign-macos_arm64-v1"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+ed25519-dalek.workspace = true
+serde_cbor.workspace = true
+hex.workspace = true
+rand.workspace = true
+
+
+
+
+[lib]
+crate-type = [ "cdylib" ]

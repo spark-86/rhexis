@@ -1,0 +1,27 @@
+{
+    "descriptor": 1,
+    "name": "transform.crypto.ed25519.sign",
+    "version": "0.1.0",
+    "requires": ["crypto.ed25519.sign"],
+    "interacts": [
+        {
+            "alias": "signed.data",
+            "key": null,
+            "schema": "rhex://schema.crypto.ed25519.sign",
+            "payload_type": "Mixed",
+            "required_fields": [],
+            "flags": ["required", "consumed", "now"]
+        }
+    ],
+    "bind": "rhex://schema.system.membrane.action",
+    "effects": [
+        {
+            "key": null,
+            "schema": "rhex://schema.crypto.ed25519.signed",
+            "payload_type": "Mixed",
+            "required_fields": [],
+            "flags": ["produce", "inherit"]
+        }
+    ],
+    "bin_format": "Native"
+}

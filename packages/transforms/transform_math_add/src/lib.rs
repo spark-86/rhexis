@@ -1,5 +1,6 @@
 use rhexis_core::{
-    flux::{item::FluxItem, meta::FluxMeta, payload::FluxPayload},
+    flux::{item::FluxItem, meta::FluxMeta},
+    rhex::{intent::RhexIntent, payload::RhexPayload},
     transform::{context::TransformContext, entry::TransformEntry},
 };
 use serde_json::json;
@@ -9,12 +10,12 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
     let input = ctx.input;
     let input: Vec<FluxItem> = serde_cbor::from_slice(&input).unwrap();
-    let left = match &input[0].payload {
-        FluxPayload::Json(v) => v,
+    let left = match &input[0].intent.data {
+        RhexPayload::Json(v) => v,
         _ => return 1,
     };
-    let right = match &input[1].payload {
-        FluxPayload::Json(v) => v,
+    let right = match &input[1].intent.data {
+        RhexPayload::Json(v) => v,
         _ => return 1,
     };
 
@@ -29,11 +30,16 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
 
     let sum = left_num + right_num;
 
+    let mut intent = RhexIntent::new(RhexIntent::gen_nonce());
+    intent.data = RhexPayload::Json(json!({
+        "value": sum
+    }));
     let out_flux = vec![FluxItem {
         name: "math.result".to_string(),
+        thread: input[0].thread.clone(),
         availability: rhexis_core::flux::availability::FluxAvailability::Now,
-        schema: None,
-        payload: rhexis_core::flux::payload::FluxPayload::Json(json!({"value": sum})),
+        intent,
+        correlation: input[0].correlation.clone(),
         meta: FluxMeta {
             creator: "transform.math.add".to_string(),
             timestamp: 0,

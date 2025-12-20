@@ -1,15 +1,43 @@
 use std::{collections::HashMap, sync::Arc};
 
+use anyhow::anyhow;
 use rhexis_core::{
-    flux::item::FluxItem, membrane::HpcCall, registry::LoadedTransform,
-    transform::context::TransformContext,
+    flux::item::FluxItem, membrane::HpcCall, registry::LoadedTransform, rhex::intent::Binding,
 };
 
+pub mod cleanup;
+pub mod dump_flux;
+pub mod execute_single;
+pub mod execute_transforms;
+pub mod handle_corr;
+pub mod handle_outputs;
+pub mod ingest_flux;
 pub mod json_path;
+pub mod resolve;
 pub mod scoring;
+pub mod trans_output;
+
+pub struct ScoreResult {
+    score: usize,
+    matched: Vec<String>,
+    consumed: Vec<String>,
+    bound: Option<String>,
+}
+
+pub struct ExecutionArtifacts {
+    collapse_map: HashMap<String, (FluxItem, usize)>,
+    consumed: Vec<String>,
+    detonators: Vec<[u8; 32]>,
+    hpc_calls: Vec<HpcCall>,
+    diag: Vec<u8>,
+}
+
+type ThreadId = String;
+type Schema = String;
+type FluxPond = HashMap<ThreadId, HashMap<Schema, Vec<FluxItem>>>;
 
 pub struct Kernel {
-    pub flux_pond: HashMap<String, FluxItem>,
+    pub flux_pond: FluxPond,
     pub hpc_symbols: Vec<String>,
     pub transform_registry: HashMap<String, Arc<LoadedTransform>>,
 }
@@ -21,8 +49,13 @@ impl Kernel {
         inital_transforms: &[Arc<LoadedTransform>],
     ) -> Self {
         let mut pond = HashMap::new();
+
         for flux_item in inital_flux {
-            pond.insert(flux_item.name.clone(), flux_item);
+            let status = Kernel::add_flux(&mut pond, flux_item.clone());
+            match status {
+                Err(e) => println!("Borked ({:?}) loading flux: {:?}", e, &flux_item.clone()),
+                _ => {}
+            }
         }
         let mut registry = HashMap::new();
         for transform in inital_transforms {
@@ -35,133 +68,91 @@ impl Kernel {
         }
     }
 
-    pub fn add_flux(&mut self, flux_item: FluxItem) {
-        self.flux_pond.insert(flux_item.name.clone(), flux_item);
+    pub fn add_flux(pond: &mut FluxPond, flux_item: FluxItem) -> Result<(), anyhow::Error> {
+        let thread = flux_item.thread.clone();
+        let schema = match &flux_item.intent.schema {
+            Binding::Bound(b) => b.clone(),
+            _ => return Err(anyhow!("Unbound schema")),
+        };
+
+        let bucket = Kernel::bucket_mut(pond, &thread, &schema);
+        bucket.push(flux_item);
+
+        Ok(())
     }
-    pub fn get_flux(&self, name: &str) -> Option<&FluxItem> {
-        self.flux_pond.get(name)
+
+    pub fn get_flux(&self, thread: &ThreadId, schema: &Schema) -> Option<&[FluxItem]> {
+        self.flux_pond
+            .get(thread)
+            .and_then(|m| m.get(schema))
+            .map(|v| v.as_slice())
     }
-    pub fn remove_flux(&mut self, name: &str) {
-        self.flux_pond.remove(name);
+
+    pub fn find_flux_by_name(&self, name: &str) -> Option<&FluxItem> {
+        for thread_map in self.flux_pond.values() {
+            for bucket in thread_map.values() {
+                if let Some(f) = bucket.iter().find(|f| f.name == name) {
+                    return Some(f);
+                }
+            }
+        }
+        None
+    }
+
+    pub fn remove_flux_by_name(&mut self, name: &str) {
+        for thread_map in self.flux_pond.values_mut() {
+            for bucket in thread_map.values_mut() {
+                bucket.retain(|f| f.name != name);
+            }
+        }
     }
 
     pub fn hash_flux(&self) -> [u8; 32] {
         let mut hasher = blake3::Hasher::new();
-        let mut keys: Vec<&String> = self.flux_pond.keys().collect();
-        keys.sort();
-        for key in keys {
-            let item = self.flux_pond.get(key).unwrap();
-            hasher.update(&item.to_cbor());
+
+        // 1. Sort threads
+        let mut threads: Vec<&String> = self.flux_pond.keys().collect();
+        threads.sort();
+
+        for thread in threads {
+            hasher.update(thread.as_bytes());
+
+            let schema_map = &self.flux_pond[thread];
+
+            // 2. Sort schemas within thread
+            let mut schemas: Vec<&String> = schema_map.keys().collect();
+            schemas.sort();
+
+            for schema in schemas {
+                hasher.update(schema.as_bytes());
+
+                let bucket = &schema_map[schema];
+
+                // 3. Hash all flux items in the bucket
+                //    Order must be deterministic
+                let mut items: Vec<&FluxItem> = bucket.iter().collect();
+
+                // If FluxItem has a stable field (name, timestamp, correlation),
+                // sort by it. Pick ONE deterministic rule.
+                items.sort_by(|a, b| a.name.cmp(&b.name));
+
+                for item in items {
+                    hasher.update(&item.to_cbor());
+                }
+            }
         }
+
         hasher.finalize().into()
     }
 
-    pub fn resolve(&mut self, system_flux: Vec<FluxItem>) -> Vec<HpcCall> {
-        // ---- process incoming flux from the membrane -------------------------
-        for flux in system_flux {
-            println!("Adding {} from the membrane...", &flux.name);
-            self.add_flux(flux.clone());
-        }
-
-        println!("Starting Flux: {:?}", &self.flux_pond);
-        let mut score_map = HashMap::new();
-
-        let mut consumed_master: Vec<String> = Vec::new();
-        let mut collapse_map = HashMap::new();
-        let mut diag_master = Vec::new();
-        let mut hpc_calls_master = Vec::new();
-
-        // ---- scoring pass ----------------------------------------------------
-        for transform in self.transform_registry.values() {
-            let (score, matched, consumed) =
-                scoring::score_transform(&transform.descriptor, &self.flux_pond);
-
-            if score == 0 {
-                continue;
-            }
-
-            score_map.insert(
-                transform.descriptor.name.clone(),
-                (score, matched.clone(), consumed.clone()),
-            );
-
-            for flux_name in consumed {
-                if !consumed_master.contains(&flux_name) {
-                    consumed_master.push(flux_name);
-                }
-            }
-
-            println!("{}: {}", transform.descriptor.name, score);
-        }
-
-        // ---- execution pass --------------------------------------------------
-        for (transform_id, (score, matched, _)) in score_map.iter() {
-            let transform = self.transform_registry.get(transform_id).unwrap();
-
-            // Preserve kernel-determined order
-            let total_flux: Vec<FluxItem> = matched
-                .iter()
-                .map(|name| self.flux_pond.get(name).unwrap().clone())
-                .collect();
-
-            let mut out_blob: Option<Vec<u8>> = None;
-            let mut diag_blob: Option<Vec<u8>> = None;
-            let mut hpc_calls_blob: Option<Vec<u8>> = None;
-
-            let mut ctx = TransformContext {
-                input: &serde_cbor::to_vec(&total_flux).unwrap(),
-                output: &mut out_blob,
-                diag: &mut diag_blob,
-                hpc_calls: &mut hpc_calls_blob,
-            };
-
-            println!("Before transform {} entry...", transform.descriptor.name);
-            let result = (transform.entry.entry)(&mut ctx);
-            println!("After transform entry. Result: {}", result);
-            let out_bin = ctx.output.clone();
-            if out_bin.is_some() {
-                let out_flux: Vec<FluxItem> = serde_cbor::from_slice(&out_bin.unwrap()).unwrap();
-                if result == 0 {
-                    for flux_item in out_flux {
-                        match collapse_map.get(&flux_item.name) {
-                            Some((_, old_score)) if score > old_score => {
-                                collapse_map
-                                    .insert(flux_item.name.clone(), (flux_item.clone(), *score));
-                            }
-                            None => {
-                                collapse_map
-                                    .insert(flux_item.name.clone(), (flux_item.clone(), *score));
-                            }
-                            _ => {}
-                        }
-                    }
-                    if ctx.diag.is_some() {
-                        diag_master.append(&mut ctx.diag.as_mut().unwrap().to_owned());
-                    }
-                    if ctx.hpc_calls.is_some() {
-                        let mut hpc_call_exploded: Vec<HpcCall> =
-                            serde_cbor::from_slice(&ctx.hpc_calls.as_ref().unwrap()).unwrap();
-                        hpc_calls_master.append(&mut hpc_call_exploded);
-                    }
-                }
-            }
-        }
-
-        println!("Collapse Map: {:?}", collapse_map);
-
-        // ---- consume ---------------------------------------------------------
-        for name in consumed_master {
-            println!("Consumed {}", &name);
-            self.remove_flux(&name);
-        }
-
-        // ---- materialize outputs ---------------------------------------------
-        for (_, (flux_item, _)) in collapse_map.iter() {
-            match self.flux_pond.get_mut(&flux_item.name) {
-                Some(existing) => *existing = flux_item.clone(),
-                None => self.add_flux(flux_item.clone()),
-            }
-        }
-        hpc_calls_master
+    pub fn bucket_mut<'a>(
+        pond: &'a mut FluxPond,
+        thread: &ThreadId,
+        schema: &Schema,
+    ) -> &'a mut Vec<FluxItem> {
+        pond.entry(thread.clone())
+            .or_default()
+            .entry(schema.clone())
+            .or_default()
     }
 }

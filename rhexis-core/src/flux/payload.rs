@@ -9,7 +9,7 @@ pub enum FluxPayload {
     None,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum PayloadType {
     Json,
     Binary,

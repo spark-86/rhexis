@@ -1,6 +1,7 @@
 use crate::flux::payload::PayloadType;
 
 pub struct TransformPattern {
+    pub alias: Option<String>,
     pub key: Option<String>,
     pub schema: Option<String>,
     pub payload_type: PayloadType,
@@ -11,6 +12,7 @@ pub struct TransformPattern {
 impl TransformPattern {
     pub fn new() -> Self {
         Self {
+            alias: None,
             key: None,
             schema: None,
             payload_type: PayloadType::Any,
