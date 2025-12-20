@@ -1,107 +1,178 @@
-use std::collections::HashMap;
-
-use crate::json_path::JsonPathExt;
+use crate::{FluxPond, json_path::JsonPathExt};
 use rhexis_core::{
-    flux::{item::FluxItem, payload::FluxPayload},
+    flux::item::FluxItem,
+    rhex::{intent::Binding, payload::RhexPayload},
     rhp::descriptor::{PatternDescriptor, TransformDescriptor},
 };
 
+/// Scores a single flux item against a pattern (unchanged logic)
 pub fn score_pattern(pattern: &PatternDescriptor, flux_item: &FluxItem) -> usize {
     let mut score: usize = 0;
 
-    if pattern.key.is_some() {
-        if flux_item.name != pattern.key.clone().unwrap() {
+    if let Some(key) = &pattern.key {
+        if &flux_item.name != key {
             return 0;
-        } else {
-            score += 10;
+        }
+        score += 10;
+    }
+
+    if let Some(schema) = &pattern.schema {
+        match &flux_item.intent.schema {
+            Binding::Bound(v) if v == schema => score += 1000,
+            _ => return 0,
         }
     }
-    if pattern.schema.is_some() {
-        if flux_item.schema != pattern.schema.clone() {
-            return 0;
-        } else {
-            score += 1000;
-        }
-    }
-    if pattern.required_fields.is_some() {
-        if all_required_present(&pattern.required_fields.clone().unwrap(), flux_item) {
+
+    if let Some(req) = &pattern.required_fields {
+        if all_required_present(req, flux_item) {
             score += 100;
         } else {
             return 0;
         }
     }
+
     score
 }
 
 fn all_required_present(req: &[String], flux: &FluxItem) -> bool {
-    match &flux.payload {
-        FluxPayload::Json(v) => req.iter().all(|p| v.contains_path(p)),
-        FluxPayload::Mixed { meta, data } => {
-            let _ = data;
-            req.iter().all(|p| meta.contains_path(p))
-        }
-        FluxPayload::Binary(_) | FluxPayload::None => false,
+    match &flux.intent.data {
+        RhexPayload::Json(v) => req.iter().all(|p| v.contains_path(p)),
+        RhexPayload::Mixed { meta, .. } => req.iter().all(|p| meta.contains_path(p)),
+        _ => false,
     }
 }
 
 pub fn score_transform(
     transform_desc: &TransformDescriptor,
-    flux_pond: &HashMap<String, FluxItem>,
-) -> (usize, Vec<String>, Vec<String>) {
+    flux_pond: &FluxPond,
+) -> (usize, Vec<String>, Vec<String>, Option<String>) {
     let mut score: usize = 0;
 
-    // Flux that have been matched already (any role)
-    let mut used_flux: Vec<String> = Vec::new();
-
-    // Ordered list of matched flux, same order as interacts[]
     let mut matched_flux: Vec<String> = Vec::new();
-
-    // Subset: which of the matched flux were consumed
     let mut consumed_flux: Vec<String> = Vec::new();
 
-    for interaction in transform_desc.interacts.iter() {
+    for interaction in &transform_desc.interacts {
         let is_required = interaction.flags.iter().any(|f| f == "required");
         let is_consumed = interaction.flags.iter().any(|f| f == "consumed");
+        let is_multiple = interaction.flags.iter().any(|f| f == "multiple");
 
-        let mut best_score = 0;
-        let mut best_name: Option<String> = None;
+        let thread = &interaction.thread;
+        let schema = match &interaction.schema {
+            Some(s) => s,
+            None => {
+                // schema is mandatory now — descriptor error
+                return (0, vec![], vec![], None);
+            }
+        };
 
-        for flux_item in flux_pond.values() {
-            if used_flux.contains(&flux_item.name) {
-                continue;
+        let bucket = flux_pond
+            .get(thread)
+            .and_then(|m| m.get(schema))
+            .map(|v| v.as_slice())
+            .unwrap_or(&[]);
+
+        // ---- MULTIPLE ----
+        if is_multiple {
+            // zero-length is allowed
+            if is_required && bucket.is_empty() {
+                return (0, vec![], vec![], None);
             }
 
-            let flux_score = score_pattern(&interaction, flux_item);
-            if flux_score > best_score {
-                best_score = flux_score;
-                best_name = Some(flux_item.name.clone());
+            for flux in bucket {
+                let s = score_pattern(interaction, flux);
+                if s > 0 {
+                    score += s;
+                    matched_flux.push(flux.name.clone());
+                    if is_consumed {
+                        consumed_flux.push(flux.name.clone());
+                    }
+                }
+            }
+
+            continue;
+        }
+
+        // ---- SINGLE ----
+        let mut best_score = 0;
+        let mut best_flux: Option<&FluxItem> = None;
+
+        for flux in bucket {
+            let s = score_pattern(interaction, flux);
+            if s > best_score {
+                best_score = s;
+                best_flux = Some(flux);
             }
         }
 
-        // Required interaction not satisfied → reject transform
         if best_score == 0 {
             if is_required {
-                return (0, vec![], vec![]);
-            } else {
-                // Optional interaction missing: preserve positional intent
-                // (push nothing, score nothing)
-                continue;
+                return (0, vec![], vec![], None);
             }
+            continue;
         }
 
-        let flux_name = best_name.unwrap();
+        let flux = best_flux.unwrap();
+        matched_flux.push(flux.name.clone());
 
-        // Weighting stays the same as before
         if is_consumed {
             score += best_score * 10;
-            consumed_flux.push(flux_name.clone());
+            consumed_flux.push(flux.name.clone());
         } else {
             score += best_score;
         }
-
-        used_flux.push(flux_name.clone());
-        matched_flux.push(flux_name);
     }
 
-    (score, matched_flux, consumed_flux)
+    // ---- BIND RESOLUTION ----
+    let bound_flux = if let Some(bind_schema) = &transform_desc.bind {
+        let exec_corr = matched_flux
+            .first()
+            .and_then(|name| find_flux_by_name(flux_pond, name))
+            .and_then(|f| f.correlation);
+
+        resolve_bind(bind_schema, flux_pond, &exec_corr)
+    } else {
+        None
+    };
+
+    if transform_desc.bind.is_some() && bound_flux.is_none() {
+        return (0, vec![], vec![], None);
+    }
+
+    (score, matched_flux, consumed_flux, bound_flux)
+}
+
+/// Bind now searches *by schema + correlation*, not by matched names
+fn resolve_bind(
+    bind_schema: &str,
+    flux_pond: &FluxPond,
+    exec_corr: &Option<[u8; 32]>,
+) -> Option<String> {
+    let corr = match exec_corr {
+        Some(c) => *c,
+        None => return None,
+    };
+
+    for thread_map in flux_pond.values() {
+        if let Some(bucket) = thread_map.get(bind_schema) {
+            for flux in bucket {
+                if flux.correlation == Some(corr) {
+                    return Some(flux.name.clone());
+                }
+            }
+        }
+    }
+
+    None
+}
+
+/// Debug / tooling helper only
+fn find_flux_by_name<'a>(pond: &'a FluxPond, name: &str) -> Option<&'a FluxItem> {
+    for thread_map in pond.values() {
+        for bucket in thread_map.values() {
+            if let Some(f) = bucket.iter().find(|f| f.name == name) {
+                return Some(f);
+            }
+        }
+    }
+    None
 }

@@ -8,14 +8,16 @@ use rhexis_core::{
 pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
     let input: Vec<FluxItem> = serde_cbor::from_slice(&ctx.input).unwrap();
-    let data = input[0].payload.as_bytes();
+    let data = input[0].intent.data.as_bytes();
 
     let out_hpc = vec![HpcCall {
         name: "crypto.hash.blake3".to_string(),
+        thread: input[0].thread.clone(),
         logical_id: None,
         token: None,
         input: data.clone(),
         cause: None,
+        correlation: input[0].correlation.clone(),
     }];
     *ctx.hpc_calls = Some(serde_cbor::to_vec(&out_hpc).unwrap());
     0

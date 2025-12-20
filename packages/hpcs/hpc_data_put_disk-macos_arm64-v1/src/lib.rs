@@ -23,7 +23,6 @@ struct DataReference {
 pub extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
     let envelope: HpcCallEnvelope = serde_cbor::from_slice(ctx.input).unwrap();
-    let logical_id = envelope.logical_id.clone();
     let input: DataReference = serde_cbor::from_slice(&envelope.payload).unwrap();
     // 2. Perform OS-level embodiment (HPC job)
     let filename = format!("/tmp/data/{}.rdat", hex::encode(&input.logical_id.clone()));
@@ -65,9 +64,10 @@ pub extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
         token: token.clone(),
         backing: ResourceBacking {
             kind: "disk.file".to_string(),
-            bytes: filename.into(),
+            bytes: Some(filename.into()),
         },
         cause: envelope.cause.clone(),
+        correlation: Some([0; 32]),
     }];
     // 3. Inform membrane of the new resource embodiment
     *ctx.directives = Some(serde_cbor::to_vec(&dir).unwrap());

@@ -19,7 +19,9 @@ pub struct TransformDescriptor {
     pub name: String,
     pub version: String,
     pub requires: Vec<String>,
+    pub views: Vec<String>,
     pub interacts: Vec<PatternDescriptor>,
+    pub bind: Option<String>,
     pub effects: Vec<PatternDescriptor>,
     pub bin_format: BinaryFormat,
     pub blake3: [u8; 32],
@@ -28,6 +30,7 @@ pub struct TransformDescriptor {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PatternDescriptor {
     pub key: Option<String>,
+    pub thread: String,
     pub schema: Option<String>,
     pub payload_type: PayloadType,
     pub required_fields: Option<Vec<String>>,

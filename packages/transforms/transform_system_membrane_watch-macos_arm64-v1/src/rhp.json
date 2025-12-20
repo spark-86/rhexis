@@ -6,6 +6,7 @@
     "interacts": [
         {
             "key": "system.membrane.actions",
+            "thread": "system.membrane",
             "schema": null,
             "payload_type": "binary",
             "required_fields": null,
@@ -15,10 +16,11 @@
     "effects": [
         {
             "key": null,
-            "schema": "rhex://schema.membrane.action",
-            "payload_type": "mixed",
+            "thread": "system.membrane",
+            "schema": "rhex://schema.system.membrane.event",
+            "payload_type": "Mixed",
             "required_fields": [],
-            "flags": ["produce"]
+            "flags": ["produce", "inherit"]
         }
     ],
     "bin_format": "Native"

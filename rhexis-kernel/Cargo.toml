@@ -8,3 +8,5 @@ rhexis-core = { path = "../rhexis-core" }
 serde_json.workspace = true
 blake3.workspace = true
 serde_cbor.workspace = true
+rand.workspace = true
+anyhow.workspace = true

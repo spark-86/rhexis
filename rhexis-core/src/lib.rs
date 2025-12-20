@@ -3,5 +3,6 @@ pub mod flux;
 pub mod hpc;
 pub mod membrane;
 pub mod registry;
+pub mod rhex;
 pub mod rhp;
 pub mod transform;

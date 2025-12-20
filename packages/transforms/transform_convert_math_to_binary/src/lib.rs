@@ -1,5 +1,6 @@
 use rhexis_core::{
-    flux::{item::FluxItem, meta::FluxMeta, payload::FluxPayload},
+    flux::{availability::FluxAvailability, item::FluxItem, meta::FluxMeta},
+    rhex::{intent::RhexIntent, payload::RhexPayload},
     transform::{context::TransformContext, entry::TransformEntry},
 };
 
@@ -8,8 +9,8 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
     let input: Vec<FluxItem> = serde_cbor::from_slice(&ctx.input).unwrap();
     // 1. Extract JSON payload
-    let value = match &input[0].payload {
-        FluxPayload::Json(v) => match v.get("value").and_then(|v| v.as_f64()) {
+    let value = match &input[0].intent.data {
+        RhexPayload::Json(v) => match v.get("value").and_then(|v| v.as_f64()) {
             Some(n) => n,
             None => return 1,
         },
@@ -19,11 +20,14 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     // 2. Encode f64 as canonical big-endian binary
     let bin_output = value.to_be_bytes().to_vec();
 
+    let mut intent = RhexIntent::new(RhexIntent::gen_nonce());
+    intent.data = RhexPayload::Binary { data: bin_output };
     let out_flux = vec![FluxItem {
         name: "console.write".to_string(),
-        availability: rhexis_core::flux::availability::FluxAvailability::Now,
-        schema: None,
-        payload: FluxPayload::Binary(bin_output),
+        thread: input[0].thread.clone(),
+        availability: FluxAvailability::Now,
+        intent,
+        correlation: input[0].correlation.clone(),
         meta: FluxMeta {
             creator: "transform.math.to.binary".to_string(),
             timestamp: 0,

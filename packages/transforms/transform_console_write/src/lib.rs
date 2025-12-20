@@ -1,6 +1,10 @@
 use rhexis_core::{
-    flux::{availability::FluxAvailability, item::FluxItem, meta::FluxMeta, payload::FluxPayload},
+    flux::{availability::FluxAvailability, item::FluxItem, meta::FluxMeta},
     membrane::HpcCall,
+    rhex::{
+        intent::{Binding, RhexIntent},
+        payload::RhexPayload,
+    },
     transform::{context::TransformContext, entry::TransformEntry},
 };
 use serde::{Deserialize, Serialize};
@@ -14,7 +18,7 @@ struct ConsoleWriteOp {
 pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
     let flux: Vec<FluxItem> = serde_cbor::from_slice(&ctx.input).unwrap();
-    let bytes = flux[0].payload.as_bytes();
+    let bytes = flux[0].intent.data.as_bytes();
     let op = ConsoleWriteOp {
         bytes: bytes.to_vec(),
     };
@@ -22,19 +26,25 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
 
     let out_hpc = vec![HpcCall {
         name: "io.console.write".to_string(),
+        thread: flux[0].thread.clone(),
         logical_id: None,
         token: None,
         input: encoded.clone(),
         cause: None,
+        correlation: flux[0].correlation.clone(),
     }];
 
     *ctx.hpc_calls = Some(serde_cbor::to_vec(&out_hpc).unwrap());
 
+    let mut intent = RhexIntent::new(RhexIntent::gen_nonce());
+    intent.schema = Binding::Bound("rhex://system.console.write.output".to_string());
+    intent.data = RhexPayload::Binary { data: encoded };
     let out_flux = vec![FluxItem {
         name: "_console.write".to_string(),
+        thread: flux[0].thread.clone(),
         availability: FluxAvailability::Now,
-        schema: None,
-        payload: FluxPayload::Binary(encoded),
+        intent,
+        correlation: flux[0].correlation.clone(),
         meta: FluxMeta {
             creator: "transform.console.write".to_string(),
             timestamp: 0,

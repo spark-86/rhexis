@@ -6,6 +6,7 @@ use crate::hpc::directive::ResourceBacking;
 pub struct HpcCallEnvelope {
     pub logical_id: Option<Vec<u8>>,
     pub token: Option<Vec<u8>>,
+    pub thread: String,
     pub cause: Option<Vec<u8>>,
     pub backing: Option<ResourceBacking>,
     pub payload: Vec<u8>,

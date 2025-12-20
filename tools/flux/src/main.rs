@@ -1,5 +1,6 @@
 use clap::Parser;
 
+mod build;
 mod pack;
 mod parse;
 mod unpack;

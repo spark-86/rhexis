@@ -1,6 +1,6 @@
 {
     "descriptor": 1,
-    "name": "transform.data.store",
+    "name": "transform.data.put",
     "version": "0.1.0",
     "requires": [],
     "interacts": [
