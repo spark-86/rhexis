@@ -19,6 +19,8 @@ Then we handle each thread as single grouping, in `transform.data.put.{target}.b
 
 ## Data shapes
 
+### `transform.data.put.disk.fire`
+
 For the actual data structure going into the HPC @ transform.data.put.disk.fire
 
 Descriptor:
@@ -60,11 +62,45 @@ pub struct DataPayload {
 }
 ```
 
+### `transform.data.put.disk.batch`
+
+The Descriptor:
+
+```json
+{
+    "descriptor": 1,
+    "name": "transform.data.put.disk.batch",
+    "version": "0.1.0",
+    "requires": ["host.{os}"],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "data.put.disk",
+            "schema": "rhex://schema.data.put.disk",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["consumed", "now", "required", "multiple"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "data.put.disk.queue",
+            "schema": "rhex://schema.data.put.disk.batch",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["produces", "now"]
+        }
+    ],
+    "bin_format": "Native"
+}
+```
+
 For the actual data structure going into `transform.data.put.disk.fire`
 
 ```text
 thread: data.put.disk.queue
-schema: rhex://schema.data.put.disk.queue
+schema: rhex://schema.data.put.disk.batch
 ```
 
 ```rust

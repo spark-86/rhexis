@@ -8,7 +8,7 @@
             "key": null,
             "thread": "data.put.disk.queue",
             "schema": "rhex://schema.data.put.disk.batch",
-            "payload_type": "Binary",
+            "payload_type": "binary",
             "required_fields": null,
             "flags": ["consumed", "now", "required"]
         }
