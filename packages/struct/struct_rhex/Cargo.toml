@@ -1,0 +1,9 @@
+[package]
+name = "struct_rhex"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+serde.workspace = true
+serde-big-array.workspace = true

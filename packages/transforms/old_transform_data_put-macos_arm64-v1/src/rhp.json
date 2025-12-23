@@ -6,6 +6,7 @@
     "interacts": [
         {
             "key": null,
+            "thread": "data.put",
             "schema": "rhex://schema.data.put",
             "payload_type": "mixed",
             "required_fields": null,
@@ -15,6 +16,7 @@
     "effects": [
         {
             "key": null,
+            "thread": "data.put",
             "schema": "rhex://schema.data.put.disk",
             "payload_type": "mixed",
             "required_fields": null,
@@ -22,6 +24,7 @@
         },
         {
             "key": null,
+            "thread": "data.put",
             "schema": "rhex://schema.data.put.ram",
             "payload_type": "mixed",
             "required_fields": null,

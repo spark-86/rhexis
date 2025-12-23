@@ -1,13 +1,14 @@
 {
     "descriptor": 1,
-    "name": "transform.data.store.disk",
+    "name": "transform.rhex.ready",
     "version": "0.1.0",
-    "requires": ["data.store.disk"],
+    "requires": [],
     "interacts": [
         {
             "key": null,
-            "schema": "rhex://schema.data.put.disk",
-            "payload_type": "mixed",
+            "thread": "rhex",
+            "schema": "rhex://schema.rhex.commited",
+            "payload_type": "None",
             "required_fields": null,
             "flags": ["required", "consumed", "now"]
         }
@@ -15,10 +16,11 @@
     "effects": [
         {
             "key": null,
-            "schema": "rhex://schema.data.put.result",
-            "payload_type": "none",
+            "thread": "rhex",
+            "schema": "rhex://schema.rhex.ready",
+            "payload_type": "Json",
             "required_fields": null,
-            "flags": ["guaranteed", "soon"]
+            "flags": ["produce", "inherit"]
         }
     ],
     "bin_format": "Native"

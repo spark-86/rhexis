@@ -1,0 +1,43 @@
+{
+    "descriptor": 1,
+    "name": "transform.rhex.store",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "rhex",
+            "schema": "rhex://schema.rhex.store",
+            "payload_type": "Mixed",
+            "required_fields": null,
+            "flags": ["required", "consumed", "now"]
+        },
+        {
+            "key": null,
+            "thread": "rhex.scope.resolve",
+            "schema": "rhex://schema.rhex.scope.query",
+            "payload_type": "None",
+            "required_fields": null,
+            "flags": ["required", "consumed", "now"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "data.put",
+            "schema": "rhex://schema.data.put",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["produce", "now", "inherit"]
+        },
+        {
+            "key": null,
+            "thread": "rhex",
+            "schema": "rhex://schema.rhex.commit",
+            "payload_type": "None",
+            "required_fields": null,
+            "flags": ["produce", "root"]
+        }
+    ],
+    "bin_format": "Native"
+}

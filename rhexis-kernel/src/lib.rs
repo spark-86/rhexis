@@ -16,6 +16,7 @@ pub mod json_path;
 pub mod resolve;
 pub mod scoring;
 pub mod trans_output;
+pub mod update_pressure;
 
 pub struct ScoreResult {
     score: usize,
@@ -38,6 +39,8 @@ type FluxPond = HashMap<ThreadId, HashMap<Schema, Vec<FluxItem>>>;
 
 pub struct Kernel {
     pub flux_pond: FluxPond,
+    pub thread_pressure: HashMap<ThreadId, usize>,
+    pub overflow: HashMap<ThreadId, Vec<FluxItem>>,
     pub hpc_symbols: Vec<String>,
     pub transform_registry: HashMap<String, Arc<LoadedTransform>>,
 }
@@ -63,6 +66,8 @@ impl Kernel {
         }
         Self {
             flux_pond: pond,
+            thread_pressure: HashMap::new(),
+            overflow: HashMap::new(),
             hpc_symbols,
             transform_registry: registry,
         }
