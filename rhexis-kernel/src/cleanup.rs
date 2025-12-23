@@ -29,7 +29,18 @@ impl Kernel {
     /// Materialize winning flux into the pond
     pub fn materialize(&mut self, collapse: HashMap<String, (FluxItem, usize)>) {
         for (_, (item, _score)) in collapse {
-            Kernel::add_flux(&mut self.flux_pond, item).expect("failed to materialize flux");
+            // Check to make sure we aren't overflowing the thread
+            if self.thread_pressure.get(&item.thread).unwrap().clone() > 0 {
+                // Thread is currently overloaded, add to overflow bucket
+                self.overflow
+                    .entry(item.thread.clone())
+                    .or_default()
+                    .push(item.clone());
+                continue;
+            } else {
+                // Thread is not overloaded and can be added to
+                Kernel::add_flux(&mut self.flux_pond, item).expect("failed to materialize flux");
+            }
         }
     }
 

@@ -4,6 +4,7 @@ use super::Kernel;
 
 impl Kernel {
     pub fn resolve(&mut self, system_flux: Vec<FluxItem>) -> Vec<HpcCall> {
+        self.update_pressure();
         self.ingest_flux(system_flux);
 
         let scores = self.score_transforms();

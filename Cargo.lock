@@ -738,6 +738,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
 
 [[package]]
+name = "struct_rhex"
+version = "0.1.0"
+dependencies = [
+ "rhexis-core",
+ "serde",
+ "serde-big-array",
+]
+
+[[package]]
 name = "subtle"
 version = "2.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -804,27 +813,44 @@ dependencies = [
 [[package]]
 name = "transform_data_put-macos_arm64-v1"
 version = "0.1.0"
-dependencies = [
- "hex",
- "rhexis-core",
- "serde_cbor",
- "serde_json",
-]
 
 [[package]]
-name = "transform_data_put_disk-macos_arm64-v1"
+name = "transform_data_put_disk_fire-macos_arm64-v1"
 version = "0.1.0"
 dependencies = [
  "hex",
  "rhexis-core",
  "serde",
  "serde_cbor",
+ "serde_json",
 ]
 
 [[package]]
 name = "transform_math_add"
 version = "0.1.0"
 dependencies = [
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_rhex_ready-macos_arm64-v1"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_rhex",
+]
+
+[[package]]
+name = "transform_rhex_store-macos_arm64-v1"
+version = "0.1.0"
+dependencies = [
+ "hex",
  "rhexis-core",
  "serde_cbor",
  "serde_json",

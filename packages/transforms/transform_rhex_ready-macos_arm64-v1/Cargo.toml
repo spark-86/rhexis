@@ -1,0 +1,17 @@
+[package]
+name = "transform_rhex_ready-macos_arm64-v1"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+struct_rhex = { path = "../../../packages/struct/struct_rhex" }
+serde_cbor.workspace = true
+serde_json.workspace = true
+hex.workspace = true
+base64.workspace = true
+
+
+
+[lib]
+crate-type = ["cdylib"]

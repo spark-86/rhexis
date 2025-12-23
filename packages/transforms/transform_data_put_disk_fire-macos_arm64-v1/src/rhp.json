@@ -1,0 +1,35 @@
+{
+    "descriptor": 1,
+    "name": "transform.data.put.disk.fire",
+    "version": "0.1.0",
+    "requires": ["data.put.disk"],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "data.put.disk.queue",
+            "schema": "rhex://schema.data.put.disk.batch",
+            "payload_type": "Binary",
+            "required_fields": null,
+            "flags": ["consumed", "now", "required"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "data.put.status",
+            "schema": "rhex://schema.data.put.status",
+            "payload_type": "Json",
+            "required_fields": null,
+            "flags": ["soon", "produced"]
+        },
+        {
+            "key": null,
+            "thread": "data.put.history",
+            "schema": "rhex://schema.data.put.history",
+            "payload_type": "Json",
+            "required_fields": null,
+            "flags": ["soon", "produced"]
+        }
+    ],
+    "bin_format": "Native"
+}

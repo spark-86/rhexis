@@ -1,0 +1,26 @@
+{
+    "descriptor": 1,
+    "name": "transform.data.store.disk",
+    "version": "0.1.0",
+    "requires": ["data.store.disk"],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "data.put.disk",
+            "schema": "rhex://schema.data.put.disk",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["required", "consumed", "now"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "schema": "rhex://schema.data.put.result",
+            "payload_type": "none",
+            "required_fields": null,
+            "flags": ["guaranteed", "soon"]
+        }
+    ],
+    "bin_format": "Native"
+}
