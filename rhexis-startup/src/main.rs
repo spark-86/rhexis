@@ -39,6 +39,7 @@ fn main() {
     let rhp_list = script.get("plugins").unwrap().as_array().unwrap();
     for rhp in rhp_list {
         let filename = rhp.as_str().unwrap();
+        println!("{}", &filename);
         let rhp_bin = std::fs::read(filename).unwrap();
         let rhp_package = serde_cbor::from_slice::<RhpPackage>(&rhp_bin).unwrap();
 

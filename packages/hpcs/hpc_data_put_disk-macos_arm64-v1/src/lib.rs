@@ -13,6 +13,17 @@ fn encode_fd_token(fd: i32) -> Vec<u8> {
     fd.to_le_bytes().to_vec()
 }
 
+#[cfg(windows)]
+fn encode_path_token(path: &str) -> Vec<u8> {
+    use std::os::windows::ffi::OsStrExt;
+
+    std::path::Path::new(path)
+        .as_os_str()
+        .encode_wide()
+        .flat_map(|u| u.to_le_bytes())
+        .collect()
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 struct DataReference {
     logical_id: Vec<u8>,
@@ -59,6 +70,10 @@ pub extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
         let fd = file.into_raw_fd();
         encode_fd_token(fd)
     };
+
+    #[cfg(windows)]
+    let token = encode_path_token(&filename);
+
     let dir = vec![MembraneDirective::RegisterResource {
         logical_id: input.logical_id.clone().to_vec(),
         token: token.clone(),

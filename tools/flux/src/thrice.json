@@ -1,0 +1,24 @@
+[
+    {
+        "name": "data.put.random_hex_value_here",
+        "thread": "data.put.disk.queue",
+        "availability": "now",
+        "intent": {
+            "schema": {
+                "state": "Bound",
+                "value": "rhex://schema.data.put.disk.batch"
+            },
+            "data": {
+                "kind": "Binary",
+                "value": {
+                    "encoding": "base64",
+                    "data": "ZnVja21l"
+                }
+            }
+        },
+        "meta": {
+            "creator": "what.the.fuck.ever",
+            "timestamp": 0
+        }
+    }
+]

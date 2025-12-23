@@ -20,6 +20,7 @@ pub struct DataPayload {
 pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
     let input: Vec<FluxItem> = serde_cbor::from_slice(&ctx.input).unwrap();
+    println!("{:?}", &input[0].intent.data);
     let payload_bytes = match &input[0].intent.data {
         RhexPayload::Binary { data } => data,
         _ => return -1,
@@ -74,8 +75,10 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
                 timestamp: 0,
             },
         };
+        out_flux.push(flux_item);
     }
 
+    *ctx.output = Some(serde_cbor::to_vec(&out_flux).unwrap());
     *ctx.hpc_calls = Some(serde_cbor::to_vec(&out_hpc).unwrap());
     0
 }
