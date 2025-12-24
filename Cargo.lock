@@ -811,8 +811,25 @@ dependencies = [
 ]
 
 [[package]]
-name = "transform_data_put-macos_arm64-v1"
+name = "transform_data_put"
+version = "0.2.0"
+dependencies = [
+ "rhexis-core",
+ "serde",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_data_put_disk_batch"
 version = "0.1.0"
+dependencies = [
+ "blake3",
+ "hex",
+ "rhexis-core",
+ "serde",
+ "serde_cbor",
+]
 
 [[package]]
 name = "transform_data_put_disk_fire-macos_arm64-v1"

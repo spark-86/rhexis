@@ -1,0 +1,42 @@
+{
+    "descriptor": 1,
+    "name": "transform.data.put",
+    "version": "0.2.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "data.put",
+            "schema": "rhex://schema.data.put",
+            "payload_type": "mixed",
+            "required_fields": "constraints",
+            "flags": ["consumed", "now", "multiple"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "data.put.disk",
+            "schema": "rhex://schema.data.put.disk",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["optional", "now"]
+        },
+        {
+            "key": null,
+            "thread": "data.put.ram",
+            "schema": "rhex://schema.data.put.ram",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["optional", "now"]
+        },
+        {
+            "key": null,
+            "thread": "data.put.network",
+            "schema": "rhex://schema.data.put.network",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["optional", "now"]
+        }
+    ]
+}

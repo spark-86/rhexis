@@ -25,8 +25,9 @@ members = [
     "packages/transforms/transform_rhex_ready-macos_arm64-v1", 
     "packages/struct/struct_rhex", 
     "packages/transforms/transform_rhex_store-macos_arm64-v1", 
-    "packages/transforms/transform_data_put-macos_arm64-v1", "packages/transforms/transform_data_put_disk_fire-macos_arm64-v1",
-    
+    "packages/transforms/transform_data_put", 
+    "packages/transforms/transform_data_put_disk_fire-macos_arm64-v1", 
+    "packages/transforms/transform_data_put_disk_batch",     
 ]
 
 resolver = "3"
