@@ -1,0 +1,27 @@
+{
+    "descriptor": 1,
+    "name": "transform.data.put.disk.batch",
+    "version": "0.1.0",
+    "requires": ["host.macos.apple"],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "data.put.disk",
+            "schema": "rhex://schema.data.put.disk",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["consumed", "now", "required", "multiple"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "data.put.disk.queue",
+            "schema": "rhex://schema.data.put.disk.batch",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["produces", "now"]
+        }
+    ],
+    "bin_format": "Native"
+}

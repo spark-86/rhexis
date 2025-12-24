@@ -1,0 +1,9 @@
+{
+    "plugins": [
+        "./hpc_data_put_disk-macos_arm64-v1.rhp",
+        "./transform_data_put_disk_fire-macos_arm64-v1.rhp",
+        "./transform_data_put_disk_batch-macos_arm64-v1.rhp",
+        "./transform_data_put-macos_arm64-v1.rhp"
+    ],
+    "flux": "./test.flux"
+}

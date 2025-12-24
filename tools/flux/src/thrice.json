@@ -1,18 +1,35 @@
 [
     {
         "name": "data.put.random_hex_value_here",
-        "thread": "data.put.disk.queue",
+        "thread": "data.put",
         "availability": "now",
         "intent": {
             "schema": {
                 "state": "Bound",
-                "value": "rhex://schema.data.put.disk.batch"
+                "value": "rhex://schema.data.put"
             },
             "data": {
-                "kind": "Binary",
+                "kind": "Mixed",
                 "value": {
-                    "encoding": "base64",
-                    "data": "ZnVja21l"
+                    "meta": {
+                        "constraints": ["disk"]
+                    },
+                    "data": [
+                        {
+                            "kind": "Binary",
+                            "value": {
+                                "encoding": "base64",
+                                "data": "cmFuY2hjaG9vc2VicmFzc3N0b3J5c3RhbmRhcmRyZWw="
+                            }
+                        },
+                        {
+                            "kind": "Binary",
+                            "value": {
+                                "encoding": "base64",
+                                "data": "dGhpcyBpcyBoYXNoZWQ="
+                            }
+                        }
+                    ]
                 }
             }
         },

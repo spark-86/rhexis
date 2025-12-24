@@ -96,12 +96,7 @@ The Descriptor:
 }
 ```
 
-For the actual data structure going into `transform.data.put.disk.fire`
-
-```text
-thread: data.put.disk.queue
-schema: rhex://schema.data.put.disk.batch
-```
+What a data.put.disk.batch contains in it's binary payload: 
 
 ```rust
 pub struct DataBatch {
@@ -109,18 +104,88 @@ pub struct DataBatch {
 }
 ```
 
-For the actual data structure going into `transform.data.put.disk.batch`
+### `transform.data.put.disk`
 
-This is just a match in the descriptor for the transforms:
+The Descriptor:
 
 ```json
 {
-    "thread": "data.put.disk",
-    "schema": "rhex://schema.data.put.disk"
+    "descriptor": 1,
+    "name": "transform.data.put.disk",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "data.put",
+            "schema": "rhex://schema.data.put",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["consumed", "now", "required", "multiple"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "data.put.disk",
+            "schema": "rhex://schema.data.put.disk",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["procuces", "now"]
+        }
+    ],
+    "bin_format": "Native"
 }
 ```
 
-Which is just again `DataPayload` again.
+### `transform.data.put`
+
+The Descriptor:
+
+```json
+{
+    "descriptor": 1,
+    "name": "transform.data.put",
+    "version": "0.2.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "data.put",
+            "schema": "rhex://schema.data.put",
+            "payload_type": "mixed",
+            "required_fields": "constraints",
+            "flags": ["consumed", "now", "multiple"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "data.put.disk",
+            "schema": "rhex://schema.data.put.disk",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["optional", "now"]
+        },
+        {
+            "key": null,
+            "thread": "data.put.ram",
+            "schema": "rhex://schema.data.put.ram",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["optional", "now"]
+        },
+        {
+            "key": null,
+            "thread": "data.put.network",
+            "schema": "rhex://schema.data.put.network",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["optional", "now"]
+        }
+    ]
+}
+```
 
 It get's a little spicer at the router, with the constraints coming into play to help route. We have a RhexPayload::Mixed type of:
 

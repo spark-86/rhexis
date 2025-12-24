@@ -1,0 +1,15 @@
+[package]
+name = "transform_data_put_disk_batch"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+serde_cbor.workspace = true
+blake3.workspace = true
+hex.workspace = true
+serde.workspace = true
+
+
+[lib]
+crate-type = [ "cdylib" ]
