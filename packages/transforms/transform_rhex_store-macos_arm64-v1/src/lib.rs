@@ -1,12 +1,14 @@
 use rhexis_core::{
     flux::{availability::FluxAvailability, item::FluxItem, meta::FluxMeta},
     rhex::{
+        Rhex,
         intent::{Binding, RhexIntent},
         payload::RhexPayload,
     },
     transform::{context::TransformContext, entry::TransformEntry},
 };
 use serde_json::json;
+use struct_lattice::usher::Usher;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
@@ -16,31 +18,50 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
         RhexPayload::Mixed { meta, data } => (meta, data),
         _ => return -1,
     };
-    let logical_id = rhex_data[0].clone();
-    let blob = rhex_data[1].clone();
 
-    let scope = match &input[1].intent.data {
-        RhexPayload::Json(j) => j,
-        _ => return -1,
-    };
+    let ushers: Vec<Usher> = serde_cbor::from_slice(&rhex_data[1]).unwrap();
+    let target_usher = ushers.iter().find(|u| u.priority == 0).unwrap();
 
-    let destination = if scope.get("local").unwrap().as_bool().unwrap() {
-        "local".to_string();
+    let destination = if target_usher.ip_address.is_none() || target_usher.port.is_none() {
+        "local"
     } else {
-        "remote".to_string();
+        "remote"
     };
+
+    let rhex: Rhex = serde_cbor::from_slice(&rhex_data[0]).unwrap();
+    let logical_id = rhex.current_hash.unwrap();
+    let blob = rhex_data[1].clone();
+    let scope = rhex_meta["scope"].as_str().unwrap().to_string();
 
     let mut store_intent = RhexIntent::new(RhexIntent::gen_nonce());
-    store_intent.schema = Binding::Bound("rhex://schema.data.put".to_string());
-    store_intent.data = RhexPayload::Mixed {
-        meta: json!({
-            "constraints": [
-                "disk",
-                destination.clone(),
+    let thread;
+
+    if destination == "local" {
+        thread = "data.put".to_string();
+        store_intent.schema = Binding::Bound("rhex://schema.data.put".to_string());
+        store_intent.data = RhexPayload::Mixed {
+            meta: json!({
+                "constraints": [
+                    "disk",
+                    destination,
+                ],
+            }),
+            data: vec![logical_id.to_vec().clone(), blob.clone()],
+        };
+    } else {
+        thread = "lattice.put".to_string();
+        store_intent.schema = Binding::Bound("rhex://schema.lattice.put".to_string());
+        store_intent.data = RhexPayload::Mixed {
+            meta: json!({
+            "action": "append",
+            "scope": scope,
+            }),
+            data: vec![
+                logical_id.to_vec().clone(),
+                serde_cbor::to_vec(&rhex).unwrap(),
             ],
-        }),
-        data: vec![logical_id.clone(), blob.clone()],
-    };
+        };
+    }
 
     let mut commit_intent = RhexIntent::new(RhexIntent::gen_nonce());
     commit_intent.schema = Binding::Bound("rhex://schema.rhex.commit".to_string());
@@ -48,11 +69,11 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
 
     let out_flux = vec![
         FluxItem {
-            name: format!("data.put.disk.{}", hex::encode(&logical_id)),
-            thread: "data.put".to_string(),
-            availability: FluxAvailability::Soon,
+            name: format!("{}.{}", &thread, hex::encode(&logical_id)),
+            thread: thread.clone(),
+            availability: FluxAvailability::Now,
             intent: store_intent,
-            correlation: input[0].correlation.clone(),
+            correlation: None,
             meta: FluxMeta {
                 creator: "transform.rhex.store".to_string(),
                 timestamp: 0,
@@ -61,9 +82,9 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
         FluxItem {
             name: format!("rhex.commit.{}", hex::encode(&logical_id)),
             thread: "rhex".to_string(),
-            availability: FluxAvailability::Now,
+            availability: FluxAvailability::Soon,
             intent: commit_intent,
-            correlation: input[0].correlation.clone(),
+            correlation: None,
             meta: FluxMeta {
                 creator: "transform.rhex.store".to_string(),
                 timestamp: 0,

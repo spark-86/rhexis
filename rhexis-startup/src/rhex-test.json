@@ -1,0 +1,7 @@
+{
+    "plugins": [
+        "./rhex_transforms/transform_rhex_author-macos_arm64-v1.rhp",
+        "./rhex_transforms/transform_rhex_usher_submit-macos_arm64-v1.rhp"
+    ],
+    "flux": "./rhex.flux"
+}

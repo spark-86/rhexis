@@ -1,6 +1,5 @@
 use std::{collections::HashMap, sync::Arc};
 
-use anyhow::anyhow;
 use rhexis_core::{
     flux::item::FluxItem, membrane::HpcCall, registry::LoadedTransform, rhex::intent::Binding,
 };
@@ -77,10 +76,13 @@ impl Kernel {
         let thread = flux_item.thread.clone();
         let schema = match &flux_item.intent.schema {
             Binding::Bound(b) => b.clone(),
-            _ => return Err(anyhow!("Unbound schema")),
+            Binding::Unbound => "(unbound)".to_string(),
         };
 
         let bucket = Kernel::bucket_mut(pond, &thread, &schema);
+
+        bucket.retain(|f| f.name != flux_item.name);
+
         bucket.push(flux_item);
 
         Ok(())

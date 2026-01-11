@@ -531,6 +531,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "registry-mod"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "clap",
+ "rand",
+ "serde_cbor",
+ "struct_registry",
+]
+
+[[package]]
 name = "rhex_types"
 version = "0.1.0"
 dependencies = [
@@ -549,6 +560,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "base64",
+ "blake3",
  "hex",
  "libloading",
  "rand",
@@ -738,6 +750,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
 
 [[package]]
+name = "struct_lattice"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "struct_registry"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
 name = "struct_rhex"
 version = "0.1.0"
 dependencies = [
@@ -796,6 +828,7 @@ dependencies = [
 name = "transform_crypto_ed25519_sign-macos_arm64-v1"
 version = "0.1.0"
 dependencies = [
+ "hex",
  "rhexis-core",
  "serde_cbor",
  "serde_json",
@@ -814,6 +847,7 @@ dependencies = [
 name = "transform_data_put"
 version = "0.2.0"
 dependencies = [
+ "hex",
  "rhexis-core",
  "serde",
  "serde_cbor",
@@ -843,9 +877,180 @@ dependencies = [
 ]
 
 [[package]]
+name = "transform_lattice_initializer"
+version = "0.1.0"
+dependencies = [
+ "blake3",
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+]
+
+[[package]]
+name = "transform_lattice_quorum_local_sign"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_lattice_quorum_local_signature_collector"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_lattice_quorum_request_signatures"
+version = "0.1.0"
+dependencies = [
+ "blake3",
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+]
+
+[[package]]
+name = "transform_lattice_scope_cache_add"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+]
+
+[[package]]
+name = "transform_lattice_scope_cache_builder"
+version = "0.1.0"
+dependencies = [
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+]
+
+[[package]]
+name = "transform_lattice_scope_cache_load"
+version = "0.1.0"
+dependencies = [
+ "rhexis-core",
+ "serde_cbor",
+ "struct_lattice",
+]
+
+[[package]]
+name = "transform_lattice_scope_cache_lookup"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+]
+
+[[package]]
+name = "transform_lattice_scope_cache_remove"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+]
+
+[[package]]
+name = "transform_lattice_scope_cache_update"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+]
+
+[[package]]
 name = "transform_math_add"
 version = "0.1.0"
 dependencies = [
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_rhex_analyze_quorum"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_rhex_author"
+version = "0.1.0"
+dependencies = [
+ "blake3",
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+]
+
+[[package]]
+name = "transform_rhex_finalize"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_rhex_quorum_add"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_rhex_quorum_advance"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_rhex_quorum_request"
+version = "0.1.0"
+dependencies = [
+ "hex",
  "rhexis-core",
  "serde_cbor",
  "serde_json",
@@ -871,6 +1076,49 @@ dependencies = [
  "rhexis-core",
  "serde_cbor",
  "serde_json",
+ "struct_lattice",
+]
+
+[[package]]
+name = "transform_rhex_store_confirm"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_rhex_submit_quorum"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+]
+
+[[package]]
+name = "transform_rhex_summarize"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_rhex_usher_submit"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "struct_lattice",
 ]
 
 [[package]]
@@ -881,6 +1129,68 @@ dependencies = [
  "rhexis-core",
  "serde_cbor",
  "serde_json",
+]
+
+[[package]]
+name = "transform_system_registry_add"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_system_registry_init"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_system_registry_load"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+]
+
+[[package]]
+name = "transform_system_registry_new"
+version = "0.1.0"
+dependencies = [
+ "rhexis-core",
+ "serde_cbor",
+ "struct_registry",
+]
+
+[[package]]
+name = "transform_system_registry_result"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_registry",
+]
+
+[[package]]
+name = "transform_system_registry_store"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_registry",
 ]
 
 [[package]]

@@ -1,0 +1,51 @@
+{
+    "descriptor": 1,
+    "name": "transform.system.registry.result",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": "system.registry",
+            "thread": "system.registry",
+            "schema": "rhex://schema.system.registry",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["soon", "required", "observed"]
+        },
+        {
+            "key": null,
+            "thread": "system.registry.actions",
+            "schema": "rhex://schema.system.registry.action",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "required", "consumed"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "system.registry.result",
+            "schema": "rhex://schema.system.registry.result",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        },
+        {
+            "key": "system.registry",
+            "thread": "system.registry",
+            "schema": "rhex://schema.system.registry",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        },
+        {
+            "key": null,
+            "thread": "system.registry.store",
+            "schema": "rhex://schema.system.registry.store",
+            "payload_type": "none",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        }
+    ],
+    "bin_format": "Native"
+}

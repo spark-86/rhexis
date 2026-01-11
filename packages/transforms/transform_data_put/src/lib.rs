@@ -86,7 +86,7 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
 
         let mut intent = RhexIntent::new(RhexIntent::gen_nonce());
         intent.schema = Binding::Bound(format!("rhex://schema.data.put.{}", &loc_string));
-
+        println!("Logical ID: {:?}", logical_id);
         intent.data = match location {
             Location::Disk | Location::Ram => RhexPayload::Binary {
                 data: serde_cbor::to_vec(&DataPayload { logical_id, data }).unwrap(),
@@ -95,8 +95,8 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
         };
 
         transform_output.push(FluxItem {
-            name: format!("data.put.{}", loc_string),
-            thread: "data.put".to_string(),
+            name: format!("data.put.{}.{}", loc_string, hex::encode(logical_id)),
+            thread: format!("data.put.{}", loc_string),
             availability: FluxAvailability::Now,
             intent,
             correlation: item.correlation.clone(),

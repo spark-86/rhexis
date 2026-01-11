@@ -1,0 +1,35 @@
+{
+    "descriptor": 1,
+    "name": "transform.lattice.scope.cache.builder",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "lattice.scope.cache.queue",
+            "schema": "rhex://schema.lattice.scope.cache.action",
+            "payload_type": "json",
+            "required_fields": null,
+            "flags": ["now", "required", "inherit", "multiple"]
+        },
+        {
+            "key": "lattice.scope.cache.table",
+            "thread": "lattice.scope.cache.table",
+            "schema": "rhex://schema.lattice.scope.cache.table",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["now", "optional", "consumed"]
+        }
+    ],
+    "effects": [
+        {
+            "key": "lattice.scope.cache.table",
+            "thread": "lattice.scope.cache",
+            "schema": "rhex://schema.lattice.scope.cache.table",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["now", "produces", "required"]
+        }
+    ],
+    "bin_format": "Native"
+}

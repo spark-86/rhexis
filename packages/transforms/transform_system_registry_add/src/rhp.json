@@ -1,0 +1,27 @@
+{
+    "descriptor": 1,
+    "name": "transform.system.registry.add",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "system.registry.add",
+            "schema": "rhex://schema.system.registry.add",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "required", "consumed"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "system.registry.actions",
+            "schema": "rhex://schema.system.registry.action",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        }
+    ],
+    "bin_format": "Native"
+}

@@ -1,0 +1,43 @@
+{
+    "descriptor": 1,
+    "name": "transform.rhex.usher.submit",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "rhex.author.awaiting",
+            "schema": "rhex://schema.rhex.author.awaiting",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "required", "consumed", "anchor"]
+        },
+        {
+            "key": null,
+            "thread": "rhex.author.signature",
+            "schema": "rhex://schema.rhex.author.signature",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["now", "required", "consumed", "bind"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "rhex.usher.request",
+            "schema": "rhex://schema.rhex.usher.request",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        },
+        {
+            "key": null,
+            "thread": "rhex.usher.awaiting",
+            "schema": "rhex://schema.rhex.usher.awaiting",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        }
+    ],
+    "bin_format": "Native"
+}

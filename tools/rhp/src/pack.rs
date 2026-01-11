@@ -2,7 +2,8 @@ use crate::Pack;
 use rhexis_core::{
     flux::payload::PayloadType,
     rhp::descriptor::{
-        BinaryFormat, HpcDescriptor, PatternDescriptor, RhpDescriptor, TransformDescriptor,
+        BinaryFormat, BindTarget, HpcDescriptor, PatternDescriptor, RhpDescriptor,
+        TransformDescriptor,
     },
 };
 use std::io::Write;
@@ -157,6 +158,14 @@ fn load_patterns(node: Option<&serde_json::Value>) -> Vec<PatternDescriptor> {
         .collect()
 }
 
-fn load_binding(node: Option<&serde_json::Value>) -> Option<String> {
-    node.and_then(|v| v.as_str()).map(|s| s.to_string())
+fn load_binding(node: Option<&serde_json::Value>) -> Option<BindTarget> {
+    let obj = node?.as_object()?;
+
+    let thread = obj.get("thread")?.as_str()?;
+    let schema = obj.get("schema")?.as_str()?;
+
+    Some(BindTarget {
+        thread: thread.to_string(),
+        schema: schema.to_string(),
+    })
 }

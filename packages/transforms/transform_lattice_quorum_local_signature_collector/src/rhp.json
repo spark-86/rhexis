@@ -1,0 +1,31 @@
+{
+    "descriptor": 1,
+    "name": "transform.lattice.quorum.local.signature.collector",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "crypto.ed25519.signed",
+            "schema": "rhex://schema.crypto.ed25519.signed",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "consumed", "required", "multiple"]
+        }
+    ],
+    "bind": {
+        "thread": "lattice.quorum.local.signature.response",
+        "schema": "rhex://schema.lattice.quorum.local.signature.response"
+    },
+    "effects": [
+        {
+            "key": null,
+            "thread": "lattice.quorum",
+            "schema": "rhex://schema.lattice.quorum.signature",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "inherit"]
+        }
+    ],
+    "bin_format": "Native"
+}

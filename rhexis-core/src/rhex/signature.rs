@@ -19,7 +19,7 @@ impl RhexSignature {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum SignatureType {
     Author,
     Usher,

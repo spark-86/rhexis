@@ -1,0 +1,27 @@
+{
+    "descriptor": 1,
+    "name": "transform.rhex.summarize",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "rhex.done",
+            "schema": "rhex://schema.rhex.store.completed",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "required", "consumed"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "ui",
+            "schema": "rhex://schema.ui.output",
+            "payload_type": "json",
+            "require_fields": null,
+            "flags": ["now", "inherit", "guaranteed"]
+        }
+    ],
+    "bin_format": "Native"
+}

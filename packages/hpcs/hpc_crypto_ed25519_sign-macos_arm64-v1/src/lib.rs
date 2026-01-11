@@ -14,10 +14,12 @@ use std::fs::read;
 pub extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
     let input: HpcCallEnvelope = serde_cbor::from_slice(ctx.input).unwrap();
-    let filename = format!(
-        "/tmp/data/keys/{}.key",
-        hex::encode(&input.logical_id.clone().unwrap())
-    );
+
+    let payload: Vec<Vec<u8>> = serde_cbor::from_slice(&input.payload).unwrap();
+    let public_key: [u8; 32] = payload[0].as_slice().try_into().unwrap();
+    let hash: [u8; 32] = payload[1].as_slice().try_into().unwrap();
+
+    let filename = format!("/tmp/data/keys/{}.key", hex::encode(public_key.clone()));
     let keyfile = read(filename).unwrap();
     let keyfile = keyfile
         .as_slice()
@@ -25,8 +27,7 @@ pub extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
         .expect("key file must be exactly 32 bytes");
     let key = ed25519_dalek::SigningKey::from_bytes(keyfile);
 
-    let data = &input.payload;
-    let signature = key.sign(data);
+    let signature = key.sign(&hash);
 
     let mut intent = RhexIntent::new(RhexIntent::gen_nonce());
     intent.schema = Binding::Bound("rhex://schema.crypto.ed25519.signed".to_string());

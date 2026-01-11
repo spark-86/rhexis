@@ -1,0 +1,27 @@
+{
+    "descriptor": 1,
+    "name": "transform.rhex.finalize",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "rhex.finalize",
+            "schema": "rhex://schema.rhex.finalize",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "consumed", "required"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "rhex",
+            "schema": "rhex://schema.rhex.store",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "optional", "inherit"]
+        }
+    ],
+    "bin_format": "Native"
+}

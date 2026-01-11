@@ -13,3 +13,4 @@ base64.workspace = true
 hex.workspace = true
 rand.workspace = true
 serde-big-array.workspace = true
+blake3.workspace = true

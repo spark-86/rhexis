@@ -10,6 +10,7 @@ pub fn check_effects(
 ) -> Option<PatternDescriptor> {
     let mut success = false;
     let mut fail_strs = Vec::new();
+    println!("Running effect validation on: {}", &flux_item.name);
     for effect in effects {
         let mut score = 0;
         let mut required = 0;
@@ -71,6 +72,7 @@ pub fn check_effects(
         }
 
         if score == required {
+            println!("{:?} succeeded, scored {}/{}", effect, score, required);
             success = true;
         } else {
             println!(

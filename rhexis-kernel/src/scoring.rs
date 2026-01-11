@@ -2,7 +2,7 @@ use crate::{FluxPond, json_path::JsonPathExt};
 use rhexis_core::{
     flux::item::FluxItem,
     rhex::{intent::Binding, payload::RhexPayload},
-    rhp::descriptor::{PatternDescriptor, TransformDescriptor},
+    rhp::descriptor::{BindTarget, PatternDescriptor, TransformDescriptor},
 };
 
 /// Scores a single flux item against a pattern (unchanged logic)
@@ -123,13 +123,13 @@ pub fn score_transform(
     }
 
     // ---- BIND RESOLUTION ----
-    let bound_flux = if let Some(bind_schema) = &transform_desc.bind {
+    let bound_flux = if let Some(bind) = &transform_desc.bind {
         let exec_corr = matched_flux
             .first()
             .and_then(|name| find_flux_by_name(flux_pond, name))
             .and_then(|f| f.correlation);
 
-        resolve_bind(bind_schema, flux_pond, &exec_corr)
+        resolve_bind(bind, flux_pond, &exec_corr)
     } else {
         None
     };
@@ -141,9 +141,8 @@ pub fn score_transform(
     (score, matched_flux, consumed_flux, bound_flux)
 }
 
-/// Bind now searches *by schema + correlation*, not by matched names
 fn resolve_bind(
-    bind_schema: &str,
+    bind: &BindTarget,
     flux_pond: &FluxPond,
     exec_corr: &Option<[u8; 32]>,
 ) -> Option<String> {
@@ -152,13 +151,12 @@ fn resolve_bind(
         None => return None,
     };
 
-    for thread_map in flux_pond.values() {
-        if let Some(bucket) = thread_map.get(bind_schema) {
-            for flux in bucket {
-                if flux.correlation == Some(corr) {
-                    return Some(flux.name.clone());
-                }
-            }
+    let thread_map = flux_pond.get(&bind.thread)?;
+    let bucket = thread_map.get(&bind.schema)?;
+
+    for flux in bucket {
+        if flux.correlation == Some(corr) {
+            return Some(flux.name.clone());
         }
     }
 

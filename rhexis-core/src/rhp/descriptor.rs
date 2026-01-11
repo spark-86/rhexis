@@ -14,6 +14,12 @@ pub struct HpcDescriptor {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct BindTarget {
+    pub thread: String,
+    pub schema: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransformDescriptor {
     pub descriptor_ver: u32,
     pub name: String,
@@ -21,7 +27,7 @@ pub struct TransformDescriptor {
     pub requires: Vec<String>,
     pub views: Vec<String>,
     pub interacts: Vec<PatternDescriptor>,
-    pub bind: Option<String>,
+    pub bind: Option<BindTarget>,
     pub effects: Vec<PatternDescriptor>,
     pub bin_format: BinaryFormat,
     pub blake3: [u8; 32],

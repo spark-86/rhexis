@@ -39,9 +39,14 @@ impl RhexIntent {
     pub fn gen_nonce() -> [u8; 32] {
         random()
     }
+
+    pub fn as_bytes(&self) -> Vec<u8> {
+        let bytes = serde_cbor::to_vec(&self);
+        bytes.unwrap()
+    }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "state", content = "value")]
 pub enum Binding<T> {
     Unbound,
@@ -51,5 +56,14 @@ pub enum Binding<T> {
 impl<T> Default for Binding<T> {
     fn default() -> Self {
         Self::Unbound
+    }
+}
+
+impl<T> Binding<T> {
+    pub fn is_bound(&self) -> bool {
+        match self {
+            Self::Unbound => false,
+            Self::Bound(_) => true,
+        }
     }
 }

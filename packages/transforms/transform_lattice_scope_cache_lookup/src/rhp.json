@@ -1,0 +1,43 @@
+{
+    "descriptor": 1,
+    "name": "transform.lattice.scope.cache.lookup",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "lattice.scope.lookup",
+            "schema": "rhex://schema.lattice.scope.lookup",
+            "payload_type": "json",
+            "required_fields": null,
+            "flags": ["now", "consumed", "required", "multiple"]
+        },
+        {
+            "key": "lattice.scope.table",
+            "thread": "lattice.scope.table",
+            "schema": "rhex://schema.lattice.scope.table",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["now", "required", "observed"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "lattice.scope.lookup.results",
+            "schema": "rhex://schema.lattice.scope.lookup.result",
+            "payload_type": "json",
+            "requried_fields": null,
+            "flags": ["now", "optional", "inherit"]
+        },
+        {
+            "key": null,
+            "thread": "lattice.scope.lookup.remote.request",
+            "schema": "rhex://schema.lattice.scope.lookup.remote.request",
+            "payload_type": "json",
+            "required_fields": null,
+            "flags": ["now", "optional", "inherit"]
+        }
+    ],
+    "bin_format": "Native"
+}
