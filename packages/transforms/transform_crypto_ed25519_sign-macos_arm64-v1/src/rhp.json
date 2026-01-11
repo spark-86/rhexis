@@ -13,7 +13,6 @@
             "flags": ["required", "consumed", "now"]
         }
     ],
-    "bind": "rhex://schema.system.membrane.action",
     "effects": [
         {
             "key": null,

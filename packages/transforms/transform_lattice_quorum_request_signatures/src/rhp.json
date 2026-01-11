@@ -1,0 +1,35 @@
+{
+    "descriptor": 1,
+    "name": "transform.lattice.quorum.request.signatures",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "lattice.quorum.requests",
+            "schema": "rhex://schema.lattice.quorum.request",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "consumed", "required"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "lattice.quorum.local.signature.request",
+            "schema": "rhex://schema.lattice.quorum.local.signature.request",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "optional", "inherit"]
+        },
+        {
+            "key": null,
+            "thread": "lattice.quorum.remote.signature.request",
+            "schema": "rhex://schema.lattice.quorum.remote.signature.request",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "optional", "inherit"]
+        }
+    ],
+    "bin_format": "Native"
+}

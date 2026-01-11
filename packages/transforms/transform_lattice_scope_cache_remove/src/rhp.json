@@ -1,0 +1,27 @@
+{
+    "descriptor": 1,
+    "name": "transform.lattice.scope.cache.remove",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "lattice.scope.cache.remove",
+            "schema": "rhex://schema.lattice.scope.cache.remove",
+            "payload_type": "json",
+            "required_fields": null,
+            "flags": ["now", "consumed", "required", "multiple"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "lattice.scope.cache.queue",
+            "schema": "rhex://schema.lattice.scope.cache.action",
+            "payload_type": "json",
+            "required_fields": null,
+            "flags": ["now", "optional", "inherit"]
+        }
+    ],
+    "bin_format": "Native"
+}

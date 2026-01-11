@@ -1,0 +1,35 @@
+{
+    "descriptor": 1,
+    "name": "transform.lattice.initializer",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "lattice.init",
+            "schema": "rhex://schema.lattice.init",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "required", "consumed", "anchor"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "data.get",
+            "schema": "rhex://schema.data.get",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        },
+        {
+            "key": "lattice.scope.cache.table",
+            "thread": "lattice.scope.cache.table",
+            "schema": "rhex://schema.lattice.scope.cache.table",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["soon", "guaranteed", "produced"]
+        }
+    ],
+    "bin_format": "Native"
+}

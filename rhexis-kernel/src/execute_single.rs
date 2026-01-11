@@ -40,7 +40,10 @@ impl Kernel {
 
         let parent_corr = total_flux[0].correlation;
 
-        println!("Firing transform: {}", &transform.descriptor.name);
+        println!(
+            "Firing transform {} ({})",
+            &transform.descriptor.name, score.score
+        );
         // ---- execute transform ----
         let mut ctx = TransformContext {
             input: &serde_cbor::to_vec(&total_flux).unwrap(),
@@ -51,6 +54,11 @@ impl Kernel {
 
         let result = (transform.entry.entry)(&mut ctx);
 
+        let out_flux = ctx.output.clone();
+        if let Some(out) = out_flux {
+            let flux: Vec<FluxItem> = serde_cbor::from_slice(&out).unwrap();
+            println!("{} flux outputted: {:?}", &transform.descriptor.name, flux);
+        }
         println!("Result of transform: {}", &result);
         if result != 0 {
             return;

@@ -4,56 +4,40 @@ use rhexis_core::{
     rhex::payload::RhexPayload,
     transform::{context::TransformContext, entry::TransformEntry},
 };
-use serde_json::json;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
     let intput: Vec<FluxItem> = serde_cbor::from_slice(&ctx.input).unwrap();
+    let mut hpc_call_list = Vec::new();
 
-    let corr = intput[0].correlation.clone();
-    let thread = intput[0].thread.clone();
-    let payload: RhexPayload = intput[0].intent.data.clone();
-    let logical_id = match &payload {
-        RhexPayload::Mixed { meta, data } => {
-            let slot = meta["slot0"].as_str().unwrap();
-            match slot {
-                "logical_id" => Some(data[0].clone()),
-                _ => None,
-            }
-        }
-        _ => None,
-    };
+    for item in intput {
+        let payload = match item.intent.data {
+            RhexPayload::Mixed { meta: _, data } => data,
+            _ => return -1,
+        };
 
-    let mut cause = CauseHeader {
-        target: "crypto.ed25519.sign.complete".to_string(),
-        thread: "crypto".to_string(),
-        schema: "rhex://schema.crypto.ed25519.sign.complete".to_string(),
-        payload: serde_cbor::to_vec(&RhexPayload::None).unwrap(),
-    };
-    cause.payload = if logical_id.is_some() {
-        serde_cbor::to_vec(&RhexPayload::Mixed {
-            meta: json!({
-                "slot0": "logical_id"
-            }),
-            data: vec![logical_id.clone().unwrap()],
-        })
-        .unwrap()
-    } else {
-        serde_cbor::to_vec(&RhexPayload::None).unwrap()
-    };
+        let cause = CauseHeader {
+            target: format!("crypto.ed25519.signed.{}", hex::encode(item.intent.nonce)),
+            thread: "crypto.ed25519.signed".to_string(),
+            schema: "rhex://schema.crypto.ed25519.signed".to_string(),
+            payload: vec![],
+        };
 
-    let hpc_call = HpcCall {
-        name: "crypto.ed25519.sign".to_string(),
-        thread,
-        logical_id,
-        token: None,
-        input: serde_cbor::to_vec(&payload).unwrap(),
-        cause: Some(serde_cbor::to_vec(&cause).unwrap()),
-        correlation: corr,
-    };
+        let hpc_call = HpcCall {
+            name: "crypto.ed25519.sign".to_string(),
+            thread: "crypto.ed25519.sign".to_string(),
+            logical_id: Some(item.intent.nonce.to_vec()),
+            token: None,
+            input: serde_cbor::to_vec(&payload).unwrap(),
+            cause: Some(serde_cbor::to_vec(&cause).unwrap()),
+            correlation: None,
+        };
 
-    *ctx.hpc_calls = Some(serde_cbor::to_vec(&[hpc_call]).unwrap());
+        hpc_call_list.push(hpc_call);
+    }
+
+    *ctx.hpc_calls = Some(serde_cbor::to_vec(&hpc_call_list).unwrap());
 
     0
 }

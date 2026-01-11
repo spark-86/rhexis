@@ -1,0 +1,39 @@
+{
+    "descriptor": 1,
+    "name": "transform.rhex.quorum.advance",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "lattice.quorum.signatures",
+            "schema": "rhex://schema.lattice.quorum.signature",
+            "payload_type": "binary",
+            "require_fields": null,
+            "flags": ["now", "consumed", "required"]
+        }
+    ],
+    "bind": {
+        "thread": "rhex.quorum",
+        "schema": "rhex://schema.rhex.awaiting_quorum"
+    },
+    "effects": [
+        {
+            "key": null,
+            "thread": "rhex.quorum",
+            "schema": "rhex://schema.rhex.awaiting_quorum",
+            "payload_type": "mixed",
+            "require_fields": null,
+            "flags": ["now", "optional", "inherit"]
+        },
+        {
+            "key": null,
+            "thread": "rhex.quorum",
+            "schema": "rhex://schema.rhex.finalize",
+            "payload_type": "mixed",
+            "require_fields": null,
+            "flags": ["now", "optional", "inherit"]
+        }
+    ],
+    "bin_format": "Native"
+}

@@ -1,0 +1,35 @@
+{
+    "descriptor": 1,
+    "name": "transform.system.registry.load",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "data.results",
+            "schema": "rhex://schema.data.result",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "required", "anchor"]
+        },
+        {
+            "key": "system.registry",
+            "thread": "system.registry",
+            "schema": "rhex://schema.system.registry",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["soon", "required", "bind"]
+        }
+    ],
+    "effects": [
+        {
+            "key": "system.registry",
+            "thread": "system.registry",
+            "schema": "rhex://schema.system.registry",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["now", "required", "inherit"]
+        }
+    ],
+    "bin_format": "Native"
+}

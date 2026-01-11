@@ -1,0 +1,15 @@
+[package]
+name = "transform_lattice_quorum_request_signatures"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+struct_lattice = { path = "../../struct/struct_lattice" }
+serde_cbor.workspace = true
+serde_json.workspace = true
+blake3.workspace = true
+hex.workspace = true
+
+[lib]
+crate-type = [ "cdylib" ]

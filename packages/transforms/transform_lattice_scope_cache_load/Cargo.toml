@@ -1,0 +1,12 @@
+[package]
+name = "transform_lattice_scope_cache_load"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+serde_cbor.workspace = true
+struct_lattice = { path = "../../struct/struct_lattice" }
+
+[lib]
+crate-type = [ "cdylib" ]

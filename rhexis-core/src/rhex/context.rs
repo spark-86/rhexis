@@ -15,4 +15,9 @@ impl RhexContext {
             spacial_data: None,
         }
     }
+
+    pub fn as_bytes(&self) -> Vec<u8> {
+        let bytes = serde_cbor::to_vec(&self);
+        bytes.unwrap()
+    }
 }

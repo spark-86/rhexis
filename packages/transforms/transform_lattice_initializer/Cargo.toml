@@ -1,0 +1,15 @@
+[package]
+name = "transform_lattice_initializer"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+serde_cbor.workspace = true
+struct_lattice = { path = "../../struct/struct_lattice" }
+serde_json.workspace = true
+hex.workspace = true
+blake3.workspace = true
+
+[lib]
+crate-type = [ "cdylib" ]

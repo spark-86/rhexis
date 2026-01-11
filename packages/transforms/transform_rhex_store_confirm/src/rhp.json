@@ -1,0 +1,39 @@
+{
+    "descriptor": 1,
+    "name": "transform.rhex.store.confirm",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "data.put.complete",
+            "schema": "rhex://schema.data.put.complete",
+            "payload_type": "json",
+            "required_fields": null,
+            "flags": ["now", "optional", "consumed"]
+        },
+        {
+            "key": null,
+            "thread": "lattice.put.complete",
+            "schema": "rhex://schema.lattice.put.complete",
+            "payload_type": "json",
+            "required_fields": null,
+            "flags": ["now", "optional", "consumed"]
+        }
+    ],
+    "bind": {
+        "thread": "rhex.store.status",
+        "schema": "rhex://schema.rhex.store.status"
+    },
+    "effects": [
+        {
+            "key": null,
+            "thread": "rhex.store.complete",
+            "schema": "rhex://schema.rhex.store.complete",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "optional", "inherit"]
+        }
+    ],
+    "bin_format": "Native"
+}

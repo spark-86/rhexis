@@ -1,0 +1,14 @@
+[package]
+name = "transform_rhex_submit_quorum"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+struct_lattice = { path = "../../struct/struct_lattice" }
+serde_cbor.workspace = true
+serde_json.workspace = true
+hex.workspace = true
+
+[lib]
+crate-type = [ "cdylib" ]

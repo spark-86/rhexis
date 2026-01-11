@@ -1,0 +1,31 @@
+{
+    "descriptor": 1,
+    "name": "transform.rhex.quorum.request",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "lattice.usher.signature",
+            "schema": "rhex://schema.lattice.usher.signature",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "consumed", "required", "multiple"]
+        }
+    ],
+    "bind": {
+        "thread": "rhex.usher.awaiting",
+        "schema": "rhex://schema.rhex.usher.awaiting"
+    },
+    "effects": [
+        {
+            "key": null,
+            "thread": "lattice.quorum.request",
+            "schema": "rhex://schema.lattice.quorum.request",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "inherit"]
+        }
+    ],
+    "bin_format": "Native"
+}

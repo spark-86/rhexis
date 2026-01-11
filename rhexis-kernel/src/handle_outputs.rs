@@ -30,8 +30,11 @@ impl Kernel {
                     handle_corr::update_correlation(&mut item, &effect, parent_corr.clone());
 
                     match artifacts.collapse_map.get(&item.name) {
-                        Some((_, old)) if *old >= score => {}
+                        Some((_, old)) if *old >= score => {
+                            println!("Old score: {}, new score: {}", old, score)
+                        }
                         _ => {
+                            println!("Collapsing {}", item.name);
                             artifacts
                                 .collapse_map
                                 .insert(item.name.clone(), (item, score));

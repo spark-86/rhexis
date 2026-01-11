@@ -1,0 +1,58 @@
+[
+    {
+        "name": "system.registry.add.1",
+        "thread": "system.registry.add",
+        "availability": "now",
+        "intent": {
+            "schema": {
+                "state": "Bound",
+                "value": "rhex://schema.system.registry.add"
+            },
+            "data": {
+                "kind": "Mixed",
+                "value": {
+                    "meta": {
+                        "action": "add",
+                        "data_type": "logical_id",
+                        "entry_name": "registry.logical_id"
+                    },
+                    "data": [
+                        {
+                            "kind": "Binary",
+                            "value": {
+                                "encoding": "base64",
+                                "data": "oWlMb2dpY2FsSWSYIBhKGDQYqgMYwBhJGE4Y7xjBGLkYbhg6GEgYrBj2GDEYdhhRGI4YUhjZGBsYNBj+GEMY9xiwGDYYRQ4YGRjc"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "meta": {
+            "creator": "what.the.fuck.ever",
+            "timestamp": 0
+        }
+    },
+    {
+        "name": "system.registry",
+        "thread": "system.registry",
+        "availability": "now",
+        "intent": {
+            "schema": {
+                "state": "Bound",
+                "value": "rhex://schema.system.registry"
+            },
+            "data": {
+                "kind": "Binary",
+                "value": {
+                    "encoding": "file",
+                    "data": "/Users/veronica/projects/rhexis/rhexis-startup/src/rhex.registry"
+                }
+            }
+        },
+        "meta": {
+            "creator": "what.the.fuck.ever",
+            "timestamp": 0
+        }
+    }
+]

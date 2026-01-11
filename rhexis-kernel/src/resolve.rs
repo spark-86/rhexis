@@ -12,8 +12,10 @@ impl Kernel {
 
         self.consume_flux(artifacts.consumed);
         self.detonate(artifacts.detonators);
-        self.materialize(artifacts.collapse_map);
-
+        let dropped = self.materialize(artifacts.collapse_map);
+        if dropped.is_ok() {
+            println!("Dropped flux: {:?}", dropped.unwrap());
+        }
         artifacts.hpc_calls
     }
 }

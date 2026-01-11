@@ -1,0 +1,43 @@
+{
+    "descriptor": 1,
+    "name": "transform.system.registry.store",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "system.registry.store",
+            "schema": "rhex://schema.system.registry.store",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["now", "required", "consumed"]
+        },
+        {
+            "key": "system.registry",
+            "thread": "system.registry",
+            "schema": "rhex://schema.system.registry",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["now", "required", "observed"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "data.put",
+            "schema": "rhex://schema.data.put",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        },
+        {
+            "key": null,
+            "thread": "system.registry.status",
+            "schema": "rhex://schema.system.registry.status",
+            "payload_type": "json",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        }
+    ],
+    "bin_format": "Native"
+}

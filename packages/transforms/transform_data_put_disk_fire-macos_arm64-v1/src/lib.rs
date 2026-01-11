@@ -49,7 +49,7 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
             thread: "data.put".to_string(),
             logical_id: Some(payload.logical_id.to_vec()),
             token: None,
-            input: serde_cbor::to_vec(&payload.data).unwrap(),
+            input: serde_cbor::to_vec(&payload).unwrap(),
             cause: Some(serde_cbor::to_vec(&cause).unwrap()),
             correlation: None,
         };

@@ -1,0 +1,11 @@
+[package]
+name = "registry-mod"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+struct_registry = { path = "../../packages/struct/struct_registry" }
+clap.workspace = true
+serde_cbor.workspace = true
+base64.workspace = true
+rand.workspace = true
