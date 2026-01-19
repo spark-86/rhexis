@@ -9,6 +9,7 @@ use crate::rhex::{
 pub mod context;
 pub mod intent;
 pub mod payload;
+pub mod payload_bytes;
 pub mod signature;
 pub mod states;
 

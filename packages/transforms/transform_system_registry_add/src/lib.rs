@@ -27,7 +27,7 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
                 "action": meta["action"],
                 "data_type": meta["data_type"]
             }),
-            data: vec![bin[0].to_vec()],
+            data: vec![bin[0].clone()],
         };
         transform_output.push(FluxItem {
             name: format!("system.registry.action.{}", hex::encode(&put_intent.nonce)),

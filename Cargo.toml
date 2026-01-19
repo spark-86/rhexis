@@ -26,7 +26,7 @@ members = [
     "packages/struct/struct_rhex", 
     "packages/transforms/transform_rhex_store-macos_arm64-v1", 
     "packages/transforms/transform_data_put", 
-    "packages/transforms/transform_data_put_disk_fire-macos_arm64-v1", 
+    "packages/transforms/transform_data_put_disk_fire", 
     "packages/transforms/transform_data_put_disk_batch", 
     "packages/transforms/transform_lattice_scope_cache_lookup", 
     "packages/struct/struct_lattice", 
@@ -46,7 +46,18 @@ members = [
     "packages/transforms/transform_lattice_quorum_local_signature_collector", 
     "packages/transforms/transform_rhex_quorum_request", 
     "packages/transforms/transform_rhex_usher_submit", 
-    "packages/transforms/transform_rhex_author", "packages/transforms/transform_lattice_initializer", "packages/transforms/transform_lattice_scope_cache_load", "packages/transforms/transform_system_registry_init", "packages/transforms/transform_system_registry_load", "packages/struct/struct_registry", "packages/transforms/transform_system_registry_store", "packages/transforms/transform_system_registry_add", "packages/transforms/transform_system_registry_result", "packages/transforms/transform_system_registry_new", "tools/registry-mod", 
+    "packages/transforms/transform_rhex_author", 
+    "packages/transforms/transform_lattice_initializer", 
+    "packages/transforms/transform_lattice_scope_cache_load", 
+    "packages/transforms/transform_system_registry_init", 
+    "packages/transforms/transform_system_registry_load", 
+    "packages/struct/struct_registry", 
+    "packages/transforms/transform_system_registry_store", 
+    "packages/transforms/transform_system_registry_add", 
+    "packages/transforms/transform_system_registry_result", 
+    "packages/transforms/transform_system_registry_new", 
+    "tools/registry-mod", 
+    "packages/transforms/transform_rhex_builder", "packages/transforms/transform_lattice_scope_cache_create", "packages/transforms/transform_lattice_scope_cache_store", 
 ]
 
 resolver = "3"
@@ -65,3 +76,4 @@ rand = "0.9.2"
 serde-big-array = "0.5.1"
 ed25519-dalek = { version = "2.2.0", features = ["rand_core"] }
 rand_core = { version = "0.6.4", features = ["getrandom"] }
+serde_bytes = "0.11.19"

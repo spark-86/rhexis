@@ -10,6 +10,7 @@ use rhexis_core::{
     },
 };
 use serde::Deserialize;
+use serde_json::Value;
 
 #[derive(Deserialize)]
 pub struct FluxBuildSpec {
@@ -104,4 +105,21 @@ fn decode_blob(encoding: JsonEncoding) -> anyhow::Result<Vec<u8>> {
 
         JsonEncoding::Array(data) => Ok(data),
     }
+}
+
+pub fn build(args: crate::Build) -> anyhow::Result<()> {
+    let input_path = args.input;
+    let output_path = args.output;
+    let rhex_payload = std::fs::read(input_path)?;
+    let rhex_payload: Value = serde_json::from_slice::<Value>(&rhex_payload)?;
+    let json_value = rhex_payload.clone();
+    let rhex_payload = serde_json::from_value::<BuildPayload>(json_value.clone())?;
+    let rhex_payload = rhex_payload.materialize()?;
+    println!("{}", serde_json::to_string_pretty(&json_value)?);
+    println!("{:?}", rhex_payload);
+    let engine = base64::engine::general_purpose::STANDARD;
+    println!("{}", engine.encode(rhex_payload.as_bytes()));
+    let rhex_payload_bin = serde_cbor::to_vec(&rhex_payload)?;
+    std::fs::write(output_path, rhex_payload_bin)?;
+    Ok(())
 }

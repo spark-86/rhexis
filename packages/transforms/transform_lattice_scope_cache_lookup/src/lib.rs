@@ -20,7 +20,9 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let mut table: HashMap<String, LatticeScopeLocation> = HashMap::new();
 
     for item in input {
-        if item.intent.schema == Binding::Bound("rhex://schema.lattice.scope.lookup".to_string()) {
+        if item.intent.schema
+            == Binding::Bound("rhex://schema.lattice.scope.cache.request".to_string())
+        {
             requests.push(item);
         } else {
             let data_bin = match item.intent.data {
@@ -56,6 +58,31 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
             });
         } else {
             // Submit remote request here.
+            let request_json = match request.intent.data {
+                RhexPayload::Json(v) => v,
+                _ => return -1,
+            };
+            let scope = request_json.get("scope");
+            if scope.is_some() {
+                let scope = scope.unwrap().as_str().unwrap();
+                let mut remote_intent = RhexIntent::new(RhexIntent::gen_nonce());
+                remote_intent.schema =
+                    Binding::Bound("rhex://schema.lattice.scope.remote.request".to_string());
+                remote_intent.data = RhexPayload::None;
+                transform_output.push(FluxItem {
+                    name: scope.to_string(),
+                    thread: "lattice.scope.remote.request".to_string(),
+                    availability: request.availability,
+                    intent: remote_intent,
+                    correlation: None,
+                    meta: FluxMeta {
+                        creator: "transform.lattice.scope.cache.lookup".to_string(),
+                        timestamp: 0,
+                    },
+                });
+            } else {
+                return -2;
+            }
         }
     }
 

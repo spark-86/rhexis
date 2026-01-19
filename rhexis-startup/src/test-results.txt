@@ -1,0 +1,651 @@
+*************************************************
+*  RHEXIS ENGINE                                *
+*************************************************
+Loaded flux state... 4 items.
+Loading plugins...
+./transform_system_registry_result-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.system.registry.result", version: "0.1.0", requires: [], views: [], interacts: [PatternDescriptor { key: Some("system.registry"), thread: "system.registry", schema: Some("rhex://schema.system.registry"), payload_type: Binary, required_fields: None, flags: ["soon", "required", "observed"] }, PatternDescriptor { key: None, thread: "system.registry.actions", schema: Some("rhex://schema.system.registry.action"), payload_type: Mixed, required_fields: None, flags: ["now", "required", "consumed"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "system.registry.result", schema: Some("rhex://schema.system.registry.result"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] }, PatternDescriptor { key: Some("system.registry"), thread: "system.registry", schema: Some("rhex://schema.system.registry"), payload_type: Binary, required_fields: None, flags: ["now", "guaranteed", "produced"] }, PatternDescriptor { key: None, thread: "system.registry.store", schema: Some("rhex://schema.system.registry.store"), payload_type: None, required_fields: None, flags: ["now", "guaranteed", "produced"] }], bin_format: Native, blake3: [225, 67, 30, 189, 9, 125, 93, 7, 200, 186, 159, 42, 123, 2, 155, 246, 223, 252, 63, 156, 219, 71, 158, 126, 32, 250, 204, 155, 81, 83, 222, 2] })
+./transform_system_registry_add-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.system.registry.add", version: "0.1.0", requires: [], views: [], interacts: [PatternDescriptor { key: None, thread: "system.registry.add", schema: Some("rhex://schema.system.registry.add"), payload_type: Mixed, required_fields: None, flags: ["now", "required", "consumed"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "system.registry.actions", schema: Some("rhex://schema.system.registry.action"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] }], bin_format: Native, blake3: [186, 225, 101, 219, 157, 55, 54, 31, 102, 215, 199, 122, 9, 84, 182, 226, 225, 168, 94, 113, 203, 105, 7, 31, 139, 117, 26, 64, 145, 179, 197, 205] })
+./transform_system_registry_store-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.system.registry.store", version: "0.1.0", requires: [], views: [], interacts: [PatternDescriptor { key: None, thread: "system.registry.store", schema: Some("rhex://schema.system.registry.store"), payload_type: Binary, required_fields: None, flags: ["now", "required", "consumed"] }, PatternDescriptor { key: Some("system.registry"), thread: "system.registry", schema: Some("rhex://schema.system.registry"), payload_type: Binary, required_fields: None, flags: ["now", "required", "observed"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "data.put", schema: Some("rhex://schema.data.put"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] }, PatternDescriptor { key: None, thread: "system.registry.status", schema: Some("rhex://schema.system.registry.status"), payload_type: Json, required_fields: None, flags: ["now", "guaranteed", "produced"] }], bin_format: Native, blake3: [4, 28, 231, 223, 174, 13, 97, 33, 111, 159, 188, 222, 2, 158, 56, 176, 73, 220, 77, 124, 138, 62, 236, 144, 209, 200, 60, 110, 89, 253, 34, 134] })
+./transform_data_put-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.data.put", version: "0.2.0", requires: [], views: [], interacts: [PatternDescriptor { key: None, thread: "data.put", schema: Some("rhex://schema.data.put"), payload_type: Mixed, required_fields: None, flags: ["consumed", "now", "multiple"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "data.put.disk", schema: Some("rhex://schema.data.put.disk"), payload_type: Binary, required_fields: None, flags: ["optional", "now"] }, PatternDescriptor { key: None, thread: "data.put.ram", schema: Some("rhex://schema.data.put.ram"), payload_type: Binary, required_fields: None, flags: ["optional", "now"] }, PatternDescriptor { key: None, thread: "data.put.network", schema: Some("rhex://schema.data.put.network"), payload_type: Mixed, required_fields: None, flags: ["optional", "now"] }], bin_format: Native, blake3: [17, 31, 255, 131, 25, 129, 57, 251, 215, 141, 74, 137, 80, 168, 186, 11, 91, 144, 158, 60, 36, 250, 88, 111, 154, 137, 177, 126, 198, 7, 121, 38] })
+./transform_data_put_disk_batch-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.data.put.disk.batch", version: "0.1.0", requires: ["host.macos.apple"], views: [], interacts: [PatternDescriptor { key: None, thread: "data.put.disk", schema: Some("rhex://schema.data.put.disk"), payload_type: Binary, required_fields: None, flags: ["consumed", "now", "required", "multiple"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "data.put.disk.queue", schema: Some("rhex://schema.data.put.disk.batch"), payload_type: Binary, required_fields: None, flags: ["produces", "now"] }], bin_format: Native, blake3: [200, 232, 91, 219, 102, 252, 18, 125, 37, 92, 7, 119, 217, 235, 124, 188, 58, 145, 235, 144, 66, 131, 178, 172, 147, 185, 85, 231, 6, 145, 14, 3] })
+./transform_data_put_disk_fire-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.data.put.disk.fire", version: "0.1.0", requires: ["data.put.disk"], views: [], interacts: [PatternDescriptor { key: None, thread: "data.put.disk.queue", schema: Some("rhex://schema.data.put.disk.batch"), payload_type: Binary, required_fields: None, flags: ["consumed", "now", "required"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "data.put.status", schema: Some("rhex://schema.data.put.status"), payload_type: Any, required_fields: None, flags: ["soon", "produced"] }, PatternDescriptor { key: None, thread: "data.put.history", schema: Some("rhex://schema.data.put.history"), payload_type: Any, required_fields: None, flags: ["soon", "produced"] }], bin_format: Native, blake3: [226, 71, 212, 228, 27, 184, 82, 49, 57, 49, 208, 249, 229, 93, 166, 188, 173, 158, 175, 255, 24, 111, 187, 203, 117, 144, 226, 101, 40, 185, 28, 185] })
+./hpc_data_put_disk-macos_arm64-v1.rhp
+Hpc(HpcDescriptor { descriptor_ver: 1, name: "hpc.data.put.disk", capability: "data.put.disk", version: "0.1.0", requires: ["host.macos.apple"], bin_format: Native, blake3: [106, 232, 25, 71, 31, 61, 120, 98, 154, 55, 100, 5, 90, 251, 150, 8, 181, 77, 151, 70, 3, 9, 196, 240, 81, 124, 198, 98, 73, 189, 206, 22] })
+./lattice_transforms/transform_lattice_scope_cache_lookup-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.lattice.scope.cache.lookup", version: "0.1.0", requires: [], views: [], interacts: [PatternDescriptor { key: None, thread: "lattice.scope.cache.requests", schema: Some("rhex://schema.lattice.scope.cache.request"), payload_type: Json, required_fields: None, flags: ["now", "consumed", "required", "multiple"] }, PatternDescriptor { key: Some("lattice.scope.cache.table"), thread: "lattice.scope.cache.table", schema: Some("rhex://schema.lattice.scope.cache.table"), payload_type: Binary, required_fields: None, flags: ["now", "required", "observed"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "lattice.scope.lookup.results", schema: Some("rhex://schema.lattice.scope.lookup.result"), payload_type: Json, required_fields: None, flags: ["now", "optional", "inherit"] }, PatternDescriptor { key: None, thread: "lattice.scope.remote.request", schema: Some("rhex://schema.lattice.scope.remote.request"), payload_type: None, required_fields: None, flags: ["now", "optional", "inherit"] }], bin_format: Native, blake3: [232, 255, 146, 238, 102, 92, 224, 217, 51, 178, 71, 28, 130, 63, 158, 118, 148, 160, 47, 71, 22, 254, 244, 196, 183, 20, 30, 138, 96, 203, 190, 182] })
+./lattice_transforms/transform_lattice_scope_cache_add-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.lattice.scope.cache.add", version: "0.1.0", requires: [], views: [], interacts: [PatternDescriptor { key: None, thread: "lattice.scope.cache.add", schema: Some("rhex://schema.lattice.scope.cache.add"), payload_type: Json, required_fields: None, flags: ["now", "consumed", "required", "multiple"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "lattice.scope.cache.queue", schema: Some("rhex://schema.lattice.scope.cache.action"), payload_type: Json, required_fields: None, flags: ["now", "optional", "inherit"] }], bin_format: Native, blake3: [83, 138, 127, 114, 204, 193, 169, 42, 165, 223, 93, 17, 255, 98, 157, 45, 19, 25, 226, 202, 132, 75, 10, 93, 8, 155, 33, 174, 156, 74, 226, 169] })
+./lattice_transforms/transform_lattice_scope_cache_builder-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.lattice.scope.cache.builder", version: "0.1.0", requires: [], views: [], interacts: [PatternDescriptor { key: None, thread: "lattice.scope.cache.queue", schema: Some("rhex://schema.lattice.scope.cache.action"), payload_type: Json, required_fields: None, flags: ["now", "required", "inherit", "multiple"] }, PatternDescriptor { key: Some("lattice.scope.cache.table"), thread: "lattice.scope.cache.table", schema: Some("rhex://schema.lattice.scope.cache.table"), payload_type: Binary, required_fields: None, flags: ["now", "optional", "consumed"] }], bind: None, effects: [PatternDescriptor { key: Some("lattice.scope.cache.table"), thread: "lattice.scope.cache", schema: Some("rhex://schema.lattice.scope.cache.table"), payload_type: Binary, required_fields: None, flags: ["now", "produces", "required"] }], bin_format: Native, blake3: [154, 245, 32, 27, 139, 148, 103, 234, 58, 98, 222, 245, 78, 129, 237, 186, 85, 186, 102, 113, 158, 133, 120, 97, 113, 146, 193, 155, 236, 238, 251, 72] })
+./lattice_transforms/transform_lattice_initializer-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.lattice.initializer", version: "0.1.0", requires: [], views: [], interacts: [PatternDescriptor { key: None, thread: "lattice.init", schema: Some("rhex://schema.lattice.init"), payload_type: Binary, required_fields: None, flags: ["now", "required", "consumed", "anchor"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "data.get", schema: Some("rhex://schema.data.get"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] }, PatternDescriptor { key: Some("lattice.scope.cache.table"), thread: "lattice.scope.cache.table", schema: Some("rhex://schema.lattice.scope.cache.table"), payload_type: Mixed, required_fields: None, flags: ["soon", "guaranteed", "produced"] }], bin_format: Native, blake3: [16, 163, 117, 53, 72, 75, 246, 209, 188, 179, 6, 221, 238, 176, 103, 12, 244, 111, 163, 14, 127, 206, 192, 137, 111, 142, 62, 245, 84, 204, 62, 225] })
+./lattice_transforms/transform_lattice_scope_cache_create-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.lattice.scope.cache.create", version: "0.1.0", requires: [], views: [], interacts: [PatternDescriptor { key: Some("lattice.scope.cache.install"), thread: "lattice.scope.cache.install", schema: Some("rhex://schema.lattice.scope.cache.install"), payload_type: None, required_fields: None, flags: ["now", "required", "consumed"] }], bind: None, effects: [PatternDescriptor { key: Some("lattice.scope.cache.table"), thread: "lattice.scope.cache.table", schema: Some("rhex://schema.lattice.scope.cache.table"), payload_type: Binary, required_fields: None, flags: ["now", "guaranteed", "produced"] }, PatternDescriptor { key: None, thread: "data.put", schema: Some("rhex://schema.data.put"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] }, PatternDescriptor { key: None, thread: "system.registry.add", schema: Some("rhex://schema.system.registry.add"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] }], bin_format: Native, blake3: [187, 158, 120, 21, 10, 209, 39, 226, 45, 54, 171, 32, 75, 225, 86, 18, 204, 64, 251, 112, 231, 123, 205, 228, 219, 99, 108, 102, 216, 183, 23, 120] })
+./rhex_transforms/transform_rhex_author-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.rhex.author", version: "0.1.0", requires: [], views: [], interacts: [PatternDescriptor { key: None, thread: "rhex.intent", schema: Some("rhex://schema.rhex.intent"), payload_type: Mixed, required_fields: None, flags: ["now", "required", "consumed", "anchor"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "rhex.author.awaiting", schema: Some("rhex://schema.rhex.author.waiting"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] }, PatternDescriptor { key: None, thread: "rhex.author.request", schema: Some("rhex://schema.rhex.author.request"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] }, PatternDescriptor { key: None, thread: "lattice.scope.cache.requests", schema: Some("rhex://schema.lattice.scope.cache.request"), payload_type: Json, required_fields: None, flags: ["now", "guaranteed", "produced"] }], bin_format: Native, blake3: [101, 76, 158, 158, 190, 7, 254, 243, 94, 227, 29, 207, 169, 132, 135, 114, 23, 223, 213, 221, 62, 193, 56, 18, 36, 23, 129, 209, 248, 49, 33, 243] })
+./rhex_transforms/transform_rhex_usher_submit-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.rhex.usher.submit", version: "0.1.0", requires: [], views: [], interacts: [PatternDescriptor { key: None, thread: "rhex.author.awaiting", schema: Some("rhex://schema.rhex.author.awaiting"), payload_type: Mixed, required_fields: None, flags: ["now", "required", "consumed", "anchor"] }, PatternDescriptor { key: None, thread: "rhex.author.signature", schema: Some("rhex://schema.rhex.author.signature"), payload_type: Binary, required_fields: None, flags: ["now", "required", "consumed", "bind"] }, PatternDescriptor { key: None, thread: "lattice.scope.cache.requests", schema: Some("rhex://schema.lattice.scope.cache.request"), payload_type: Mixed, required_fields: None, flags: ["now", "required", "consumed", "bind"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "rhex.usher.request", schema: Some("rhex://schema.rhex.usher.request"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] }, PatternDescriptor { key: None, thread: "rhex.usher.awaiting", schema: Some("rhex://schema.rhex.usher.awaiting"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] }], bin_format: Native, blake3: [136, 66, 76, 154, 171, 178, 20, 143, 173, 49, 168, 30, 133, 99, 250, 57, 55, 65, 200, 134, 171, 0, 165, 55, 180, 65, 203, 77, 129, 37, 187, 122] })
+./rhex_transforms/transform_rhex_builder-macos_arm64-v1.rhp
+Transform(TransformDescriptor { descriptor_ver: 1, name: "transform.rhex.builder", version: "0.1.0", requires: [], views: [], interacts: [PatternDescriptor { key: None, thread: "rhex.build", schema: Some("rhex://schema.rhex.build"), payload_type: Mixed, required_fields: None, flags: ["now", "required", "inherit", "multiple", "consumed"] }], bind: None, effects: [PatternDescriptor { key: None, thread: "rhex.intent", schema: Some("rhex://schema.rhex.intent"), payload_type: Mixed, required_fields: None, flags: ["now", "produces", "required"] }], bin_format: Native, blake3: [235, 114, 167, 9, 134, 3, 220, 119, 107, 46, 34, 133, 255, 43, 93, 45, 101, 144, 175, 156, 197, 26, 187, 129, 144, 187, 120, 208, 139, 219, 126, 67] })
+Loaded 1 HPCs
+Loaded 14 transforms
+Membrane constructed
+Init kernel...
+---------------------------------------
+Start of kernel spin...
+Flux hash at start: [117, 24, 38, 141, 146, 119, 231, 45, 157, 129, 3, 220, 255, 118, 233, 237, 163, 163, 220, 142, 187, 101, 175, 163, 197, 2, 157, 95, 7, 46, 138, 186]
+Flux Pond
+├─ thread: lattice.scope.cache.install
+│  └─ schema: rhex://schema.lattice.scope.cache.install
+│     └─ lattice.scope.cache.install  (no corr)
+├─ thread: rhex.build
+│  └─ schema: rhex://schema.rhex.build
+│     └─ rhex.build.1  (no corr)
+├─ thread: system.registry
+│  └─ schema: rhex://schema.system.registry
+│     └─ system.registry  (no corr)
+└─ thread: system.registry.add
+   └─ schema: rhex://schema.system.registry.add
+      └─ system.registry.add.1  (no corr)
+
+Firing transform transform.system.registry.add (10000)
+transform.system.registry.add flux outputted: [FluxItem { name: "system.registry.action.167d76c013417000e2d1b2ddd2d5b0005cfb2fffabf766013eb99318219928a2", thread: "system.registry.actions", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [22, 125, 118, 192, 19, 65, 112, 0, 226, 209, 178, 221, 210, 213, 176, 0, 92, 251, 47, 255, 171, 247, 102, 1, 62, 185, 147, 24, 33, 153, 40, 162], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.registry.action"), record_type: Unbound, data: Mixed { meta: Object {"action": String("add"), "data_type": String("logical_id")}, data: [[161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 74, 24, 52, 24, 170, 3, 24, 192, 24, 73, 24, 78, 24, 239, 24, 193, 24, 185, 24, 110, 24, 58, 24, 72, 24, 172, 24, 246, 24, 49, 24, 118, 24, 81, 24, 142, 24, 82, 24, 217, 24, 27, 24, 52, 24, 254, 24, 67, 24, 247, 24, 176, 24, 54, 24, 69, 14, 24, 25, 24, 220]] } }, correlation: None, meta: FluxMeta { creator: "transform.system.registry.add", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: system.registry.action.167d76c013417000e2d1b2ddd2d5b0005cfb2fffabf766013eb99318219928a2
+PatternDescriptor { key: None, thread: "system.registry.actions", schema: Some("rhex://schema.system.registry.action"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing system.registry.action.167d76c013417000e2d1b2ddd2d5b0005cfb2fffabf766013eb99318219928a2
+Firing transform transform.lattice.scope.cache.create (10100)
+transform.lattice.scope.cache.create flux outputted: [FluxItem { name: "lattice.scope.cache.table", thread: "lattice.scope.cache.table", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [1, 133, 1, 70, 243, 66, 76, 150, 155, 71, 159, 226, 242, 171, 202, 254, 38, 172, 5, 146, 74, 196, 99, 55, 93, 176, 241, 59, 217, 30, 24, 189], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.lattice.scope.cache.table"), record_type: Unbound, data: Binary { data: [160] } }, correlation: None, meta: FluxMeta { creator: "transform.lattice.scope.cache.create", timestamp: 0 } }, FluxItem { name: "data.put.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128", thread: "data.put", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [50, 25, 239, 70, 144, 118, 226, 9, 91, 35, 189, 111, 135, 211, 110, 60, 228, 219, 115, 114, 46, 104, 254, 67, 180, 195, 163, 41, 247, 7, 152, 97], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put"), record_type: Unbound, data: Mixed { meta: Object {"constraints": Array [String("local"), String("permanent")]}, data: [[220, 132, 55, 209, 101, 71, 103, 72, 203, 46, 225, 35, 204, 41, 217, 132, 154, 182, 216, 21, 60, 66, 100, 223, 48, 0, 110, 78, 126, 77, 161, 40], [160]] } }, correlation: None, meta: FluxMeta { creator: "transform.lattice.scope.cache.create", timestamp: 0 } }, FluxItem { name: "system.registry.add.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128", thread: "system.registry.add", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [47, 151, 225, 228, 86, 222, 181, 141, 77, 42, 119, 226, 151, 23, 199, 164, 69, 95, 97, 177, 99, 170, 100, 197, 156, 58, 227, 62, 30, 29, 145, 75], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.registry.add"), record_type: Unbound, data: Mixed { meta: Object {"action": String("add"), "data_type": String("logical_id")}, data: [[161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 220, 24, 132, 24, 55, 24, 209, 24, 101, 24, 71, 24, 103, 24, 72, 24, 203, 24, 46, 24, 225, 24, 35, 24, 204, 24, 41, 24, 217, 24, 132, 24, 154, 24, 182, 24, 216, 21, 24, 60, 24, 66, 24, 100, 24, 223, 24, 48, 0, 24, 110, 24, 78, 24, 126, 24, 77, 24, 161, 24, 40]] } }, correlation: None, meta: FluxMeta { creator: "transform.lattice.scope.cache.create", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: lattice.scope.cache.table
+PatternDescriptor { key: Some("lattice.scope.cache.table"), thread: "lattice.scope.cache.table", schema: Some("rhex://schema.lattice.scope.cache.table"), payload_type: Binary, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 3/3
+Collapsing lattice.scope.cache.table
+Running effect validation on: data.put.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128
+PatternDescriptor { key: Some("lattice.scope.cache.table"), thread: "lattice.scope.cache.table", schema: Some("rhex://schema.lattice.scope.cache.table"), payload_type: Binary, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["KEY", "SCHEMA:Bound(\"rhex://schema.data.put\")", "PAYLOAD_TYPE"], scored 0/3
+PatternDescriptor { key: None, thread: "data.put", schema: Some("rhex://schema.data.put"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing data.put.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128
+Running effect validation on: system.registry.add.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128
+PatternDescriptor { key: Some("lattice.scope.cache.table"), thread: "lattice.scope.cache.table", schema: Some("rhex://schema.lattice.scope.cache.table"), payload_type: Binary, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["KEY", "SCHEMA:Bound(\"rhex://schema.system.registry.add\")", "PAYLOAD_TYPE"], scored 0/3
+PatternDescriptor { key: None, thread: "data.put", schema: Some("rhex://schema.data.put"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["KEY", "SCHEMA:Bound(\"rhex://schema.system.registry.add\")", "PAYLOAD_TYPE", "SCHEMA:Bound(\"rhex://schema.system.registry.add\")"], scored 1/2
+PatternDescriptor { key: None, thread: "system.registry.add", schema: Some("rhex://schema.system.registry.add"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing system.registry.add.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128
+Firing transform transform.rhex.builder (1000)
+transform.rhex.builder flux outputted: [FluxItem { name: "rhex.intent.15319362847aeff49201219fe025b8cf42510bfcede00dc5320825ed12fb15b9", thread: "rhex.intent", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [21, 49, 147, 98, 132, 122, 239, 244, 146, 1, 33, 159, 224, 37, 184, 207, 66, 81, 11, 252, 237, 224, 13, 197, 50, 8, 37, 237, 18, 251, 21, 185], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.rhex.intent"), record_type: Unbound, data: Mixed { meta: Object {}, data: [[165, 101, 109, 97, 103, 105, 99, 134, 24, 82, 24, 72, 24, 69, 24, 88, 24, 48, 24, 49, 102, 105, 110, 116, 101, 110, 116, 168, 109, 112, 114, 101, 118, 105, 111, 117, 115, 95, 104, 97, 115, 104, 162, 101, 115, 116, 97, 116, 101, 101, 66, 111, 117, 110, 100, 101, 118, 97, 108, 117, 101, 152, 32, 24, 205, 24, 26, 24, 220, 24, 69, 24, 201, 24, 104, 24, 169, 24, 133, 24, 146, 24, 65, 24, 150, 24, 202, 24, 46, 24, 221, 24, 220, 24, 177, 24, 194, 24, 160, 24, 249, 24, 64, 24, 84, 24, 135, 24, 104, 24, 94, 24, 179, 24, 109, 24, 57, 24, 249, 24, 218, 24, 130, 24, 117, 24, 220, 101, 115, 99, 111, 112, 101, 162, 101, 115, 116, 97, 116, 101, 101, 66, 111, 117, 110, 100, 101, 118, 97, 108, 117, 101, 102, 34, 116, 101, 115, 116, 34, 101, 110, 111, 110, 99, 101, 152, 32, 24, 243, 12, 24, 127, 24, 222, 24, 205, 12, 13, 24, 170, 24, 118, 24, 41, 24, 151, 24, 220, 24, 169, 24, 137, 5, 24, 128, 24, 83, 24, 167, 24, 183, 24, 228, 24, 45, 9, 24, 171, 24, 249, 24, 218, 24, 152, 24, 196, 24, 49, 24, 73, 24, 35, 11, 24, 57, 113, 97, 117, 116, 104, 111, 114, 95, 112, 117, 98, 108, 105, 99, 95, 107, 101, 121, 162, 101, 115, 116, 97, 116, 101, 101, 66, 111, 117, 110, 100, 101, 118, 97, 108, 117, 101, 152, 32, 24, 108, 24, 65, 24, 216, 24, 37, 24, 83, 24, 116, 24, 142, 24, 103, 24, 166, 24, 92, 24, 115, 24, 228, 24, 96, 24, 134, 24, 111, 2, 24, 54, 24, 221, 24, 90, 13, 24, 124, 24, 159, 24, 250, 24, 88, 24, 186, 24, 245, 24, 38, 24, 52, 14, 24, 90, 24, 124, 24, 118, 112, 117, 115, 104, 101, 114, 95, 112, 117, 98, 108, 105, 99, 95, 107, 101, 121, 161, 101, 115, 116, 97, 116, 101, 103, 85, 110, 98, 111, 117, 110, 100, 102, 115, 99, 104, 101, 109, 97, 161, 101, 115, 116, 97, 116, 101, 103, 85, 110, 98, 111, 117, 110, 100, 107, 114, 101, 99, 111, 114, 100, 95, 116, 121, 112, 101, 162, 101, 115, 116, 97, 116, 101, 101, 66, 111, 117, 110, 100, 101, 118, 97, 108, 117, 101, 107, 34, 116, 101, 115, 116, 58, 116, 101, 115, 116, 34, 100, 100, 97, 116, 97, 163, 100, 107, 105, 110, 100, 101, 109, 105, 120, 101, 100, 100, 109, 101, 116, 97, 161, 100, 116, 101, 115, 116, 100, 100, 97, 116, 97, 100, 100, 97, 116, 97, 129, 88, 33, 161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 74, 24, 52, 24, 170, 3, 24, 192, 24, 73, 24, 78, 24, 239, 24, 193, 24, 185, 24, 103, 99, 111, 110, 116, 101, 120, 116, 163, 98, 97, 116, 0, 107, 115, 112, 97, 99, 105, 97, 108, 95, 114, 101, 102, 246, 108, 115, 112, 97, 99, 105, 97, 108, 95, 100, 97, 116, 97, 246, 106, 115, 105, 103, 110, 97, 116, 117, 114, 101, 115, 128, 108, 99, 117, 114, 114, 101, 110, 116, 95, 104, 97, 115, 104, 246]] } }, correlation: None, meta: FluxMeta { creator: "transform.rhex.intent", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: rhex.intent.15319362847aeff49201219fe025b8cf42510bfcede00dc5320825ed12fb15b9
+PatternDescriptor { key: None, thread: "rhex.intent", schema: Some("rhex://schema.rhex.intent"), payload_type: Mixed, required_fields: None, flags: ["now", "produces", "required"] } succeeded, scored 2/2
+Collapsing rhex.intent.15319362847aeff49201219fe025b8cf42510bfcede00dc5320825ed12fb15b9
+Dropped flux: []
+End of kernel spin. Firing HPCs...
+Returned: []
+Flux hash at end: [247, 182, 97, 201, 126, 243, 22, 140, 248, 198, 138, 142, 117, 99, 172, 22, 194, 233, 55, 163, 100, 194, 159, 85, 7, 22, 42, 231, 183, 245, 139, 81]
+---------------------------------------
+Start of kernel spin...
+Flux hash at start: [247, 182, 97, 201, 126, 243, 22, 140, 248, 198, 138, 142, 117, 99, 172, 22, 194, 233, 55, 163, 100, 194, 159, 85, 7, 22, 42, 231, 183, 245, 139, 81]
+Flux Pond
+├─ thread: data.put
+│  └─ schema: rhex://schema.data.put
+│     └─ data.put.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+├─ thread: lattice.scope.cache.install
+│  └─ schema: rhex://schema.lattice.scope.cache.install
+├─ thread: lattice.scope.cache.table
+│  └─ schema: rhex://schema.lattice.scope.cache.table
+│     └─ lattice.scope.cache.table  (no corr)
+├─ thread: rhex.build
+│  └─ schema: rhex://schema.rhex.build
+├─ thread: rhex.intent
+│  └─ schema: rhex://schema.rhex.intent
+│     └─ rhex.intent.15319362847aeff49201219fe025b8cf42510bfcede00dc5320825ed12fb15b9  (no corr)
+├─ thread: system.registry
+│  └─ schema: rhex://schema.system.registry
+│     └─ system.registry  (no corr)
+├─ thread: system.registry.actions
+│  └─ schema: rhex://schema.system.registry.action
+│     └─ system.registry.action.167d76c013417000e2d1b2ddd2d5b0005cfb2fffabf766013eb99318219928a2  (no corr)
+└─ thread: system.registry.add
+   └─ schema: rhex://schema.system.registry.add
+      └─ system.registry.add.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+
+Firing transform transform.rhex.author (10000)
+transform.rhex.author flux outputted: [FluxItem { name: "rhex.author.waiting.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39", thread: "rhex.author.waiting", availability: Eventually, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [117, 236, 136, 92, 68, 129, 109, 155, 181, 222, 121, 160, 8, 91, 118, 237, 105, 153, 58, 163, 120, 46, 111, 69, 49, 233, 91, 84, 82, 64, 36, 250], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.rhex.author.waiting"), record_type: Unbound, data: Mixed { meta: Object {}, data: [[165, 101, 109, 97, 103, 105, 99, 134, 24, 82, 24, 72, 24, 69, 24, 88, 24, 48, 24, 49, 102, 105, 110, 116, 101, 110, 116, 168, 109, 112, 114, 101, 118, 105, 111, 117, 115, 95, 104, 97, 115, 104, 162, 101, 115, 116, 97, 116, 101, 101, 66, 111, 117, 110, 100, 101, 118, 97, 108, 117, 101, 152, 32, 24, 205, 24, 26, 24, 220, 24, 69, 24, 201, 24, 104, 24, 169, 24, 133, 24, 146, 24, 65, 24, 150, 24, 202, 24, 46, 24, 221, 24, 220, 24, 177, 24, 194, 24, 160, 24, 249, 24, 64, 24, 84, 24, 135, 24, 104, 24, 94, 24, 179, 24, 109, 24, 57, 24, 249, 24, 218, 24, 130, 24, 117, 24, 220, 101, 115, 99, 111, 112, 101, 162, 101, 115, 116, 97, 116, 101, 101, 66, 111, 117, 110, 100, 101, 118, 97, 108, 117, 101, 102, 34, 116, 101, 115, 116, 34, 101, 110, 111, 110, 99, 101, 152, 32, 24, 243, 12, 24, 127, 24, 222, 24, 205, 12, 13, 24, 170, 24, 118, 24, 41, 24, 151, 24, 220, 24, 169, 24, 137, 5, 24, 128, 24, 83, 24, 167, 24, 183, 24, 228, 24, 45, 9, 24, 171, 24, 249, 24, 218, 24, 152, 24, 196, 24, 49, 24, 73, 24, 35, 11, 24, 57, 113, 97, 117, 116, 104, 111, 114, 95, 112, 117, 98, 108, 105, 99, 95, 107, 101, 121, 162, 101, 115, 116, 97, 116, 101, 101, 66, 111, 117, 110, 100, 101, 118, 97, 108, 117, 101, 152, 32, 24, 108, 24, 65, 24, 216, 24, 37, 24, 83, 24, 116, 24, 142, 24, 103, 24, 166, 24, 92, 24, 115, 24, 228, 24, 96, 24, 134, 24, 111, 2, 24, 54, 24, 221, 24, 90, 13, 24, 124, 24, 159, 24, 250, 24, 88, 24, 186, 24, 245, 24, 38, 24, 52, 14, 24, 90, 24, 124, 24, 118, 112, 117, 115, 104, 101, 114, 95, 112, 117, 98, 108, 105, 99, 95, 107, 101, 121, 161, 101, 115, 116, 97, 116, 101, 103, 85, 110, 98, 111, 117, 110, 100, 102, 115, 99, 104, 101, 109, 97, 161, 101, 115, 116, 97, 116, 101, 103, 85, 110, 98, 111, 117, 110, 100, 107, 114, 101, 99, 111, 114, 100, 95, 116, 121, 112, 101, 162, 101, 115, 116, 97, 116, 101, 101, 66, 111, 117, 110, 100, 101, 118, 97, 108, 117, 101, 107, 34, 116, 101, 115, 116, 58, 116, 101, 115, 116, 34, 100, 100, 97, 116, 97, 163, 100, 107, 105, 110, 100, 101, 109, 105, 120, 101, 100, 100, 109, 101, 116, 97, 161, 100, 116, 101, 115, 116, 100, 100, 97, 116, 97, 100, 100, 97, 116, 97, 129, 88, 33, 161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 74, 24, 52, 24, 170, 3, 24, 192, 24, 73, 24, 78, 24, 239, 24, 193, 24, 185, 24, 103, 99, 111, 110, 116, 101, 120, 116, 163, 98, 97, 116, 0, 107, 115, 112, 97, 99, 105, 97, 108, 95, 114, 101, 102, 246, 108, 115, 112, 97, 99, 105, 97, 108, 95, 100, 97, 116, 97, 246, 106, 115, 105, 103, 110, 97, 116, 117, 114, 101, 115, 128, 108, 99, 117, 114, 114, 101, 110, 116, 95, 104, 97, 115, 104, 246]] } }, correlation: None, meta: FluxMeta { creator: "transform.rhex.author", timestamp: 0 } }, FluxItem { name: "rhex.author.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39", thread: "rhex.author.request", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [229, 143, 29, 176, 235, 166, 50, 220, 148, 182, 49, 221, 139, 27, 101, 221, 228, 60, 171, 91, 103, 85, 114, 150, 0, 206, 50, 122, 31, 44, 130, 92], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.rhex.author.request"), record_type: Unbound, data: Mixed { meta: Object {}, data: [[152, 32, 24, 189, 24, 138, 24, 236, 24, 239, 24, 253, 24, 223, 24, 132, 24, 157, 24, 72, 24, 44, 24, 77, 24, 146, 4, 24, 191, 24, 236, 24, 229, 24, 135, 24, 79, 24, 50, 24, 149, 24, 233, 24, 139, 10, 24, 166, 23, 24, 154, 24, 189, 24, 131, 24, 224, 24, 128, 24, 73, 24, 237]] } }, correlation: None, meta: FluxMeta { creator: "transform.rhex.author", timestamp: 0 } }, FluxItem { name: "lattice.scope.cache.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39", thread: "lattice.scope.cache.requests", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [175, 59, 204, 243, 85, 81, 32, 192, 8, 165, 50, 43, 245, 15, 131, 28, 197, 208, 222, 166, 140, 13, 160, 236, 121, 232, 151, 79, 174, 14, 122, 32], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.lattice.scope.cache.request"), record_type: Unbound, data: Json(Object {"scope": String("\"test\"")}) }, correlation: None, meta: FluxMeta { creator: "transform.rhex.author", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: rhex.author.waiting.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39
+PatternDescriptor { key: None, thread: "rhex.author.awaiting", schema: Some("rhex://schema.rhex.author.waiting"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing rhex.author.waiting.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39
+Running effect validation on: rhex.author.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39
+PatternDescriptor { key: None, thread: "rhex.author.awaiting", schema: Some("rhex://schema.rhex.author.waiting"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.rhex.author.request\")"], scored 1/2
+PatternDescriptor { key: None, thread: "rhex.author.request", schema: Some("rhex://schema.rhex.author.request"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing rhex.author.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39
+Running effect validation on: lattice.scope.cache.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39
+PatternDescriptor { key: None, thread: "rhex.author.awaiting", schema: Some("rhex://schema.rhex.author.waiting"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.lattice.scope.cache.request\")", "PAYLOAD_TYPE"], scored 0/2
+PatternDescriptor { key: None, thread: "rhex.author.request", schema: Some("rhex://schema.rhex.author.request"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.lattice.scope.cache.request\")", "PAYLOAD_TYPE", "SCHEMA:Bound(\"rhex://schema.lattice.scope.cache.request\")", "PAYLOAD_TYPE"], scored 0/2
+PatternDescriptor { key: None, thread: "lattice.scope.cache.requests", schema: Some("rhex://schema.lattice.scope.cache.request"), payload_type: Json, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing lattice.scope.cache.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39
+Firing transform transform.system.registry.add (10000)
+transform.system.registry.add flux outputted: [FluxItem { name: "system.registry.action.f9ef92c87c354149cce33add9d8337c0b8919c7eef5dc0e4c126d3739518dc33", thread: "system.registry.actions", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [249, 239, 146, 200, 124, 53, 65, 73, 204, 227, 58, 221, 157, 131, 55, 192, 184, 145, 156, 126, 239, 93, 192, 228, 193, 38, 211, 115, 149, 24, 220, 51], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.registry.action"), record_type: Unbound, data: Mixed { meta: Object {"action": String("add"), "data_type": String("logical_id")}, data: [[161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 220, 24, 132, 24, 55, 24, 209, 24, 101, 24, 71, 24, 103, 24, 72, 24, 203, 24, 46, 24, 225, 24, 35, 24, 204, 24, 41, 24, 217, 24, 132, 24, 154, 24, 182, 24, 216, 21, 24, 60, 24, 66, 24, 100, 24, 223, 24, 48, 0, 24, 110, 24, 78, 24, 126, 24, 77, 24, 161, 24, 40]] } }, correlation: None, meta: FluxMeta { creator: "transform.system.registry.add", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: system.registry.action.f9ef92c87c354149cce33add9d8337c0b8919c7eef5dc0e4c126d3739518dc33
+PatternDescriptor { key: None, thread: "system.registry.actions", schema: Some("rhex://schema.system.registry.action"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing system.registry.action.f9ef92c87c354149cce33add9d8337c0b8919c7eef5dc0e4c126d3739518dc33
+Firing transform transform.data.put (1000)
+Logical ID: [220, 132, 55, 209, 101, 71, 103, 72, 203, 46, 225, 35, 204, 41, 217, 132, 154, 182, 216, 21, 60, 66, 100, 223, 48, 0, 110, 78, 126, 77, 161, 40]
+transform.data.put flux outputted: [FluxItem { name: "data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128", thread: "data.put.disk", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [49, 73, 52, 234, 159, 191, 0, 2, 234, 214, 222, 153, 135, 13, 7, 126, 13, 185, 172, 241, 208, 103, 13, 72, 231, 61, 177, 173, 226, 184, 164, 175], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.disk"), record_type: Unbound, data: Binary { data: [162, 106, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 152, 32, 24, 220, 24, 132, 24, 55, 24, 209, 24, 101, 24, 71, 24, 103, 24, 72, 24, 203, 24, 46, 24, 225, 24, 35, 24, 204, 24, 41, 24, 217, 24, 132, 24, 154, 24, 182, 24, 216, 21, 24, 60, 24, 66, 24, 100, 24, 223, 24, 48, 0, 24, 110, 24, 78, 24, 126, 24, 77, 24, 161, 24, 40, 100, 100, 97, 116, 97, 129, 24, 160] } }, correlation: None, meta: FluxMeta { creator: "transform.data.put", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128
+PatternDescriptor { key: None, thread: "data.put.disk", schema: Some("rhex://schema.data.put.disk"), payload_type: Binary, required_fields: None, flags: ["optional", "now"] } succeeded, scored 2/2
+Collapsing data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128
+Firing transform transform.system.registry.result (11010)
+transform.system.registry.result flux outputted: [FluxItem { name: "system.registry.result.e548b460a76caef4c96dd9c94143cbee88fc32bf22cac4bd32dec9d4b37941fe", thread: "system.registry.results", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [229, 72, 180, 96, 167, 108, 174, 244, 201, 109, 217, 201, 65, 67, 203, 238, 136, 252, 50, 191, 34, 202, 196, 189, 50, 222, 201, 212, 179, 121, 65, 254], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.registry.result"), record_type: Unbound, data: Mixed { meta: Object {"action": String("add"), "result": String("success")}, data: [[161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 74, 24, 52, 24, 170, 3, 24, 192, 24, 73, 24, 78, 24, 239, 24, 193, 24, 185, 24, 110, 24, 58, 24, 72, 24, 172, 24, 246, 24, 49, 24, 118, 24, 81, 24, 142, 24, 82, 24, 217, 24, 27, 24, 52, 24, 254, 24, 67, 24, 247, 24, 176, 24, 54, 24, 69, 14, 24, 25, 24, 220]] } }, correlation: None, meta: FluxMeta { creator: "transform.system.registry.result", timestamp: 0 } }, FluxItem { name: "system.registry", thread: "system.registry", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [34, 183, 156, 101, 88, 56, 128, 168, 229, 192, 37, 212, 253, 205, 150, 8, 215, 60, 95, 185, 199, 144, 200, 86, 192, 167, 46, 246, 146, 144, 57, 8], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.registry"), record_type: Unbound, data: Binary { data: [164, 115, 114, 101, 103, 105, 115, 116, 114, 121, 46, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 69, 6, 24, 226, 24, 232, 24, 177, 24, 193, 24, 55, 24, 250, 24, 41, 24, 219, 24, 178, 24, 115, 24, 77, 15, 24, 218, 24, 97, 24, 165, 24, 138, 24, 51, 24, 162, 24, 253, 24, 151, 24, 210, 24, 139, 24, 27, 2, 24, 98, 24, 105, 24, 152, 24, 125, 24, 155, 24, 255, 118, 102, 117, 99, 107, 46, 121, 111, 46, 99, 104, 105, 99, 107, 101, 110, 46, 115, 116, 114, 105, 112, 115, 161, 102, 83, 116, 114, 105, 110, 103, 108, 97, 110, 100, 32, 121, 111, 32, 109, 111, 109, 109, 97, 115, 98, 111, 103, 117, 115, 46, 101, 110, 116, 114, 121, 46, 102, 117, 110, 116, 105, 109, 101, 161, 99, 85, 54, 52, 26, 0, 183, 161, 108, 100, 110, 117, 108, 108, 161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 74, 24, 52, 24, 170, 3, 24, 192, 24, 73, 24, 78, 24, 239, 24, 193, 24, 185, 24, 110, 24, 58, 24, 72, 24, 172, 24, 246, 24, 49, 24, 118, 24, 81, 24, 142, 24, 82, 24, 217, 24, 27, 24, 52, 24, 254, 24, 67, 24, 247, 24, 176, 24, 54, 24, 69, 14, 24, 25, 24, 220] } }, correlation: None, meta: FluxMeta { creator: "transform.system.registry.result", timestamp: 0 } }, FluxItem { name: "system.registry.store", thread: "system.registry.store", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [36, 242, 103, 170, 70, 170, 83, 68, 223, 255, 107, 0, 116, 147, 152, 235, 29, 142, 166, 17, 55, 14, 217, 220, 136, 197, 140, 74, 85, 118, 59, 0], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.registry.store"), record_type: Unbound, data: None }, correlation: None, meta: FluxMeta { creator: "transform.system.registry.result", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: system.registry.result.e548b460a76caef4c96dd9c94143cbee88fc32bf22cac4bd32dec9d4b37941fe
+PatternDescriptor { key: None, thread: "system.registry.result", schema: Some("rhex://schema.system.registry.result"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing system.registry.result.e548b460a76caef4c96dd9c94143cbee88fc32bf22cac4bd32dec9d4b37941fe
+Running effect validation on: system.registry
+PatternDescriptor { key: None, thread: "system.registry.result", schema: Some("rhex://schema.system.registry.result"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.system.registry\")", "PAYLOAD_TYPE"], scored 0/2
+PatternDescriptor { key: Some("system.registry"), thread: "system.registry", schema: Some("rhex://schema.system.registry"), payload_type: Binary, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 3/3
+Collapsing system.registry
+Running effect validation on: system.registry.store
+PatternDescriptor { key: None, thread: "system.registry.result", schema: Some("rhex://schema.system.registry.result"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.system.registry.store\")", "PAYLOAD_TYPE"], scored 0/2
+PatternDescriptor { key: Some("system.registry"), thread: "system.registry", schema: Some("rhex://schema.system.registry"), payload_type: Binary, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.system.registry.store\")", "PAYLOAD_TYPE", "KEY", "SCHEMA:Bound(\"rhex://schema.system.registry.store\")", "PAYLOAD_TYPE"], scored 0/3
+PatternDescriptor { key: None, thread: "system.registry.store", schema: Some("rhex://schema.system.registry.store"), payload_type: None, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing system.registry.store
+Dropped flux: []
+End of kernel spin. Firing HPCs...
+Returned: []
+Flux hash at end: [158, 2, 174, 12, 232, 237, 56, 54, 113, 13, 219, 43, 21, 176, 113, 207, 120, 79, 26, 130, 81, 82, 37, 50, 42, 125, 208, 249, 36, 162, 83, 194]
+---------------------------------------
+Start of kernel spin...
+Flux hash at start: [158, 2, 174, 12, 232, 237, 56, 54, 113, 13, 219, 43, 21, 176, 113, 207, 120, 79, 26, 130, 81, 82, 37, 50, 42, 125, 208, 249, 36, 162, 83, 194]
+Flux Pond
+├─ thread: data.put
+│  └─ schema: rhex://schema.data.put
+├─ thread: data.put.disk
+│  └─ schema: rhex://schema.data.put.disk
+│     └─ data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+├─ thread: lattice.scope.cache.install
+│  └─ schema: rhex://schema.lattice.scope.cache.install
+├─ thread: lattice.scope.cache.requests
+│  └─ schema: rhex://schema.lattice.scope.cache.request
+│     └─ lattice.scope.cache.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: lattice.scope.cache.table
+│  └─ schema: rhex://schema.lattice.scope.cache.table
+│     └─ lattice.scope.cache.table  (no corr)
+├─ thread: rhex.author.request
+│  └─ schema: rhex://schema.rhex.author.request
+│     └─ rhex.author.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.author.waiting
+│  └─ schema: rhex://schema.rhex.author.waiting
+│     └─ rhex.author.waiting.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.build
+│  └─ schema: rhex://schema.rhex.build
+├─ thread: rhex.intent
+│  └─ schema: rhex://schema.rhex.intent
+├─ thread: system.registry
+│  └─ schema: rhex://schema.system.registry
+│     └─ system.registry  (no corr)
+├─ thread: system.registry.actions
+│  └─ schema: rhex://schema.system.registry.action
+│     └─ system.registry.action.f9ef92c87c354149cce33add9d8337c0b8919c7eef5dc0e4c126d3739518dc33  (no corr)
+├─ thread: system.registry.add
+│  └─ schema: rhex://schema.system.registry.add
+├─ thread: system.registry.results
+│  └─ schema: rhex://schema.system.registry.result
+│     └─ system.registry.result.e548b460a76caef4c96dd9c94143cbee88fc32bf22cac4bd32dec9d4b37941fe  (no corr)
+└─ thread: system.registry.store
+   └─ schema: rhex://schema.system.registry.store
+      └─ system.registry.store  (no corr)
+
+Firing transform transform.system.registry.result (11010)
+transform.system.registry.result flux outputted: [FluxItem { name: "system.registry.result.e20761f25148ca9b5937b427589c5acfafdc2ebe1119f044db035e9030aac660", thread: "system.registry.results", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [226, 7, 97, 242, 81, 72, 202, 155, 89, 55, 180, 39, 88, 156, 90, 207, 175, 220, 46, 190, 17, 25, 240, 68, 219, 3, 94, 144, 48, 170, 198, 96], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.registry.result"), record_type: Unbound, data: Mixed { meta: Object {"action": String("add"), "result": String("success")}, data: [[161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 220, 24, 132, 24, 55, 24, 209, 24, 101, 24, 71, 24, 103, 24, 72, 24, 203, 24, 46, 24, 225, 24, 35, 24, 204, 24, 41, 24, 217, 24, 132, 24, 154, 24, 182, 24, 216, 21, 24, 60, 24, 66, 24, 100, 24, 223, 24, 48, 0, 24, 110, 24, 78, 24, 126, 24, 77, 24, 161, 24, 40]] } }, correlation: None, meta: FluxMeta { creator: "transform.system.registry.result", timestamp: 0 } }, FluxItem { name: "system.registry", thread: "system.registry", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [180, 238, 137, 120, 214, 234, 6, 133, 237, 78, 230, 85, 120, 254, 183, 7, 33, 2, 206, 144, 169, 255, 164, 70, 190, 211, 84, 85, 77, 128, 12, 144], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.registry"), record_type: Unbound, data: Binary { data: [164, 100, 110, 117, 108, 108, 161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 220, 24, 132, 24, 55, 24, 209, 24, 101, 24, 71, 24, 103, 24, 72, 24, 203, 24, 46, 24, 225, 24, 35, 24, 204, 24, 41, 24, 217, 24, 132, 24, 154, 24, 182, 24, 216, 21, 24, 60, 24, 66, 24, 100, 24, 223, 24, 48, 0, 24, 110, 24, 78, 24, 126, 24, 77, 24, 161, 24, 40, 115, 114, 101, 103, 105, 115, 116, 114, 121, 46, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 69, 6, 24, 226, 24, 232, 24, 177, 24, 193, 24, 55, 24, 250, 24, 41, 24, 219, 24, 178, 24, 115, 24, 77, 15, 24, 218, 24, 97, 24, 165, 24, 138, 24, 51, 24, 162, 24, 253, 24, 151, 24, 210, 24, 139, 24, 27, 2, 24, 98, 24, 105, 24, 152, 24, 125, 24, 155, 24, 255, 118, 102, 117, 99, 107, 46, 121, 111, 46, 99, 104, 105, 99, 107, 101, 110, 46, 115, 116, 114, 105, 112, 115, 161, 102, 83, 116, 114, 105, 110, 103, 108, 97, 110, 100, 32, 121, 111, 32, 109, 111, 109, 109, 97, 115, 98, 111, 103, 117, 115, 46, 101, 110, 116, 114, 121, 46, 102, 117, 110, 116, 105, 109, 101, 161, 99, 85, 54, 52, 26, 0, 183, 161, 108] } }, correlation: None, meta: FluxMeta { creator: "transform.system.registry.result", timestamp: 0 } }, FluxItem { name: "system.registry.store", thread: "system.registry.store", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [34, 11, 73, 218, 119, 198, 214, 107, 21, 161, 153, 77, 52, 126, 93, 8, 9, 87, 36, 241, 116, 109, 43, 244, 67, 178, 2, 133, 60, 83, 49, 34], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.registry.store"), record_type: Unbound, data: None }, correlation: None, meta: FluxMeta { creator: "transform.system.registry.result", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: system.registry.result.e20761f25148ca9b5937b427589c5acfafdc2ebe1119f044db035e9030aac660
+PatternDescriptor { key: None, thread: "system.registry.result", schema: Some("rhex://schema.system.registry.result"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing system.registry.result.e20761f25148ca9b5937b427589c5acfafdc2ebe1119f044db035e9030aac660
+Running effect validation on: system.registry
+PatternDescriptor { key: None, thread: "system.registry.result", schema: Some("rhex://schema.system.registry.result"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.system.registry\")", "PAYLOAD_TYPE"], scored 0/2
+PatternDescriptor { key: Some("system.registry"), thread: "system.registry", schema: Some("rhex://schema.system.registry"), payload_type: Binary, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 3/3
+Collapsing system.registry
+Running effect validation on: system.registry.store
+PatternDescriptor { key: None, thread: "system.registry.result", schema: Some("rhex://schema.system.registry.result"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.system.registry.store\")", "PAYLOAD_TYPE"], scored 0/2
+PatternDescriptor { key: Some("system.registry"), thread: "system.registry", schema: Some("rhex://schema.system.registry"), payload_type: Binary, required_fields: None, flags: ["now", "guaranteed", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.system.registry.store\")", "PAYLOAD_TYPE", "KEY", "SCHEMA:Bound(\"rhex://schema.system.registry.store\")", "PAYLOAD_TYPE"], scored 0/3
+PatternDescriptor { key: None, thread: "system.registry.store", schema: Some("rhex://schema.system.registry.store"), payload_type: None, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing system.registry.store
+Firing transform transform.lattice.scope.cache.lookup (2010)
+The scope string is: "test"
+transform.lattice.scope.cache.lookup flux outputted: [FluxItem { name: "\"test\"", thread: "lattice.scope.remote.request", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [86, 205, 193, 28, 7, 31, 239, 129, 150, 85, 48, 71, 162, 3, 15, 53, 55, 157, 49, 192, 18, 136, 89, 21, 9, 49, 32, 50, 223, 134, 12, 202], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.lattice.scope.remote.request"), record_type: Unbound, data: None }, correlation: None, meta: FluxMeta { creator: "transform.lattice.scope.cache.lookup", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: "test"
+PatternDescriptor { key: None, thread: "lattice.scope.lookup.results", schema: Some("rhex://schema.lattice.scope.lookup.result"), payload_type: Json, required_fields: None, flags: ["now", "optional", "inherit"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.lattice.scope.remote.request\")", "PAYLOAD_TYPE"], scored 0/2
+PatternDescriptor { key: None, thread: "lattice.scope.remote.request", schema: Some("rhex://schema.lattice.scope.remote.request"), payload_type: None, required_fields: None, flags: ["now", "optional", "inherit"] } succeeded, scored 2/2
+Collapsing "test"
+Firing transform transform.system.registry.store (11010)
+{"fuck.yo.chicken.strips": String("and yo momma"), "null": LogicalId([74, 52, 170, 3, 192, 73, 78, 239, 193, 185, 110, 58, 72, 172, 246, 49, 118, 81, 142, 82, 217, 27, 52, 254, 67, 247, 176, 54, 69, 14, 25, 220]), "bogus.entry.funtime": U64(12034412), "registry.logical_id": LogicalId([69, 6, 226, 232, 177, 193, 55, 250, 41, 219, 178, 115, 77, 15, 218, 97, 165, 138, 51, 162, 253, 151, 210, 139, 27, 2, 98, 105, 152, 125, 155, 255])}
+transform.system.registry.store flux outputted: [FluxItem { name: "data.put.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff", thread: "data.put", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [68, 196, 209, 185, 36, 151, 3, 173, 78, 168, 84, 141, 57, 56, 98, 118, 233, 1, 37, 103, 54, 169, 2, 44, 174, 127, 226, 93, 218, 154, 29, 46], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put"), record_type: Unbound, data: Mixed { meta: Object {"constraints": Array [String("local"), String("permanent")]}, data: [[69, 6, 226, 232, 177, 193, 55, 250, 41, 219, 178, 115, 77, 15, 218, 97, 165, 138, 51, 162, 253, 151, 210, 139, 27, 2, 98, 105, 152, 125, 155, 255], [164, 115, 114, 101, 103, 105, 115, 116, 114, 121, 46, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 69, 6, 24, 226, 24, 232, 24, 177, 24, 193, 24, 55, 24, 250, 24, 41, 24, 219, 24, 178, 24, 115, 24, 77, 15, 24, 218, 24, 97, 24, 165, 24, 138, 24, 51, 24, 162, 24, 253, 24, 151, 24, 210, 24, 139, 24, 27, 2, 24, 98, 24, 105, 24, 152, 24, 125, 24, 155, 24, 255, 118, 102, 117, 99, 107, 46, 121, 111, 46, 99, 104, 105, 99, 107, 101, 110, 46, 115, 116, 114, 105, 112, 115, 161, 102, 83, 116, 114, 105, 110, 103, 108, 97, 110, 100, 32, 121, 111, 32, 109, 111, 109, 109, 97, 115, 98, 111, 103, 117, 115, 46, 101, 110, 116, 114, 121, 46, 102, 117, 110, 116, 105, 109, 101, 161, 99, 85, 54, 52, 26, 0, 183, 161, 108, 100, 110, 117, 108, 108, 161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 74, 24, 52, 24, 170, 3, 24, 192, 24, 73, 24, 78, 24, 239, 24, 193, 24, 185, 24, 110, 24, 58, 24, 72, 24, 172, 24, 246, 24, 49, 24, 118, 24, 81, 24, 142, 24, 82, 24, 217, 24, 27, 24, 52, 24, 254, 24, 67, 24, 247, 24, 176, 24, 54, 24, 69, 14, 24, 25, 24, 220]] } }, correlation: None, meta: FluxMeta { creator: "transform.system.registry.store", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: data.put.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+PatternDescriptor { key: None, thread: "data.put", schema: Some("rhex://schema.data.put"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing data.put.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+Firing transform transform.data.put.disk.batch (1000)
+transform.data.put.disk.batch flux outputted: [FluxItem { name: "data.put.disk.batch.5af6995d5fbc08cbba34e568378c3eb05030d13b57f442ec3afa9f3a82e2ed64", thread: "data.put.disk.queue", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [210, 214, 104, 208, 166, 122, 236, 132, 44, 83, 194, 154, 245, 43, 238, 185, 109, 96, 111, 154, 152, 142, 89, 223, 195, 101, 58, 25, 222, 62, 65, 222], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.disk.batch"), record_type: Unbound, data: Binary { data: [129, 162, 106, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 152, 32, 24, 220, 24, 132, 24, 55, 24, 209, 24, 101, 24, 71, 24, 103, 24, 72, 24, 203, 24, 46, 24, 225, 24, 35, 24, 204, 24, 41, 24, 217, 24, 132, 24, 154, 24, 182, 24, 216, 21, 24, 60, 24, 66, 24, 100, 24, 223, 24, 48, 0, 24, 110, 24, 78, 24, 126, 24, 77, 24, 161, 24, 40, 100, 100, 97, 116, 97, 129, 24, 160] } }, correlation: None, meta: FluxMeta { creator: "transform.data.put.disk.batch", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: data.put.disk.batch.5af6995d5fbc08cbba34e568378c3eb05030d13b57f442ec3afa9f3a82e2ed64
+PatternDescriptor { key: None, thread: "data.put.disk.queue", schema: Some("rhex://schema.data.put.disk.batch"), payload_type: Binary, required_fields: None, flags: ["produces", "now"] } succeeded, scored 2/2
+Collapsing data.put.disk.batch.5af6995d5fbc08cbba34e568378c3eb05030d13b57f442ec3afa9f3a82e2ed64
+Dropped flux: []
+End of kernel spin. Firing HPCs...
+Returned: []
+Flux hash at end: [210, 26, 109, 121, 51, 229, 167, 164, 43, 57, 234, 177, 125, 61, 139, 74, 177, 245, 212, 101, 43, 90, 32, 88, 119, 39, 33, 215, 148, 67, 37, 26]
+---------------------------------------
+Start of kernel spin...
+Flux hash at start: [210, 26, 109, 121, 51, 229, 167, 164, 43, 57, 234, 177, 125, 61, 139, 74, 177, 245, 212, 101, 43, 90, 32, 88, 119, 39, 33, 215, 148, 67, 37, 26]
+Flux Pond
+├─ thread: data.put
+│  └─ schema: rhex://schema.data.put
+│     └─ data.put.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: data.put.disk
+│  └─ schema: rhex://schema.data.put.disk
+├─ thread: data.put.disk.queue
+│  └─ schema: rhex://schema.data.put.disk.batch
+│     └─ data.put.disk.batch.5af6995d5fbc08cbba34e568378c3eb05030d13b57f442ec3afa9f3a82e2ed64  (no corr)
+├─ thread: lattice.scope.cache.install
+│  └─ schema: rhex://schema.lattice.scope.cache.install
+├─ thread: lattice.scope.cache.requests
+│  └─ schema: rhex://schema.lattice.scope.cache.request
+├─ thread: lattice.scope.cache.table
+│  └─ schema: rhex://schema.lattice.scope.cache.table
+│     └─ lattice.scope.cache.table  (no corr)
+├─ thread: lattice.scope.remote.request
+│  └─ schema: rhex://schema.lattice.scope.remote.request
+│     └─ "test"  (no corr)
+├─ thread: rhex.author.request
+│  └─ schema: rhex://schema.rhex.author.request
+│     └─ rhex.author.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.author.waiting
+│  └─ schema: rhex://schema.rhex.author.waiting
+│     └─ rhex.author.waiting.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.build
+│  └─ schema: rhex://schema.rhex.build
+├─ thread: rhex.intent
+│  └─ schema: rhex://schema.rhex.intent
+├─ thread: system.registry
+│  └─ schema: rhex://schema.system.registry
+│     └─ system.registry  (no corr)
+├─ thread: system.registry.actions
+│  └─ schema: rhex://schema.system.registry.action
+├─ thread: system.registry.add
+│  └─ schema: rhex://schema.system.registry.add
+├─ thread: system.registry.results
+│  └─ schema: rhex://schema.system.registry.result
+│     └─ system.registry.result.e548b460a76caef4c96dd9c94143cbee88fc32bf22cac4bd32dec9d4b37941fe  (no corr)
+│     └─ system.registry.result.e20761f25148ca9b5937b427589c5acfafdc2ebe1119f044db035e9030aac660  (no corr)
+└─ thread: system.registry.store
+   └─ schema: rhex://schema.system.registry.store
+      └─ system.registry.store  (no corr)
+
+Firing transform transform.data.put (1000)
+Logical ID: [69, 6, 226, 232, 177, 193, 55, 250, 41, 219, 178, 115, 77, 15, 218, 97, 165, 138, 51, 162, 253, 151, 210, 139, 27, 2, 98, 105, 152, 125, 155, 255]
+transform.data.put flux outputted: [FluxItem { name: "data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff", thread: "data.put.disk", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [208, 16, 59, 244, 108, 204, 168, 128, 82, 62, 148, 43, 153, 171, 167, 15, 22, 100, 222, 53, 6, 137, 203, 164, 54, 21, 110, 37, 123, 175, 51, 198], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.disk"), record_type: Unbound, data: Binary { data: [162, 106, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 152, 32, 24, 69, 6, 24, 226, 24, 232, 24, 177, 24, 193, 24, 55, 24, 250, 24, 41, 24, 219, 24, 178, 24, 115, 24, 77, 15, 24, 218, 24, 97, 24, 165, 24, 138, 24, 51, 24, 162, 24, 253, 24, 151, 24, 210, 24, 139, 24, 27, 2, 24, 98, 24, 105, 24, 152, 24, 125, 24, 155, 24, 255, 100, 100, 97, 116, 97, 152, 249, 24, 164, 24, 115, 24, 114, 24, 101, 24, 103, 24, 105, 24, 115, 24, 116, 24, 114, 24, 121, 24, 46, 24, 108, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 95, 24, 105, 24, 100, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 69, 6, 24, 24, 24, 226, 24, 24, 24, 232, 24, 24, 24, 177, 24, 24, 24, 193, 24, 24, 24, 55, 24, 24, 24, 250, 24, 24, 24, 41, 24, 24, 24, 219, 24, 24, 24, 178, 24, 24, 24, 115, 24, 24, 24, 77, 15, 24, 24, 24, 218, 24, 24, 24, 97, 24, 24, 24, 165, 24, 24, 24, 138, 24, 24, 24, 51, 24, 24, 24, 162, 24, 24, 24, 253, 24, 24, 24, 151, 24, 24, 24, 210, 24, 24, 24, 139, 24, 24, 24, 27, 2, 24, 24, 24, 98, 24, 24, 24, 105, 24, 24, 24, 152, 24, 24, 24, 125, 24, 24, 24, 155, 24, 24, 24, 255, 24, 118, 24, 102, 24, 117, 24, 99, 24, 107, 24, 46, 24, 121, 24, 111, 24, 46, 24, 99, 24, 104, 24, 105, 24, 99, 24, 107, 24, 101, 24, 110, 24, 46, 24, 115, 24, 116, 24, 114, 24, 105, 24, 112, 24, 115, 24, 161, 24, 102, 24, 83, 24, 116, 24, 114, 24, 105, 24, 110, 24, 103, 24, 108, 24, 97, 24, 110, 24, 100, 24, 32, 24, 121, 24, 111, 24, 32, 24, 109, 24, 111, 24, 109, 24, 109, 24, 97, 24, 115, 24, 98, 24, 111, 24, 103, 24, 117, 24, 115, 24, 46, 24, 101, 24, 110, 24, 116, 24, 114, 24, 121, 24, 46, 24, 102, 24, 117, 24, 110, 24, 116, 24, 105, 24, 109, 24, 101, 24, 161, 24, 99, 24, 85, 24, 54, 24, 52, 24, 26, 0, 24, 183, 24, 161, 24, 108, 24, 100, 24, 110, 24, 117, 24, 108, 24, 108, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 74, 24, 24, 24, 52, 24, 24, 24, 170, 3, 24, 24, 24, 192, 24, 24, 24, 73, 24, 24, 24, 78, 24, 24, 24, 239, 24, 24, 24, 193, 24, 24, 24, 185, 24, 24, 24, 110, 24, 24, 24, 58, 24, 24, 24, 72, 24, 24, 24, 172, 24, 24, 24, 246, 24, 24, 24, 49, 24, 24, 24, 118, 24, 24, 24, 81, 24, 24, 24, 142, 24, 24, 24, 82, 24, 24, 24, 217, 24, 24, 24, 27, 24, 24, 24, 52, 24, 24, 24, 254, 24, 24, 24, 67, 24, 24, 24, 247, 24, 24, 24, 176, 24, 24, 24, 54, 24, 24, 24, 69, 14, 24, 24, 24, 25, 24, 24, 24, 220] } }, correlation: None, meta: FluxMeta { creator: "transform.data.put", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+PatternDescriptor { key: None, thread: "data.put.disk", schema: Some("rhex://schema.data.put.disk"), payload_type: Binary, required_fields: None, flags: ["optional", "now"] } succeeded, scored 2/2
+Collapsing data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+Firing transform transform.data.put.disk.fire (10000)
+Binary { data: [129, 162, 106, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 152, 32, 24, 220, 24, 132, 24, 55, 24, 209, 24, 101, 24, 71, 24, 103, 24, 72, 24, 203, 24, 46, 24, 225, 24, 35, 24, 204, 24, 41, 24, 217, 24, 132, 24, 154, 24, 182, 24, 216, 21, 24, 60, 24, 66, 24, 100, 24, 223, 24, 48, 0, 24, 110, 24, 78, 24, 126, 24, 77, 24, 161, 24, 40, 100, 100, 97, 116, 97, 129, 24, 160] }
+transform.data.put.disk.fire flux outputted: [FluxItem { name: "data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128", thread: "data.put", availability: Soon, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [76, 51, 233, 227, 188, 252, 148, 107, 234, 8, 84, 23, 19, 208, 206, 22, 116, 221, 131, 176, 151, 78, 39, 226, 180, 180, 22, 3, 109, 189, 100, 31], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.history"), record_type: Unbound, data: Json(Object {"action": String("store"), "logical_id": String("dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128"), "status": String("pending")}) }, correlation: None, meta: FluxMeta { creator: "transform.data.put.disk.fire", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128
+PatternDescriptor { key: None, thread: "data.put.status", schema: Some("rhex://schema.data.put.status"), payload_type: Any, required_fields: None, flags: ["soon", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.data.put.history\")"], scored 1/2
+PatternDescriptor { key: None, thread: "data.put.history", schema: Some("rhex://schema.data.put.history"), payload_type: Any, required_fields: None, flags: ["soon", "produced"] } succeeded, scored 2/2
+Collapsing data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128
+Firing transform transform.system.registry.store (11010)
+{"fuck.yo.chicken.strips": String("and yo momma"), "bogus.entry.funtime": U64(12034412), "null": LogicalId([220, 132, 55, 209, 101, 71, 103, 72, 203, 46, 225, 35, 204, 41, 217, 132, 154, 182, 216, 21, 60, 66, 100, 223, 48, 0, 110, 78, 126, 77, 161, 40]), "registry.logical_id": LogicalId([69, 6, 226, 232, 177, 193, 55, 250, 41, 219, 178, 115, 77, 15, 218, 97, 165, 138, 51, 162, 253, 151, 210, 139, 27, 2, 98, 105, 152, 125, 155, 255])}
+transform.system.registry.store flux outputted: [FluxItem { name: "data.put.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff", thread: "data.put", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [137, 217, 88, 117, 211, 236, 169, 25, 233, 16, 227, 27, 239, 66, 147, 146, 54, 139, 204, 129, 131, 135, 13, 188, 203, 223, 57, 84, 217, 209, 59, 225], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put"), record_type: Unbound, data: Mixed { meta: Object {"constraints": Array [String("local"), String("permanent")]}, data: [[69, 6, 226, 232, 177, 193, 55, 250, 41, 219, 178, 115, 77, 15, 218, 97, 165, 138, 51, 162, 253, 151, 210, 139, 27, 2, 98, 105, 152, 125, 155, 255], [164, 100, 110, 117, 108, 108, 161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 220, 24, 132, 24, 55, 24, 209, 24, 101, 24, 71, 24, 103, 24, 72, 24, 203, 24, 46, 24, 225, 24, 35, 24, 204, 24, 41, 24, 217, 24, 132, 24, 154, 24, 182, 24, 216, 21, 24, 60, 24, 66, 24, 100, 24, 223, 24, 48, 0, 24, 110, 24, 78, 24, 126, 24, 77, 24, 161, 24, 40, 115, 114, 101, 103, 105, 115, 116, 114, 121, 46, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 161, 105, 76, 111, 103, 105, 99, 97, 108, 73, 100, 152, 32, 24, 69, 6, 24, 226, 24, 232, 24, 177, 24, 193, 24, 55, 24, 250, 24, 41, 24, 219, 24, 178, 24, 115, 24, 77, 15, 24, 218, 24, 97, 24, 165, 24, 138, 24, 51, 24, 162, 24, 253, 24, 151, 24, 210, 24, 139, 24, 27, 2, 24, 98, 24, 105, 24, 152, 24, 125, 24, 155, 24, 255, 118, 102, 117, 99, 107, 46, 121, 111, 46, 99, 104, 105, 99, 107, 101, 110, 46, 115, 116, 114, 105, 112, 115, 161, 102, 83, 116, 114, 105, 110, 103, 108, 97, 110, 100, 32, 121, 111, 32, 109, 111, 109, 109, 97, 115, 98, 111, 103, 117, 115, 46, 101, 110, 116, 114, 121, 46, 102, 117, 110, 116, 105, 109, 101, 161, 99, 85, 54, 52, 26, 0, 183, 161, 108]] } }, correlation: None, meta: FluxMeta { creator: "transform.system.registry.store", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: data.put.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+PatternDescriptor { key: None, thread: "data.put", schema: Some("rhex://schema.data.put"), payload_type: Mixed, required_fields: None, flags: ["now", "guaranteed", "produced"] } succeeded, scored 2/2
+Collapsing data.put.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+Dropped flux: []
+End of kernel spin. Firing HPCs...
+Calling HPC capability: data.put.disk
+What we got: None
+Returned: [FluxItem { name: "data.put.history.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128", thread: "data.put.history", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [104, 233, 227, 181, 97, 163, 224, 148, 200, 4, 23, 216, 195, 42, 56, 50, 61, 179, 227, 224, 159, 197, 244, 173, 41, 19, 79, 128, 169, 218, 220, 54], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.history"), record_type: Unbound, data: Json(Object {"action": String("store"), "logical_id": String("dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128"), "status": String("complete")}) }, correlation: None, meta: FluxMeta { creator: "system.membrane", timestamp: 0 } }, FluxItem { name: "system.membrane.action.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128", thread: "system.membrane", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [72, 107, 151, 182, 89, 255, 18, 9, 12, 45, 108, 40, 189, 190, 231, 56, 239, 92, 236, 108, 120, 141, 98, 180, 95, 217, 80, 78, 26, 93, 222, 251], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.membrane.action"), record_type: Unbound, data: None }, correlation: None, meta: FluxMeta { creator: "system.membrane", timestamp: 0 } }]
+Flux hash at end: [168, 143, 214, 149, 247, 174, 214, 194, 53, 138, 233, 64, 138, 74, 100, 67, 20, 238, 159, 37, 254, 161, 145, 231, 154, 190, 40, 132, 204, 35, 19, 25]
+---------------------------------------
+Start of kernel spin...
+Flux hash at start: [168, 143, 214, 149, 247, 174, 214, 194, 53, 138, 233, 64, 138, 74, 100, 67, 20, 238, 159, 37, 254, 161, 145, 231, 154, 190, 40, 132, 204, 35, 19, 25]
+Flux Pond
+├─ thread: data.put
+│  ├─ schema: rhex://schema.data.put
+│     ├─ data.put.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+│  └─ schema: rhex://schema.data.put.history
+│     └─ data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+├─ thread: data.put.disk
+│  └─ schema: rhex://schema.data.put.disk
+│     └─ data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: data.put.disk.queue
+│  └─ schema: rhex://schema.data.put.disk.batch
+├─ thread: data.put.history
+│  └─ schema: rhex://schema.data.put.history
+│     └─ data.put.history.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+├─ thread: lattice.scope.cache.install
+│  └─ schema: rhex://schema.lattice.scope.cache.install
+├─ thread: lattice.scope.cache.requests
+│  └─ schema: rhex://schema.lattice.scope.cache.request
+├─ thread: lattice.scope.cache.table
+│  └─ schema: rhex://schema.lattice.scope.cache.table
+│     └─ lattice.scope.cache.table  (no corr)
+├─ thread: lattice.scope.remote.request
+│  └─ schema: rhex://schema.lattice.scope.remote.request
+│     └─ "test"  (no corr)
+├─ thread: rhex.author.request
+│  └─ schema: rhex://schema.rhex.author.request
+│     └─ rhex.author.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.author.waiting
+│  └─ schema: rhex://schema.rhex.author.waiting
+│     └─ rhex.author.waiting.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.build
+│  └─ schema: rhex://schema.rhex.build
+├─ thread: rhex.intent
+│  └─ schema: rhex://schema.rhex.intent
+├─ thread: system.membrane
+│  └─ schema: rhex://schema.system.membrane.action
+│     └─ system.membrane.action.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+├─ thread: system.registry
+│  └─ schema: rhex://schema.system.registry
+│     └─ system.registry  (no corr)
+├─ thread: system.registry.actions
+│  └─ schema: rhex://schema.system.registry.action
+├─ thread: system.registry.add
+│  └─ schema: rhex://schema.system.registry.add
+├─ thread: system.registry.results
+│  └─ schema: rhex://schema.system.registry.result
+│     └─ system.registry.result.e548b460a76caef4c96dd9c94143cbee88fc32bf22cac4bd32dec9d4b37941fe  (no corr)
+│     └─ system.registry.result.e20761f25148ca9b5937b427589c5acfafdc2ebe1119f044db035e9030aac660  (no corr)
+└─ thread: system.registry.store
+   └─ schema: rhex://schema.system.registry.store
+
+Firing transform transform.data.put.disk.batch (1000)
+transform.data.put.disk.batch flux outputted: [FluxItem { name: "data.put.disk.batch.45a460b0cb4e897002980911e4c8f8ab222bde4f3704e784aa8765adafa26978", thread: "data.put.disk.queue", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [45, 42, 125, 244, 84, 49, 81, 244, 192, 49, 63, 111, 113, 195, 200, 251, 4, 9, 94, 91, 143, 249, 169, 149, 130, 78, 99, 110, 93, 159, 192, 148], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.disk.batch"), record_type: Unbound, data: Binary { data: [129, 162, 106, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 152, 32, 24, 69, 6, 24, 226, 24, 232, 24, 177, 24, 193, 24, 55, 24, 250, 24, 41, 24, 219, 24, 178, 24, 115, 24, 77, 15, 24, 218, 24, 97, 24, 165, 24, 138, 24, 51, 24, 162, 24, 253, 24, 151, 24, 210, 24, 139, 24, 27, 2, 24, 98, 24, 105, 24, 152, 24, 125, 24, 155, 24, 255, 100, 100, 97, 116, 97, 152, 249, 24, 164, 24, 115, 24, 114, 24, 101, 24, 103, 24, 105, 24, 115, 24, 116, 24, 114, 24, 121, 24, 46, 24, 108, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 95, 24, 105, 24, 100, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 69, 6, 24, 24, 24, 226, 24, 24, 24, 232, 24, 24, 24, 177, 24, 24, 24, 193, 24, 24, 24, 55, 24, 24, 24, 250, 24, 24, 24, 41, 24, 24, 24, 219, 24, 24, 24, 178, 24, 24, 24, 115, 24, 24, 24, 77, 15, 24, 24, 24, 218, 24, 24, 24, 97, 24, 24, 24, 165, 24, 24, 24, 138, 24, 24, 24, 51, 24, 24, 24, 162, 24, 24, 24, 253, 24, 24, 24, 151, 24, 24, 24, 210, 24, 24, 24, 139, 24, 24, 24, 27, 2, 24, 24, 24, 98, 24, 24, 24, 105, 24, 24, 24, 152, 24, 24, 24, 125, 24, 24, 24, 155, 24, 24, 24, 255, 24, 118, 24, 102, 24, 117, 24, 99, 24, 107, 24, 46, 24, 121, 24, 111, 24, 46, 24, 99, 24, 104, 24, 105, 24, 99, 24, 107, 24, 101, 24, 110, 24, 46, 24, 115, 24, 116, 24, 114, 24, 105, 24, 112, 24, 115, 24, 161, 24, 102, 24, 83, 24, 116, 24, 114, 24, 105, 24, 110, 24, 103, 24, 108, 24, 97, 24, 110, 24, 100, 24, 32, 24, 121, 24, 111, 24, 32, 24, 109, 24, 111, 24, 109, 24, 109, 24, 97, 24, 115, 24, 98, 24, 111, 24, 103, 24, 117, 24, 115, 24, 46, 24, 101, 24, 110, 24, 116, 24, 114, 24, 121, 24, 46, 24, 102, 24, 117, 24, 110, 24, 116, 24, 105, 24, 109, 24, 101, 24, 161, 24, 99, 24, 85, 24, 54, 24, 52, 24, 26, 0, 24, 183, 24, 161, 24, 108, 24, 100, 24, 110, 24, 117, 24, 108, 24, 108, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 74, 24, 24, 24, 52, 24, 24, 24, 170, 3, 24, 24, 24, 192, 24, 24, 24, 73, 24, 24, 24, 78, 24, 24, 24, 239, 24, 24, 24, 193, 24, 24, 24, 185, 24, 24, 24, 110, 24, 24, 24, 58, 24, 24, 24, 72, 24, 24, 24, 172, 24, 24, 24, 246, 24, 24, 24, 49, 24, 24, 24, 118, 24, 24, 24, 81, 24, 24, 24, 142, 24, 24, 24, 82, 24, 24, 24, 217, 24, 24, 24, 27, 24, 24, 24, 52, 24, 24, 24, 254, 24, 24, 24, 67, 24, 24, 24, 247, 24, 24, 24, 176, 24, 24, 24, 54, 24, 24, 24, 69, 14, 24, 24, 24, 25, 24, 24, 24, 220] } }, correlation: None, meta: FluxMeta { creator: "transform.data.put.disk.batch", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: data.put.disk.batch.45a460b0cb4e897002980911e4c8f8ab222bde4f3704e784aa8765adafa26978
+PatternDescriptor { key: None, thread: "data.put.disk.queue", schema: Some("rhex://schema.data.put.disk.batch"), payload_type: Binary, required_fields: None, flags: ["produces", "now"] } succeeded, scored 2/2
+Collapsing data.put.disk.batch.45a460b0cb4e897002980911e4c8f8ab222bde4f3704e784aa8765adafa26978
+Firing transform transform.data.put (1000)
+Logical ID: [69, 6, 226, 232, 177, 193, 55, 250, 41, 219, 178, 115, 77, 15, 218, 97, 165, 138, 51, 162, 253, 151, 210, 139, 27, 2, 98, 105, 152, 125, 155, 255]
+transform.data.put flux outputted: [FluxItem { name: "data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff", thread: "data.put.disk", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [27, 30, 217, 198, 255, 52, 192, 249, 17, 198, 90, 155, 103, 8, 17, 170, 155, 249, 124, 163, 139, 178, 83, 127, 70, 217, 155, 220, 177, 129, 115, 190], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.disk"), record_type: Unbound, data: Binary { data: [162, 106, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 152, 32, 24, 69, 6, 24, 226, 24, 232, 24, 177, 24, 193, 24, 55, 24, 250, 24, 41, 24, 219, 24, 178, 24, 115, 24, 77, 15, 24, 218, 24, 97, 24, 165, 24, 138, 24, 51, 24, 162, 24, 253, 24, 151, 24, 210, 24, 139, 24, 27, 2, 24, 98, 24, 105, 24, 152, 24, 125, 24, 155, 24, 255, 100, 100, 97, 116, 97, 152, 249, 24, 164, 24, 100, 24, 110, 24, 117, 24, 108, 24, 108, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 220, 24, 24, 24, 132, 24, 24, 24, 55, 24, 24, 24, 209, 24, 24, 24, 101, 24, 24, 24, 71, 24, 24, 24, 103, 24, 24, 24, 72, 24, 24, 24, 203, 24, 24, 24, 46, 24, 24, 24, 225, 24, 24, 24, 35, 24, 24, 24, 204, 24, 24, 24, 41, 24, 24, 24, 217, 24, 24, 24, 132, 24, 24, 24, 154, 24, 24, 24, 182, 24, 24, 24, 216, 21, 24, 24, 24, 60, 24, 24, 24, 66, 24, 24, 24, 100, 24, 24, 24, 223, 24, 24, 24, 48, 0, 24, 24, 24, 110, 24, 24, 24, 78, 24, 24, 24, 126, 24, 24, 24, 77, 24, 24, 24, 161, 24, 24, 24, 40, 24, 115, 24, 114, 24, 101, 24, 103, 24, 105, 24, 115, 24, 116, 24, 114, 24, 121, 24, 46, 24, 108, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 95, 24, 105, 24, 100, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 69, 6, 24, 24, 24, 226, 24, 24, 24, 232, 24, 24, 24, 177, 24, 24, 24, 193, 24, 24, 24, 55, 24, 24, 24, 250, 24, 24, 24, 41, 24, 24, 24, 219, 24, 24, 24, 178, 24, 24, 24, 115, 24, 24, 24, 77, 15, 24, 24, 24, 218, 24, 24, 24, 97, 24, 24, 24, 165, 24, 24, 24, 138, 24, 24, 24, 51, 24, 24, 24, 162, 24, 24, 24, 253, 24, 24, 24, 151, 24, 24, 24, 210, 24, 24, 24, 139, 24, 24, 24, 27, 2, 24, 24, 24, 98, 24, 24, 24, 105, 24, 24, 24, 152, 24, 24, 24, 125, 24, 24, 24, 155, 24, 24, 24, 255, 24, 118, 24, 102, 24, 117, 24, 99, 24, 107, 24, 46, 24, 121, 24, 111, 24, 46, 24, 99, 24, 104, 24, 105, 24, 99, 24, 107, 24, 101, 24, 110, 24, 46, 24, 115, 24, 116, 24, 114, 24, 105, 24, 112, 24, 115, 24, 161, 24, 102, 24, 83, 24, 116, 24, 114, 24, 105, 24, 110, 24, 103, 24, 108, 24, 97, 24, 110, 24, 100, 24, 32, 24, 121, 24, 111, 24, 32, 24, 109, 24, 111, 24, 109, 24, 109, 24, 97, 24, 115, 24, 98, 24, 111, 24, 103, 24, 117, 24, 115, 24, 46, 24, 101, 24, 110, 24, 116, 24, 114, 24, 121, 24, 46, 24, 102, 24, 117, 24, 110, 24, 116, 24, 105, 24, 109, 24, 101, 24, 161, 24, 99, 24, 85, 24, 54, 24, 52, 24, 26, 0, 24, 183, 24, 161, 24, 108] } }, correlation: None, meta: FluxMeta { creator: "transform.data.put", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+PatternDescriptor { key: None, thread: "data.put.disk", schema: Some("rhex://schema.data.put.disk"), payload_type: Binary, required_fields: None, flags: ["optional", "now"] } succeeded, scored 2/2
+Collapsing data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+Dropped flux: []
+End of kernel spin. Firing HPCs...
+Returned: []
+Flux hash at end: [250, 84, 249, 21, 183, 117, 176, 219, 59, 126, 175, 53, 249, 63, 0, 216, 128, 171, 5, 62, 70, 168, 58, 218, 224, 173, 68, 234, 67, 124, 248, 199]
+---------------------------------------
+Start of kernel spin...
+Flux hash at start: [250, 84, 249, 21, 183, 117, 176, 219, 59, 126, 175, 53, 249, 63, 0, 216, 128, 171, 5, 62, 70, 168, 58, 218, 224, 173, 68, 234, 67, 124, 248, 199]
+Flux Pond
+├─ thread: data.put
+│  ├─ schema: rhex://schema.data.put
+│  └─ schema: rhex://schema.data.put.history
+│     └─ data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+├─ thread: data.put.disk
+│  └─ schema: rhex://schema.data.put.disk
+│     └─ data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: data.put.disk.queue
+│  └─ schema: rhex://schema.data.put.disk.batch
+│     └─ data.put.disk.batch.45a460b0cb4e897002980911e4c8f8ab222bde4f3704e784aa8765adafa26978  (no corr)
+├─ thread: data.put.history
+│  └─ schema: rhex://schema.data.put.history
+│     └─ data.put.history.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+├─ thread: lattice.scope.cache.install
+│  └─ schema: rhex://schema.lattice.scope.cache.install
+├─ thread: lattice.scope.cache.requests
+│  └─ schema: rhex://schema.lattice.scope.cache.request
+├─ thread: lattice.scope.cache.table
+│  └─ schema: rhex://schema.lattice.scope.cache.table
+│     └─ lattice.scope.cache.table  (no corr)
+├─ thread: lattice.scope.remote.request
+│  └─ schema: rhex://schema.lattice.scope.remote.request
+│     └─ "test"  (no corr)
+├─ thread: rhex.author.request
+│  └─ schema: rhex://schema.rhex.author.request
+│     └─ rhex.author.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.author.waiting
+│  └─ schema: rhex://schema.rhex.author.waiting
+│     └─ rhex.author.waiting.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.build
+│  └─ schema: rhex://schema.rhex.build
+├─ thread: rhex.intent
+│  └─ schema: rhex://schema.rhex.intent
+├─ thread: system.membrane
+│  └─ schema: rhex://schema.system.membrane.action
+│     └─ system.membrane.action.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+├─ thread: system.registry
+│  └─ schema: rhex://schema.system.registry
+│     └─ system.registry  (no corr)
+├─ thread: system.registry.actions
+│  └─ schema: rhex://schema.system.registry.action
+├─ thread: system.registry.add
+│  └─ schema: rhex://schema.system.registry.add
+├─ thread: system.registry.results
+│  └─ schema: rhex://schema.system.registry.result
+│     └─ system.registry.result.e548b460a76caef4c96dd9c94143cbee88fc32bf22cac4bd32dec9d4b37941fe  (no corr)
+│     └─ system.registry.result.e20761f25148ca9b5937b427589c5acfafdc2ebe1119f044db035e9030aac660  (no corr)
+└─ thread: system.registry.store
+   └─ schema: rhex://schema.system.registry.store
+
+Firing transform transform.data.put.disk.fire (10000)
+Binary { data: [129, 162, 106, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 152, 32, 24, 69, 6, 24, 226, 24, 232, 24, 177, 24, 193, 24, 55, 24, 250, 24, 41, 24, 219, 24, 178, 24, 115, 24, 77, 15, 24, 218, 24, 97, 24, 165, 24, 138, 24, 51, 24, 162, 24, 253, 24, 151, 24, 210, 24, 139, 24, 27, 2, 24, 98, 24, 105, 24, 152, 24, 125, 24, 155, 24, 255, 100, 100, 97, 116, 97, 152, 249, 24, 164, 24, 115, 24, 114, 24, 101, 24, 103, 24, 105, 24, 115, 24, 116, 24, 114, 24, 121, 24, 46, 24, 108, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 95, 24, 105, 24, 100, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 69, 6, 24, 24, 24, 226, 24, 24, 24, 232, 24, 24, 24, 177, 24, 24, 24, 193, 24, 24, 24, 55, 24, 24, 24, 250, 24, 24, 24, 41, 24, 24, 24, 219, 24, 24, 24, 178, 24, 24, 24, 115, 24, 24, 24, 77, 15, 24, 24, 24, 218, 24, 24, 24, 97, 24, 24, 24, 165, 24, 24, 24, 138, 24, 24, 24, 51, 24, 24, 24, 162, 24, 24, 24, 253, 24, 24, 24, 151, 24, 24, 24, 210, 24, 24, 24, 139, 24, 24, 24, 27, 2, 24, 24, 24, 98, 24, 24, 24, 105, 24, 24, 24, 152, 24, 24, 24, 125, 24, 24, 24, 155, 24, 24, 24, 255, 24, 118, 24, 102, 24, 117, 24, 99, 24, 107, 24, 46, 24, 121, 24, 111, 24, 46, 24, 99, 24, 104, 24, 105, 24, 99, 24, 107, 24, 101, 24, 110, 24, 46, 24, 115, 24, 116, 24, 114, 24, 105, 24, 112, 24, 115, 24, 161, 24, 102, 24, 83, 24, 116, 24, 114, 24, 105, 24, 110, 24, 103, 24, 108, 24, 97, 24, 110, 24, 100, 24, 32, 24, 121, 24, 111, 24, 32, 24, 109, 24, 111, 24, 109, 24, 109, 24, 97, 24, 115, 24, 98, 24, 111, 24, 103, 24, 117, 24, 115, 24, 46, 24, 101, 24, 110, 24, 116, 24, 114, 24, 121, 24, 46, 24, 102, 24, 117, 24, 110, 24, 116, 24, 105, 24, 109, 24, 101, 24, 161, 24, 99, 24, 85, 24, 54, 24, 52, 24, 26, 0, 24, 183, 24, 161, 24, 108, 24, 100, 24, 110, 24, 117, 24, 108, 24, 108, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 74, 24, 24, 24, 52, 24, 24, 24, 170, 3, 24, 24, 24, 192, 24, 24, 24, 73, 24, 24, 24, 78, 24, 24, 24, 239, 24, 24, 24, 193, 24, 24, 24, 185, 24, 24, 24, 110, 24, 24, 24, 58, 24, 24, 24, 72, 24, 24, 24, 172, 24, 24, 24, 246, 24, 24, 24, 49, 24, 24, 24, 118, 24, 24, 24, 81, 24, 24, 24, 142, 24, 24, 24, 82, 24, 24, 24, 217, 24, 24, 24, 27, 24, 24, 24, 52, 24, 24, 24, 254, 24, 24, 24, 67, 24, 24, 24, 247, 24, 24, 24, 176, 24, 24, 24, 54, 24, 24, 24, 69, 14, 24, 24, 24, 25, 24, 24, 24, 220] }
+transform.data.put.disk.fire flux outputted: [FluxItem { name: "data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff", thread: "data.put", availability: Soon, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [203, 181, 189, 33, 169, 101, 159, 136, 6, 201, 46, 193, 74, 152, 80, 3, 75, 139, 236, 130, 27, 202, 151, 124, 16, 142, 44, 24, 197, 117, 146, 144], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.history"), record_type: Unbound, data: Json(Object {"action": String("store"), "logical_id": String("4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff"), "status": String("pending")}) }, correlation: None, meta: FluxMeta { creator: "transform.data.put.disk.fire", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+PatternDescriptor { key: None, thread: "data.put.status", schema: Some("rhex://schema.data.put.status"), payload_type: Any, required_fields: None, flags: ["soon", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.data.put.history\")"], scored 1/2
+PatternDescriptor { key: None, thread: "data.put.history", schema: Some("rhex://schema.data.put.history"), payload_type: Any, required_fields: None, flags: ["soon", "produced"] } succeeded, scored 2/2
+Collapsing data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+Firing transform transform.data.put.disk.batch (1000)
+transform.data.put.disk.batch flux outputted: [FluxItem { name: "data.put.disk.batch.f4b73ac02ba5359fc04b61efa179ebf5f59c995d10939841ce6b94f5851ab1cb", thread: "data.put.disk.queue", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [42, 253, 10, 85, 87, 181, 105, 249, 132, 90, 204, 33, 91, 128, 129, 47, 7, 171, 67, 7, 47, 128, 21, 155, 40, 42, 153, 130, 115, 217, 128, 39], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.disk.batch"), record_type: Unbound, data: Binary { data: [129, 162, 106, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 152, 32, 24, 69, 6, 24, 226, 24, 232, 24, 177, 24, 193, 24, 55, 24, 250, 24, 41, 24, 219, 24, 178, 24, 115, 24, 77, 15, 24, 218, 24, 97, 24, 165, 24, 138, 24, 51, 24, 162, 24, 253, 24, 151, 24, 210, 24, 139, 24, 27, 2, 24, 98, 24, 105, 24, 152, 24, 125, 24, 155, 24, 255, 100, 100, 97, 116, 97, 152, 249, 24, 164, 24, 100, 24, 110, 24, 117, 24, 108, 24, 108, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 220, 24, 24, 24, 132, 24, 24, 24, 55, 24, 24, 24, 209, 24, 24, 24, 101, 24, 24, 24, 71, 24, 24, 24, 103, 24, 24, 24, 72, 24, 24, 24, 203, 24, 24, 24, 46, 24, 24, 24, 225, 24, 24, 24, 35, 24, 24, 24, 204, 24, 24, 24, 41, 24, 24, 24, 217, 24, 24, 24, 132, 24, 24, 24, 154, 24, 24, 24, 182, 24, 24, 24, 216, 21, 24, 24, 24, 60, 24, 24, 24, 66, 24, 24, 24, 100, 24, 24, 24, 223, 24, 24, 24, 48, 0, 24, 24, 24, 110, 24, 24, 24, 78, 24, 24, 24, 126, 24, 24, 24, 77, 24, 24, 24, 161, 24, 24, 24, 40, 24, 115, 24, 114, 24, 101, 24, 103, 24, 105, 24, 115, 24, 116, 24, 114, 24, 121, 24, 46, 24, 108, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 95, 24, 105, 24, 100, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 69, 6, 24, 24, 24, 226, 24, 24, 24, 232, 24, 24, 24, 177, 24, 24, 24, 193, 24, 24, 24, 55, 24, 24, 24, 250, 24, 24, 24, 41, 24, 24, 24, 219, 24, 24, 24, 178, 24, 24, 24, 115, 24, 24, 24, 77, 15, 24, 24, 24, 218, 24, 24, 24, 97, 24, 24, 24, 165, 24, 24, 24, 138, 24, 24, 24, 51, 24, 24, 24, 162, 24, 24, 24, 253, 24, 24, 24, 151, 24, 24, 24, 210, 24, 24, 24, 139, 24, 24, 24, 27, 2, 24, 24, 24, 98, 24, 24, 24, 105, 24, 24, 24, 152, 24, 24, 24, 125, 24, 24, 24, 155, 24, 24, 24, 255, 24, 118, 24, 102, 24, 117, 24, 99, 24, 107, 24, 46, 24, 121, 24, 111, 24, 46, 24, 99, 24, 104, 24, 105, 24, 99, 24, 107, 24, 101, 24, 110, 24, 46, 24, 115, 24, 116, 24, 114, 24, 105, 24, 112, 24, 115, 24, 161, 24, 102, 24, 83, 24, 116, 24, 114, 24, 105, 24, 110, 24, 103, 24, 108, 24, 97, 24, 110, 24, 100, 24, 32, 24, 121, 24, 111, 24, 32, 24, 109, 24, 111, 24, 109, 24, 109, 24, 97, 24, 115, 24, 98, 24, 111, 24, 103, 24, 117, 24, 115, 24, 46, 24, 101, 24, 110, 24, 116, 24, 114, 24, 121, 24, 46, 24, 102, 24, 117, 24, 110, 24, 116, 24, 105, 24, 109, 24, 101, 24, 161, 24, 99, 24, 85, 24, 54, 24, 52, 24, 26, 0, 24, 183, 24, 161, 24, 108] } }, correlation: None, meta: FluxMeta { creator: "transform.data.put.disk.batch", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: data.put.disk.batch.f4b73ac02ba5359fc04b61efa179ebf5f59c995d10939841ce6b94f5851ab1cb
+PatternDescriptor { key: None, thread: "data.put.disk.queue", schema: Some("rhex://schema.data.put.disk.batch"), payload_type: Binary, required_fields: None, flags: ["produces", "now"] } succeeded, scored 2/2
+Collapsing data.put.disk.batch.f4b73ac02ba5359fc04b61efa179ebf5f59c995d10939841ce6b94f5851ab1cb
+Dropped flux: []
+End of kernel spin. Firing HPCs...
+Calling HPC capability: data.put.disk
+What we got: None
+Returned: [FluxItem { name: "data.put.history.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff", thread: "data.put.history", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [203, 215, 6, 24, 180, 226, 125, 18, 23, 154, 22, 0, 143, 210, 135, 165, 28, 135, 161, 74, 166, 167, 223, 198, 219, 105, 188, 218, 210, 255, 205, 52], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.history"), record_type: Unbound, data: Json(Object {"action": String("store"), "logical_id": String("4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff"), "status": String("complete")}) }, correlation: None, meta: FluxMeta { creator: "system.membrane", timestamp: 0 } }, FluxItem { name: "system.membrane.action.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff", thread: "system.membrane", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [118, 117, 128, 9, 229, 65, 1, 78, 107, 111, 235, 41, 210, 27, 91, 104, 31, 200, 31, 191, 229, 115, 36, 220, 219, 125, 125, 175, 237, 156, 129, 35], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.membrane.action"), record_type: Unbound, data: None }, correlation: None, meta: FluxMeta { creator: "system.membrane", timestamp: 0 } }]
+Flux hash at end: [64, 224, 21, 85, 204, 15, 106, 178, 169, 215, 109, 74, 182, 8, 114, 176, 223, 199, 32, 198, 147, 155, 134, 255, 139, 67, 106, 199, 29, 79, 94, 167]
+---------------------------------------
+Start of kernel spin...
+Flux hash at start: [64, 224, 21, 85, 204, 15, 106, 178, 169, 215, 109, 74, 182, 8, 114, 176, 223, 199, 32, 198, 147, 155, 134, 255, 139, 67, 106, 199, 29, 79, 94, 167]
+Flux Pond
+├─ thread: data.put
+│  ├─ schema: rhex://schema.data.put
+│  └─ schema: rhex://schema.data.put.history
+│     └─ data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+│     └─ data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: data.put.disk
+│  └─ schema: rhex://schema.data.put.disk
+├─ thread: data.put.disk.queue
+│  └─ schema: rhex://schema.data.put.disk.batch
+│     └─ data.put.disk.batch.f4b73ac02ba5359fc04b61efa179ebf5f59c995d10939841ce6b94f5851ab1cb  (no corr)
+├─ thread: data.put.history
+│  └─ schema: rhex://schema.data.put.history
+│     └─ data.put.history.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+│     └─ data.put.history.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: lattice.scope.cache.install
+│  └─ schema: rhex://schema.lattice.scope.cache.install
+├─ thread: lattice.scope.cache.requests
+│  └─ schema: rhex://schema.lattice.scope.cache.request
+├─ thread: lattice.scope.cache.table
+│  └─ schema: rhex://schema.lattice.scope.cache.table
+│     └─ lattice.scope.cache.table  (no corr)
+├─ thread: lattice.scope.remote.request
+│  └─ schema: rhex://schema.lattice.scope.remote.request
+│     └─ "test"  (no corr)
+├─ thread: rhex.author.request
+│  └─ schema: rhex://schema.rhex.author.request
+│     └─ rhex.author.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.author.waiting
+│  └─ schema: rhex://schema.rhex.author.waiting
+│     └─ rhex.author.waiting.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.build
+│  └─ schema: rhex://schema.rhex.build
+├─ thread: rhex.intent
+│  └─ schema: rhex://schema.rhex.intent
+├─ thread: system.membrane
+│  └─ schema: rhex://schema.system.membrane.action
+│     └─ system.membrane.action.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+│     └─ system.membrane.action.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: system.registry
+│  └─ schema: rhex://schema.system.registry
+│     └─ system.registry  (no corr)
+├─ thread: system.registry.actions
+│  └─ schema: rhex://schema.system.registry.action
+├─ thread: system.registry.add
+│  └─ schema: rhex://schema.system.registry.add
+├─ thread: system.registry.results
+│  └─ schema: rhex://schema.system.registry.result
+│     └─ system.registry.result.e548b460a76caef4c96dd9c94143cbee88fc32bf22cac4bd32dec9d4b37941fe  (no corr)
+│     └─ system.registry.result.e20761f25148ca9b5937b427589c5acfafdc2ebe1119f044db035e9030aac660  (no corr)
+└─ thread: system.registry.store
+   └─ schema: rhex://schema.system.registry.store
+
+Firing transform transform.data.put.disk.fire (10000)
+Binary { data: [129, 162, 106, 108, 111, 103, 105, 99, 97, 108, 95, 105, 100, 152, 32, 24, 69, 6, 24, 226, 24, 232, 24, 177, 24, 193, 24, 55, 24, 250, 24, 41, 24, 219, 24, 178, 24, 115, 24, 77, 15, 24, 218, 24, 97, 24, 165, 24, 138, 24, 51, 24, 162, 24, 253, 24, 151, 24, 210, 24, 139, 24, 27, 2, 24, 98, 24, 105, 24, 152, 24, 125, 24, 155, 24, 255, 100, 100, 97, 116, 97, 152, 249, 24, 164, 24, 100, 24, 110, 24, 117, 24, 108, 24, 108, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 220, 24, 24, 24, 132, 24, 24, 24, 55, 24, 24, 24, 209, 24, 24, 24, 101, 24, 24, 24, 71, 24, 24, 24, 103, 24, 24, 24, 72, 24, 24, 24, 203, 24, 24, 24, 46, 24, 24, 24, 225, 24, 24, 24, 35, 24, 24, 24, 204, 24, 24, 24, 41, 24, 24, 24, 217, 24, 24, 24, 132, 24, 24, 24, 154, 24, 24, 24, 182, 24, 24, 24, 216, 21, 24, 24, 24, 60, 24, 24, 24, 66, 24, 24, 24, 100, 24, 24, 24, 223, 24, 24, 24, 48, 0, 24, 24, 24, 110, 24, 24, 24, 78, 24, 24, 24, 126, 24, 24, 24, 77, 24, 24, 24, 161, 24, 24, 24, 40, 24, 115, 24, 114, 24, 101, 24, 103, 24, 105, 24, 115, 24, 116, 24, 114, 24, 121, 24, 46, 24, 108, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 95, 24, 105, 24, 100, 24, 161, 24, 105, 24, 76, 24, 111, 24, 103, 24, 105, 24, 99, 24, 97, 24, 108, 24, 73, 24, 100, 24, 152, 24, 32, 24, 24, 24, 69, 6, 24, 24, 24, 226, 24, 24, 24, 232, 24, 24, 24, 177, 24, 24, 24, 193, 24, 24, 24, 55, 24, 24, 24, 250, 24, 24, 24, 41, 24, 24, 24, 219, 24, 24, 24, 178, 24, 24, 24, 115, 24, 24, 24, 77, 15, 24, 24, 24, 218, 24, 24, 24, 97, 24, 24, 24, 165, 24, 24, 24, 138, 24, 24, 24, 51, 24, 24, 24, 162, 24, 24, 24, 253, 24, 24, 24, 151, 24, 24, 24, 210, 24, 24, 24, 139, 24, 24, 24, 27, 2, 24, 24, 24, 98, 24, 24, 24, 105, 24, 24, 24, 152, 24, 24, 24, 125, 24, 24, 24, 155, 24, 24, 24, 255, 24, 118, 24, 102, 24, 117, 24, 99, 24, 107, 24, 46, 24, 121, 24, 111, 24, 46, 24, 99, 24, 104, 24, 105, 24, 99, 24, 107, 24, 101, 24, 110, 24, 46, 24, 115, 24, 116, 24, 114, 24, 105, 24, 112, 24, 115, 24, 161, 24, 102, 24, 83, 24, 116, 24, 114, 24, 105, 24, 110, 24, 103, 24, 108, 24, 97, 24, 110, 24, 100, 24, 32, 24, 121, 24, 111, 24, 32, 24, 109, 24, 111, 24, 109, 24, 109, 24, 97, 24, 115, 24, 98, 24, 111, 24, 103, 24, 117, 24, 115, 24, 46, 24, 101, 24, 110, 24, 116, 24, 114, 24, 121, 24, 46, 24, 102, 24, 117, 24, 110, 24, 116, 24, 105, 24, 109, 24, 101, 24, 161, 24, 99, 24, 85, 24, 54, 24, 52, 24, 26, 0, 24, 183, 24, 161, 24, 108] }
+transform.data.put.disk.fire flux outputted: [FluxItem { name: "data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff", thread: "data.put", availability: Soon, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [166, 212, 154, 143, 87, 228, 152, 255, 77, 32, 196, 58, 187, 39, 121, 17, 79, 138, 238, 16, 46, 163, 64, 129, 187, 38, 117, 28, 208, 39, 205, 57], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.history"), record_type: Unbound, data: Json(Object {"action": String("store"), "logical_id": String("4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff"), "status": String("pending")}) }, correlation: None, meta: FluxMeta { creator: "transform.data.put.disk.fire", timestamp: 0 } }]
+Result of transform: 0
+Running effect validation on: data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+PatternDescriptor { key: None, thread: "data.put.status", schema: Some("rhex://schema.data.put.status"), payload_type: Any, required_fields: None, flags: ["soon", "produced"] } failed to output, failed with ["SCHEMA:Bound(\"rhex://schema.data.put.history\")"], scored 1/2
+PatternDescriptor { key: None, thread: "data.put.history", schema: Some("rhex://schema.data.put.history"), payload_type: Any, required_fields: None, flags: ["soon", "produced"] } succeeded, scored 2/2
+Collapsing data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff
+Dropped flux: []
+End of kernel spin. Firing HPCs...
+Calling HPC capability: data.put.disk
+What we got: None
+Returned: [FluxItem { name: "data.put.history.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff", thread: "data.put.history", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [245, 250, 123, 243, 221, 231, 70, 217, 254, 108, 169, 33, 74, 28, 162, 215, 250, 32, 14, 128, 188, 224, 37, 112, 89, 112, 0, 48, 243, 63, 12, 135], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.data.put.history"), record_type: Unbound, data: Json(Object {"action": String("store"), "logical_id": String("4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff"), "status": String("complete")}) }, correlation: None, meta: FluxMeta { creator: "system.membrane", timestamp: 0 } }, FluxItem { name: "system.membrane.action.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff", thread: "system.membrane", availability: Now, intent: RhexIntent { previous_hash: Unbound, scope: Unbound, nonce: [72, 179, 117, 55, 76, 171, 167, 240, 153, 108, 2, 202, 227, 95, 152, 202, 22, 47, 222, 174, 93, 43, 22, 78, 0, 231, 172, 59, 235, 203, 107, 188], author_public_key: Unbound, usher_public_key: Unbound, schema: Bound("rhex://schema.system.membrane.action"), record_type: Unbound, data: None }, correlation: None, meta: FluxMeta { creator: "system.membrane", timestamp: 0 } }]
+Flux hash at end: [27, 238, 228, 246, 112, 175, 181, 236, 56, 254, 197, 211, 41, 56, 216, 104, 34, 46, 110, 34, 171, 37, 7, 81, 29, 244, 131, 118, 17, 108, 157, 156]
+---------------------------------------
+Start of kernel spin...
+Flux hash at start: [27, 238, 228, 246, 112, 175, 181, 236, 56, 254, 197, 211, 41, 56, 216, 104, 34, 46, 110, 34, 171, 37, 7, 81, 29, 244, 131, 118, 17, 108, 157, 156]
+Flux Pond
+├─ thread: data.put
+│  ├─ schema: rhex://schema.data.put
+│  └─ schema: rhex://schema.data.put.history
+│     └─ data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+│     └─ data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: data.put.disk
+│  └─ schema: rhex://schema.data.put.disk
+├─ thread: data.put.disk.queue
+│  └─ schema: rhex://schema.data.put.disk.batch
+├─ thread: data.put.history
+│  └─ schema: rhex://schema.data.put.history
+│     └─ data.put.history.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+│     └─ data.put.history.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: lattice.scope.cache.install
+│  └─ schema: rhex://schema.lattice.scope.cache.install
+├─ thread: lattice.scope.cache.requests
+│  └─ schema: rhex://schema.lattice.scope.cache.request
+├─ thread: lattice.scope.cache.table
+│  └─ schema: rhex://schema.lattice.scope.cache.table
+│     └─ lattice.scope.cache.table  (no corr)
+├─ thread: lattice.scope.remote.request
+│  └─ schema: rhex://schema.lattice.scope.remote.request
+│     └─ "test"  (no corr)
+├─ thread: rhex.author.request
+│  └─ schema: rhex://schema.rhex.author.request
+│     └─ rhex.author.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.author.waiting
+│  └─ schema: rhex://schema.rhex.author.waiting
+│     └─ rhex.author.waiting.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.build
+│  └─ schema: rhex://schema.rhex.build
+├─ thread: rhex.intent
+│  └─ schema: rhex://schema.rhex.intent
+├─ thread: system.membrane
+│  └─ schema: rhex://schema.system.membrane.action
+│     └─ system.membrane.action.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+│     └─ system.membrane.action.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: system.registry
+│  └─ schema: rhex://schema.system.registry
+│     └─ system.registry  (no corr)
+├─ thread: system.registry.actions
+│  └─ schema: rhex://schema.system.registry.action
+├─ thread: system.registry.add
+│  └─ schema: rhex://schema.system.registry.add
+├─ thread: system.registry.results
+│  └─ schema: rhex://schema.system.registry.result
+│     └─ system.registry.result.e548b460a76caef4c96dd9c94143cbee88fc32bf22cac4bd32dec9d4b37941fe  (no corr)
+│     └─ system.registry.result.e20761f25148ca9b5937b427589c5acfafdc2ebe1119f044db035e9030aac660  (no corr)
+└─ thread: system.registry.store
+   └─ schema: rhex://schema.system.registry.store
+
+Dropped flux: []
+End of kernel spin. Firing HPCs...
+Returned: []
+Flux hash at end: [18, 30, 217, 231, 198, 106, 232, 97, 252, 68, 93, 27, 219, 195, 163, 225, 119, 88, 116, 197, 108, 14, 233, 152, 233, 31, 224, 171, 146, 215, 222, 20]
+---------------------------------------
+Start of kernel spin...
+Flux hash at start: [18, 30, 217, 231, 198, 106, 232, 97, 252, 68, 93, 27, 219, 195, 163, 225, 119, 88, 116, 197, 108, 14, 233, 152, 233, 31, 224, 171, 146, 215, 222, 20]
+Flux Pond
+├─ thread: data.put
+│  ├─ schema: rhex://schema.data.put
+│  └─ schema: rhex://schema.data.put.history
+│     └─ data.put.disk.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+│     └─ data.put.disk.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: data.put.disk
+│  └─ schema: rhex://schema.data.put.disk
+├─ thread: data.put.disk.queue
+│  └─ schema: rhex://schema.data.put.disk.batch
+├─ thread: data.put.history
+│  └─ schema: rhex://schema.data.put.history
+│     └─ data.put.history.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+│     └─ data.put.history.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: lattice.scope.cache.install
+│  └─ schema: rhex://schema.lattice.scope.cache.install
+├─ thread: lattice.scope.cache.requests
+│  └─ schema: rhex://schema.lattice.scope.cache.request
+├─ thread: lattice.scope.cache.table
+│  └─ schema: rhex://schema.lattice.scope.cache.table
+│     └─ lattice.scope.cache.table  (no corr)
+├─ thread: lattice.scope.remote.request
+│  └─ schema: rhex://schema.lattice.scope.remote.request
+│     └─ "test"  (no corr)
+├─ thread: rhex.author.request
+│  └─ schema: rhex://schema.rhex.author.request
+│     └─ rhex.author.request.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.author.waiting
+│  └─ schema: rhex://schema.rhex.author.waiting
+│     └─ rhex.author.waiting.f30c7fdecd0c0daa762997dca989058053a7b7e42d09abf9da98c43149230b39  (no corr)
+├─ thread: rhex.build
+│  └─ schema: rhex://schema.rhex.build
+├─ thread: rhex.intent
+│  └─ schema: rhex://schema.rhex.intent
+├─ thread: system.membrane
+│  └─ schema: rhex://schema.system.membrane.action
+│     └─ system.membrane.action.dc8437d165476748cb2ee123cc29d9849ab6d8153c4264df30006e4e7e4da128  (no corr)
+│     └─ system.membrane.action.4506e2e8b1c137fa29dbb2734d0fda61a58a33a2fd97d28b1b026269987d9bff  (no corr)
+├─ thread: system.registry
+│  └─ schema: rhex://schema.system.registry
+│     └─ system.registry  (no corr)
+├─ thread: system.registry.actions
+│  └─ schema: rhex://schema.system.registry.action
+├─ thread: system.registry.add
+│  └─ schema: rhex://schema.system.registry.add
+├─ thread: system.registry.results
+│  └─ schema: rhex://schema.system.registry.result
+│     └─ system.registry.result.e548b460a76caef4c96dd9c94143cbee88fc32bf22cac4bd32dec9d4b37941fe  (no corr)
+│     └─ system.registry.result.e20761f25148ca9b5937b427589c5acfafdc2ebe1119f044db035e9030aac660  (no corr)
+└─ thread: system.registry.store
+   └─ schema: rhex://schema.system.registry.store
+
+Dropped flux: []
+End of kernel spin. Firing HPCs...
+Returned: []
+Flux hash at end: [18, 30, 217, 231, 198, 106, 232, 97, 252, 68, 93, 27, 219, 195, 163, 225, 119, 88, 116, 197, 108, 14, 233, 152, 233, 31, 224, 171, 146, 215, 222, 20]

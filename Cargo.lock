@@ -566,6 +566,7 @@ dependencies = [
  "rand",
  "serde",
  "serde-big-array",
+ "serde_bytes",
  "serde_cbor",
  "serde_json",
 ]
@@ -662,6 +663,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "11fc7cc2c76d73e0f27ee52abbd64eec84d46f370c88371120433196934e4b7f"
 dependencies = [
  "serde",
+]
+
+[[package]]
+name = "serde_bytes"
+version = "0.11.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a5d440709e79d88e51ac01c4b72fc6cb7314017bb7da9eeff678aa94c10e3ea8"
+dependencies = [
+ "serde",
+ "serde_core",
 ]
 
 [[package]]
@@ -866,7 +877,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "transform_data_put_disk_fire-macos_arm64-v1"
+name = "transform_data_put_disk_fire"
 version = "0.1.0"
 dependencies = [
  "hex",
@@ -942,6 +953,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "transform_lattice_scope_cache_create"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rand",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+ "struct_registry",
+]
+
+[[package]]
 name = "transform_lattice_scope_cache_load"
 version = "0.1.0"
 dependencies = [
@@ -971,6 +995,19 @@ dependencies = [
  "serde_cbor",
  "serde_json",
  "struct_lattice",
+]
+
+[[package]]
+name = "transform_lattice_scope_cache_store"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rand",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+ "struct_registry",
 ]
 
 [[package]]
@@ -1014,6 +1051,16 @@ dependencies = [
  "serde_cbor",
  "serde_json",
  "struct_lattice",
+]
+
+[[package]]
+name = "transform_rhex_builder"
+version = "0.1.0"
+dependencies = [
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
 ]
 
 [[package]]

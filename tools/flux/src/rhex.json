@@ -54,5 +54,79 @@
             "creator": "what.the.fuck.ever",
             "timestamp": 0
         }
+    },
+    {
+        "name": "rhex.build.1",
+        "thread": "rhex.build",
+        "availability": "now",
+        "intent": {
+            "schema": {
+                "state": "Bound",
+                "value": "rhex://schema.rhex.build"
+            },
+            "data": {
+                "kind": "Mixed",
+                "value": {
+                    "meta": {
+                        "scope": "test",
+                        "record_type": "test:test",
+                        "usher_key_present": false
+                    },
+                    "data": [
+                        {
+                            "kind": "Binary",
+                            "value": {
+                                "encoding": "base64",
+                                "data": "zRrcRcloqYWSQZbKLt3cscKg+UBUh2hes205+dqCddw="
+                            }
+                        },
+                        {
+                            "kind": "Binary",
+                            "value": {
+                                "encoding": "base64",
+                                "data": "8wx/3s0MDap2KZfcqYkFgFOnt+QtCav52pjEMUkjCzk="
+                            }
+                        },
+                        {
+                            "kind": "Binary",
+                            "value": {
+                                "encoding": "base64",
+                                "data": "bEHYJVN0jmemXHPkYIZvAjbdWg18n/pYuvUmNA5afHY="
+                            }
+                        },
+                        {
+                            "kind": "Binary",
+                            "value": {
+                                "encoding": "base64",
+                                "data": "o2RraW5kZW1peGVkZG1ldGGhZHRlc3RkZGF0YWRkYXRhgVghoWlMb2dpY2FsSWSYIBhKGDQYqgMYwBhJGE4Y7xjBGLkY"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "meta": {
+            "creator": "what.the.fuck.ever",
+            "timestamp": 0
+        }
+    },
+    {
+        "name": "lattice.scope.cache.install",
+        "thread": "lattice.scope.cache.install",
+        "availability": "now",
+        "intent": {
+            "schema": {
+                "state": "Bound",
+                "value": "rhex://schema.lattice.scope.cache.install"
+            },
+            "data": {
+                "kind": "None",
+                "value": null
+            }
+        },
+        "meta": {
+            "creator": "what.the.fuck.ever",
+            "timestamp": 0
+        }
     }
 ]

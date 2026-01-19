@@ -1,0 +1,17 @@
+{
+    "kind": "Mixed",
+    "value": {
+        "meta": {
+            "test": "data"
+        },
+        "data": [
+            {
+                "kind": "Binary",
+                "value": {
+                    "encoding": "base64",
+                    "data": "oWlMb2dpY2FsSWSYIBhKGDQYqgMYwBhJGE4Y7xjBGLkY"
+                }
+            }
+        ]
+    }
+}

@@ -8,5 +8,6 @@ pub type Registry = HashMap<String, RegistryEntry>;
 pub enum RegistryEntry {
     LogicalId([u8; 32]),
     String(String),
+    StringArray(Vec<String>),
     U64(u64),
 }

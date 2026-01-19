@@ -1,0 +1,15 @@
+[package]
+name = "transform_data_put_disk_fire"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+serde_cbor.workspace = true
+hex.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+
+[lib]
+crate-type = [ "cdylib" ]

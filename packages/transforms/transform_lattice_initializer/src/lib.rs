@@ -16,7 +16,7 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let init_item = input[0].clone();
 
     let init_logical_id = match init_item.intent.data {
-        RhexPayload::Mixed { meta: _, data } => data[0].clone(),
+        RhexPayload::Binary { data } => data,
         _ => return -1,
     };
 
