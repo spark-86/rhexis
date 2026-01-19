@@ -17,7 +17,7 @@
         {
             "key": null,
             "thread": "rhex.author.awaiting",
-            "schema": "rhex://schema.rhex.author.awaiting",
+            "schema": "rhex://schema.rhex.author.waiting",
             "payload_type": "mixed",
             "required_fields": null,
             "flags": ["now", "guaranteed", "produced"]
@@ -33,7 +33,7 @@
         {
             "key": null,
             "thread": "lattice.scope.cache.requests",
-            "schema": "rhex://schema.lattice.scope.cache.lookup",
+            "schema": "rhex://schema.lattice.scope.cache.request",
             "payload_type": "json",
             "required_fields": null,
             "flags": ["now", "guaranteed", "produced"]

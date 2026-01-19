@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize};
-
 use crate::flux::payload::FluxPayload;
+use crate::rhex::payload_bytes;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "lowercase")]
@@ -8,10 +8,12 @@ use crate::flux::payload::FluxPayload;
 pub enum RhexPayload {
     Json(serde_json::Value),
     Binary {
+        #[serde(with = "serde_bytes")]
         data: Vec<u8>,
     },
     Mixed {
         meta: serde_json::Value,
+        #[serde(with = "payload_bytes")]
         data: Vec<Vec<u8>>,
     },
     None,

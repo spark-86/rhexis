@@ -6,7 +6,7 @@ use rhexis_core::{
         intent::{Binding, RhexIntent},
         payload::RhexPayload,
     },
-    transform::context::TransformContext,
+    transform::{context::TransformContext, entry::TransformEntry},
 };
 use struct_lattice::{
     LatticeScopeCacheAction, LatticeScopeCacheAdd, LatticeScopeCacheRemove,
@@ -99,3 +99,8 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     *ctx.output = Some(serde_cbor::to_vec(&transform_output).unwrap());
     0
 }
+
+#[unsafe(no_mangle)]
+pub static RHEX_TRANSFORM: TransformEntry = TransformEntry {
+    entry: transform_entry,
+};

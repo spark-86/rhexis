@@ -20,7 +20,6 @@ pub struct DataPayload {
 pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let ctx = unsafe { &mut *ctx };
     let input: Vec<FluxItem> = serde_cbor::from_slice(&ctx.input).unwrap();
-    println!("{:?}", &input[0].intent.data);
     let payload_bytes = match &input[0].intent.data {
         RhexPayload::Binary { data } => data,
         _ => return -1,

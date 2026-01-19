@@ -1,7 +1,9 @@
 use std::sync::Arc;
 
 use rhexis_core::{
-    flux::item::FluxItem, registry::LoadedTransform, transform::context::TransformContext,
+    flux::{item::FluxItem, pretty::pretty_print_flux},
+    registry::LoadedTransform,
+    transform::context::TransformContext,
 };
 
 use crate::{ExecutionArtifacts, ScoreResult};
@@ -57,7 +59,8 @@ impl Kernel {
         let out_flux = ctx.output.clone();
         if let Some(out) = out_flux {
             let flux: Vec<FluxItem> = serde_cbor::from_slice(&out).unwrap();
-            println!("{} flux outputted: {:?}", &transform.descriptor.name, flux);
+            println!("{} outputted:", &transform.descriptor.name);
+            pretty_print_flux(&flux);
         }
         println!("Result of transform: {}", &result);
         if result != 0 {

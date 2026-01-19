@@ -17,6 +17,7 @@ enum Commands {
     Pack(Pack),
     View(View),
     Unpack(Unpack),
+    Build(Build),
 }
 
 #[derive(Parser, Debug)]
@@ -41,11 +42,24 @@ struct Unpack {
     pub output: String,
 }
 
+#[derive(Parser, Debug)]
+struct Build {
+    #[arg(short, long)]
+    pub input: String,
+    #[arg(short, long)]
+    pub output: String,
+}
+
 fn main() {
     let args = Args::parse();
-    let _ = match args.command {
+    let result = match args.command {
         Commands::Pack(args) => crate::pack::pack(args),
         Commands::View(args) => crate::view::view(args),
         Commands::Unpack(args) => crate::unpack::unpack(args),
+        Commands::Build(args) => crate::build::build(args),
     };
+
+    if result.is_err() {
+        eprintln!("{}", result.err().unwrap());
+    }
 }

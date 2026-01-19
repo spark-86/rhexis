@@ -1,0 +1,42 @@
+{
+    "descriptor": 1,
+    "name": "transform.lattice.scope.cache.create",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": "lattice.scope.cache.install",
+            "thread": "lattice.scope.cache.install",
+            "schema": "rhex://schema.lattice.scope.cache.install",
+            "payload_type": "none",
+            "required_fields": null,
+            "flags": ["now", "required", "consumed"]
+        }
+    ],
+    "effects": [
+        {
+            "key": "lattice.scope.cache.table",
+            "thread": "lattice.scope.cache.table",
+            "schema": "rhex://schema.lattice.scope.cache.table",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        },
+        {
+            "key": null,
+            "thread": "data.put",
+            "schema": "rhex://schema.data.put",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        },
+        {
+            "key": null,
+            "thread": "system.registry.add",
+            "schema": "rhex://schema.system.registry.add",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "guaranteed", "produced"]
+        }
+    ]
+}

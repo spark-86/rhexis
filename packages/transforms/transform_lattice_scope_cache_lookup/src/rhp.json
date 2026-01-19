@@ -6,16 +6,16 @@
     "interacts": [
         {
             "key": null,
-            "thread": "lattice.scope.lookup",
-            "schema": "rhex://schema.lattice.scope.lookup",
+            "thread": "lattice.scope.cache.requests",
+            "schema": "rhex://schema.lattice.scope.cache.request",
             "payload_type": "json",
             "required_fields": null,
             "flags": ["now", "consumed", "required", "multiple"]
         },
         {
-            "key": "lattice.scope.table",
-            "thread": "lattice.scope.table",
-            "schema": "rhex://schema.lattice.scope.table",
+            "key": "lattice.scope.cache.table",
+            "thread": "lattice.scope.cache.table",
+            "schema": "rhex://schema.lattice.scope.cache.table",
             "payload_type": "binary",
             "required_fields": null,
             "flags": ["now", "required", "observed"]
@@ -32,9 +32,9 @@
         },
         {
             "key": null,
-            "thread": "lattice.scope.lookup.remote.request",
-            "schema": "rhex://schema.lattice.scope.lookup.remote.request",
-            "payload_type": "json",
+            "thread": "lattice.scope.remote.request",
+            "schema": "rhex://schema.lattice.scope.remote.request",
+            "payload_type": "none",
             "required_fields": null,
             "flags": ["now", "optional", "inherit"]
         }

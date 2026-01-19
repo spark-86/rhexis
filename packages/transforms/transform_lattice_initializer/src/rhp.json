@@ -8,7 +8,7 @@
             "key": null,
             "thread": "lattice.init",
             "schema": "rhex://schema.lattice.init",
-            "payload_type": "mixed",
+            "payload_type": "binary",
             "required_fields": null,
             "flags": ["now", "required", "consumed", "anchor"]
         }

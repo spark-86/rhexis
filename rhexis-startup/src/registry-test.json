@@ -3,11 +3,23 @@
         "./transform_system_registry_result-macos_arm64-v1.rhp",
         "./transform_system_registry_add-macos_arm64-v1.rhp",
         "./transform_system_registry_store-macos_arm64-v1.rhp",
+
         "./transform_data_put-macos_arm64-v1.rhp",
-        "./transform_data_put_disk-macos_arm64-v1.rhp",
         "./transform_data_put_disk_batch-macos_arm64-v1.rhp",
         "./transform_data_put_disk_fire-macos_arm64-v1.rhp",
-        "./hpc_data_put_disk-macos_arm64-v1.rhp"
+
+        "./hpc_data_put_disk-macos_arm64-v1.rhp",
+
+        "./lattice_transforms/transform_lattice_scope_cache_lookup-macos_arm64-v1.rhp",
+        "./lattice_transforms/transform_lattice_scope_cache_add-macos_arm64-v1.rhp",
+        "./lattice_transforms/transform_lattice_scope_cache_builder-macos_arm64-v1.rhp",
+        "./lattice_transforms/transform_lattice_initializer-macos_arm64-v1.rhp",
+        "./lattice_transforms/transform_lattice_scope_cache_create-macos_arm64-v1.rhp",
+        "./lattice_transforms/transform_lattice_scope_cache_store-macos_arm64-v1.rhp",
+
+        "./rhex_transforms/transform_rhex_author-macos_arm64-v1.rhp",
+        "./rhex_transforms/transform_rhex_usher_submit-macos_arm64-v1.rhp",
+        "./rhex_transforms/transform_rhex_builder-macos_arm64-v1.rhp"
     ],
-    "flux": "./registry.flux"
+    "flux": "./rhex.flux"
 }

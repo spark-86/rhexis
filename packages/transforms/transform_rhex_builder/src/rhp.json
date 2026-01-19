@@ -1,0 +1,27 @@
+{
+    "descriptor": 1,
+    "name": "transform.rhex.builder",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "rhex.build",
+            "schema": "rhex://schema.rhex.build",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "required", "multiple", "consumed"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "rhex.intent",
+            "schema": "rhex://schema.rhex.intent",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "produces", "required"]
+        }
+    ],
+    "bin_format": "Native"
+}
