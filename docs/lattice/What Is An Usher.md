@@ -108,3 +108,20 @@ The fully assembled R⬢ is then resubmitted to the original usher for finalizat
 If all checks pass, the usher commits the record to its storage backend, advances the scope’s temporal chain, and publishes the new `last_hash` for discovery.
 
 At that point, the intent has crossed the event horizon: it is no longer a proposal, but an immutable fact of the lattice.
+
+## The Usher Data Structure
+
+```rust
+pub struct Usher {
+    pub name: String,
+    pub public_key: [u8; 32],
+    pub priority: u8,
+    pub location: UsherLocation,
+    pub last_updated: u64,
+}
+
+pub enum UsherLocation {
+    Local,
+    Remote { ip_addr: String, port: u16 },
+}
+```
