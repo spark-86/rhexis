@@ -57,7 +57,7 @@ members = [
     "packages/transforms/transform_system_registry_result", 
     "packages/transforms/transform_system_registry_new", 
     "tools/registry-mod", 
-    "packages/transforms/transform_rhex_builder", "packages/transforms/transform_lattice_scope_cache_create", "packages/transforms/transform_lattice_scope_cache_store", 
+    "packages/transforms/transform_rhex_builder", "packages/transforms/transform_lattice_scope_cache_create", "packages/transforms/transform_lattice_scope_cache_store", "packages/transforms/transform_lattice_usher_builder", 
 ]
 
 resolver = "3"

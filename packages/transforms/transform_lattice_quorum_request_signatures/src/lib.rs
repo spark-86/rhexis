@@ -8,7 +8,7 @@ use rhexis_core::{
     transform::{context::TransformContext, entry::TransformEntry},
 };
 use serde_json::json;
-use struct_lattice::usher::Usher;
+use struct_lattice::usher::{Usher, UsherLocation};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
@@ -42,45 +42,48 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
 
         let mut usher_intent = RhexIntent::new(RhexIntent::gen_nonce());
 
-        if usher.ip_address.is_some() {
-            let mut cloned_meta = meta.clone();
-            name = format!(
-                "lattice.quorum.remote.signature.request.{}",
-                hex::encode(hash.as_bytes())
-            );
-            thread = "lattice.quorum.remote.signature.requests".to_string();
-            cloned_meta["target"] = json!({
-                "location": "remote",
-                "name": usher.name,
-                "public_key": hex::encode(usher.public_key),
-                "priority": usher.priority,
-                "ip_address": usher.ip_address.clone(),
-                "port": usher.port.unwrap(),
-            });
-            usher_intent.schema =
-                Binding::Bound("rhex://schema.lattice.quorum.signature.request".to_string());
-            usher_intent.data = RhexPayload::Mixed {
-                meta: cloned_meta,
-                data: vec![serde_cbor::to_vec(&rhex).unwrap()],
+        match &usher.location {
+            UsherLocation::Remote { ip_addr, port } => {
+                let mut cloned_meta = meta.clone();
+                name = format!(
+                    "lattice.quorum.remote.signature.request.{}",
+                    hex::encode(hash.as_bytes())
+                );
+                thread = "lattice.quorum.remote.signature.requests".to_string();
+                cloned_meta["target"] = json!({
+                    "location": "remote",
+                    "name": usher.name,
+                    "public_key": hex::encode(usher.public_key),
+                    "priority": usher.priority,
+                    "ip_address": ip_addr.clone(),
+                    "port": port.clone(),
+                });
+                usher_intent.schema =
+                    Binding::Bound("rhex://schema.lattice.quorum.signature.request".to_string());
+                usher_intent.data = RhexPayload::Mixed {
+                    meta: cloned_meta,
+                    data: vec![serde_cbor::to_vec(&rhex).unwrap()],
+                }
             }
-        } else {
-            let mut cloned_meta = meta.clone();
-            name = format!(
-                "lattice.quorum.local.signature.request.{}",
-                hex::encode(hash.as_bytes())
-            );
-            thread = "lattice.quorum.local.signature.requests".to_string();
-            cloned_meta["target"] = json!({
-                "location": "local",
-                "name": usher.name,
-                "public_key": hex::encode(usher.public_key),
-                "priority": usher.priority,
-            });
-            usher_intent.schema =
-                Binding::Bound("rhex://schema.lattice.quorum.local.signature".to_string());
-            usher_intent.data = RhexPayload::Mixed {
-                meta: meta.clone(),
-                data: vec![serde_cbor::to_vec(&rhex).unwrap()],
+            UsherLocation::Local => {
+                let mut cloned_meta = meta.clone();
+                name = format!(
+                    "lattice.quorum.local.signature.request.{}",
+                    hex::encode(hash.as_bytes())
+                );
+                thread = "lattice.quorum.local.signature.requests".to_string();
+                cloned_meta["target"] = json!({
+                    "location": "local",
+                    "name": usher.name,
+                    "public_key": hex::encode(usher.public_key),
+                    "priority": usher.priority,
+                });
+                usher_intent.schema =
+                    Binding::Bound("rhex://schema.lattice.quorum.local.signature".to_string());
+                usher_intent.data = RhexPayload::Mixed {
+                    meta: meta.clone(),
+                    data: vec![serde_cbor::to_vec(&rhex).unwrap()],
+                }
             }
         }
 

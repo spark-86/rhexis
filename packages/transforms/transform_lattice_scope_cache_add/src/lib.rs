@@ -16,13 +16,15 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
 
     for item in input {
         let payload: LatticeScopeCacheAction = match item.intent.data {
-            RhexPayload::Json(j) => serde_json::from_value(j).unwrap(),
+            RhexPayload::Binary { data } => serde_cbor::from_slice(&data).unwrap(),
             _ => return -1,
         };
 
         let mut intent = RhexIntent::new(RhexIntent::gen_nonce());
         intent.schema = Binding::Bound("rhex://schema.lattice.scope.cache.action".to_string());
-        intent.data = RhexPayload::Json(serde_json::to_value(payload).unwrap());
+        intent.data = RhexPayload::Binary {
+            data: serde_cbor::to_vec(&payload).unwrap(),
+        };
 
         transform_output.push(FluxItem {
             name: format!("lattice.scope.cache.action.{}", hex::encode(&intent.nonce)),

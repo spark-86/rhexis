@@ -10,7 +10,7 @@ use rhexis_core::{
     transform::{context::TransformContext, entry::TransformEntry},
 };
 use serde_json::json;
-use struct_lattice::LatticeScopeLocation;
+use struct_lattice::scope::Scope;
 use struct_registry::RegistryEntry;
 
 #[unsafe(no_mangle)]
@@ -19,7 +19,7 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let mut transform_output: Vec<FluxItem> = Vec::new();
 
     let logical_id: [u8; 32] = random();
-    let lattice_scope_table: HashMap<String, Vec<LatticeScopeLocation>> = HashMap::new();
+    let lattice_scope_table: HashMap<String, Scope> = HashMap::new();
 
     let mut cache_table_intent = RhexIntent::new(RhexIntent::gen_nonce());
     cache_table_intent.schema =

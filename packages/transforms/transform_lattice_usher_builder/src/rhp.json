@@ -1,0 +1,27 @@
+{
+    "descriptor": 1,
+    "name": "transform.lattice.usher.builder",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "lattice.usher.builder",
+            "schema": "rhex://schema.lattice.usher.builder",
+            "payload_type": "json",
+            "required_fields": null,
+            "flags": ["now", "required", "consumed"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "lattice.ushers",
+            "schema": "rhex://schema.lattice.usher",
+            "payload_type": "binary",
+            "required_fields": null,
+            "flags": ["fork", "now", "guaranteed", "produced"]
+        }
+    ],
+    "bin_format": "Native"
+}
