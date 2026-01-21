@@ -8,7 +8,7 @@ use rhexis_core::{
     transform::{context::TransformContext, entry::TransformEntry},
 };
 use serde_json::json;
-use struct_lattice::usher::Usher;
+use struct_lattice::usher::{Usher, UsherLocation};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
@@ -22,10 +22,12 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     let ushers: Vec<Usher> = serde_cbor::from_slice(&rhex_data[1]).unwrap();
     let target_usher = ushers.iter().find(|u| u.priority == 0).unwrap();
 
-    let destination = if target_usher.ip_address.is_none() || target_usher.port.is_none() {
-        "local"
-    } else {
-        "remote"
+    let destination = match target_usher.location {
+        UsherLocation::Local => "local",
+        UsherLocation::Remote {
+            ip_addr: _,
+            port: _,
+        } => "remote",
     };
 
     let rhex: Rhex = serde_cbor::from_slice(&rhex_data[0]).unwrap();

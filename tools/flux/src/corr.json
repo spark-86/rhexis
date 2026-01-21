@@ -1,0 +1,29 @@
+[
+    {
+        "name": "usher.create",
+        "thread": "lattice.usher.builder",
+        "availability": "now",
+        "intent": {
+            "schema": {
+                "state": "Bound",
+                "value": "rhex://schema.lattice.usher.builder"
+            },
+            "data": {
+                "kind": "Json",
+                "value": {
+                    "name": "test",
+                    "public_key": "sk1qJJ6Bn1u3N3Gb4-xpIAnCVAmUSqlZRJPEU3RhAhg",
+                    "priority": 1
+                }
+            }
+        },
+        "correlation": [
+            0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ],
+        "meta": {
+            "creator": "what.the.fuck.ever",
+            "timestamp": 0
+        }
+    }
+]

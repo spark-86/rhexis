@@ -1,0 +1,7 @@
+{
+    "plugins": [
+        "./lattice_transforms/transform_lattice_scope_cache_add-macos_arm64-v1.rhp",
+        "./lattice_transforms/transform_lattice_usher_builder-macos_arm64-v1.rhp"
+    ],
+    "flux": "./corr.flux"
+}

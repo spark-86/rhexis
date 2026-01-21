@@ -8,7 +8,7 @@
             "key": null,
             "thread": "lattice.scope.cache.add",
             "schema": "rhex://schema.lattice.scope.cache.add",
-            "payload_type": "json",
+            "payload_type": "binary",
             "required_fields": null,
             "flags": ["now", "consumed", "required", "multiple"]
         }
@@ -18,7 +18,7 @@
             "key": null,
             "thread": "lattice.scope.cache.queue",
             "schema": "rhex://schema.lattice.scope.cache.action",
-            "payload_type": "json",
+            "payload_type": "binary",
             "required_fields": null,
             "flags": ["now", "optional", "inherit"]
         }

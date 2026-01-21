@@ -1022,6 +1022,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "transform_lattice_usher_builder"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "hex",
+ "rhexis-core",
+ "serde_cbor",
+ "serde_json",
+ "struct_lattice",
+]
+
+[[package]]
 name = "transform_math_add"
 version = "0.1.0"
 dependencies = [

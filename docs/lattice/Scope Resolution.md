@@ -111,7 +111,7 @@ The R⬢ is transmitted to the chosen writing usher. The usher:
 2. Verifies policy compliance
 3. Assigns a timestamp in micromarks (`at`)
 4. Optionally attaches spatial or jurisdictional metadata
-5. Signs over: `Intent || Context || AuthorSignature`
+5. Signs over: `H(author signature || Context)`
 
 The result is returned to the author as a partially-complete R⬢ containing both the author and primary usher signatures.
 
@@ -136,7 +136,7 @@ Each quorum usher independently:
 
 If valid, the usher signs over:
 
-`AuthorSignature || WritingUsherSignature || Context`
+`H(author signature || usher signature)`
 
 These signatures are returned to the client and appended to the R⬢.
 

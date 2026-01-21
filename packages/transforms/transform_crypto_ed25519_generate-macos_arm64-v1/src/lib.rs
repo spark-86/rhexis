@@ -21,7 +21,7 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
             serde_cbor::to_vec(&CauseHeader {
                 target: format!("crypto.ed25519.generate.complete.{}", &hex::encode(id))
                     .to_string(),
-                thread: "crypto_engine".to_string(),
+                thread: "crypto.engine".to_string(),
                 schema: "rhex://schema.crypto.ed25519.generate.complete".to_string(),
                 payload: serde_cbor::to_vec(&RhexPayload::Mixed {
                     meta: serde_json::json!({
