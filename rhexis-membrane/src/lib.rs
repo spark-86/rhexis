@@ -1,5 +1,6 @@
-use std::{collections::HashMap, sync::Arc};
+use std::{collections::HashMap, sync::Arc, thread::sleep, time::Duration};
 
+use crossbeam::queue::SegQueue;
 use rhexis_core::{
     flux::item::FluxItem,
     hpc::{
@@ -12,12 +13,16 @@ use rhexis_core::{
 };
 use rhexis_kernel::Kernel;
 
+use crate::net::spawn_net_listener;
+
 pub mod directives;
 pub mod loader;
+pub mod net;
 
 pub struct MacOSMembrane {
     pub registry: registry::MembraneRegistry,
     pub resource_table: HashMap<Vec<u8>, (Vec<u8>, ResourceBacking)>,
+    pub net_ingress: Arc<SegQueue<FluxItem>>,
 }
 
 impl Membrane for MacOSMembrane {
@@ -147,13 +152,17 @@ impl MacOSMembrane {
             .into_iter()
             .map(|h| (h.descriptor.capability.to_string(), h))
             .collect();
-
+        let ingress = Arc::new(SegQueue::new());
+        let addr = "0.0.0.0:9000";
+        println!("Spawning net listener on {}...", addr);
+        let _ = spawn_net_listener(addr, ingress.clone());
         Self {
             registry: registry::MembraneRegistry {
                 transforms, // ✔ Already Arc<LoadedTransform>
                 hpcs: hpc_map,
             },
             resource_table: HashMap::new(),
+            net_ingress: ingress,
         }
     }
 
@@ -190,28 +199,42 @@ impl MacOSMembrane {
 
         let mut system_flux = Vec::new();
         let mut done = false;
+
         while !done {
             println!("---------------------------------------");
             println!("Start of kernel spin...");
             let before = kernel.hash_flux();
             println!("Flux hash at start: {:?}", &before);
-            let hpc_calls = kernel.resolve(system_flux);
+
+            // Move current system_flux into resolve, leave an empty Vec behind
+            let hpc_calls = kernel.resolve(std::mem::take(&mut system_flux));
 
             println!("End of kernel spin. Firing HPCs...");
 
             let hpc_returns = self.execute_hpc_calls(hpc_calls);
 
             println!("Returned: {:?}", hpc_returns);
-            // Poll shit in here somewhere.
-            system_flux = hpc_returns.clone();
+
+            // Drain network ingress
+            let net_count = self.net_ingress.len();
+            println!("Draining network ingress ({} items)...", &net_count);
+            while let Some(f) = self.net_ingress.pop() {
+                system_flux.push(f);
+            }
+
+            // Add HPC outputs
+            system_flux.extend(hpc_returns.iter().cloned());
+
             let after = kernel.hash_flux();
             println!("Flux hash at end: {:?}", &after);
-            if hpc_returns.len() == 0 {
-                if before == after {
-                    done = true;
-                }
+
+            if hpc_returns.is_empty() && before == after && net_count == 0 {
+                done = true;
             }
+
+            sleep(Duration::from_secs(20));
         }
+
         Ok(())
     }
 }

@@ -1,0 +1,8 @@
+{
+    "descriptor": 1,
+    "name": "hpc.net.send.flux",
+    "capability": "net.send.flux",
+    "version": "0.1.0",
+    "requires": ["net"],
+    "bin_format": "native"
+}
