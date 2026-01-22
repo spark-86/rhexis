@@ -1,0 +1,12 @@
+[package]
+name = "transform_net_send_flux_fire"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+serde_cbor.workspace = true
+struct_net = { path = "../../struct/struct_net" }
+
+[lib]
+crate-type = [ "cdylib" ]

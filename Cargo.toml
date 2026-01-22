@@ -57,7 +57,10 @@ members = [
     "packages/transforms/transform_system_registry_result", 
     "packages/transforms/transform_system_registry_new", 
     "tools/registry-mod", 
-    "packages/transforms/transform_rhex_builder", "packages/transforms/transform_lattice_scope_cache_create", "packages/transforms/transform_lattice_scope_cache_store", "packages/transforms/transform_lattice_usher_builder", 
+    "packages/transforms/transform_rhex_builder", 
+    "packages/transforms/transform_lattice_scope_cache_create", 
+    "packages/transforms/transform_lattice_scope_cache_store", 
+    "packages/transforms/transform_lattice_usher_builder", "packages/hpcs/hpc_net_send_flux", "packages/struct/struct_net", "packages/transforms/transform_net_send_flux_fire", 
 ]
 
 resolver = "3"
@@ -77,3 +80,5 @@ serde-big-array = "0.5.1"
 ed25519-dalek = { version = "2.2.0", features = ["rand_core"] }
 rand_core = { version = "0.6.4", features = ["getrandom"] }
 serde_bytes = "0.11.19"
+crossbeam = "0.8.4"
+tokio = "1.49.0"

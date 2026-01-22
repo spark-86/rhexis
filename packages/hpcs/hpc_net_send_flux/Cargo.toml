@@ -1,0 +1,12 @@
+[package]
+name = "hpc_net_send_flux"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rhexis-core = { path = "../../../rhexis-core" }
+struct_net = { path = "../../struct/struct_net" }
+serde_cbor.workspace = true
+
+[lib]
+crate-type = [ "cdylib" ]
