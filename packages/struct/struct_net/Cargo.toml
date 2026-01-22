@@ -7,3 +7,5 @@ edition = "2024"
 rhexis-core = { path = "../../../rhexis-core" }
 serde.workspace = true
 serde_cbor.workspace = true
+blake3.workspace = true
+serde_bytes.workspace = true

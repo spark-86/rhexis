@@ -6,14 +6,14 @@ Flux are designed to be the ultimate atomic truth. Either be it for local comput
 
 ## Net.Flux
 
-Flux alone handles most data states, it just lacks addressing. Net.Flux, as defined in `rhex://schema.net.flux` is an outer wrapper around a binary CBOR of a flux.
+Flux alone handles most data states, it just lacks addressing. Net.Flux, as defined in `rhex://schema.net.flux` is an outer wrapper around a Vec of flux.
 
 ```rust
 pub struct NetFlux {
     hash: [u8; 32],
     ip_addr: String,
     port: u16,
-    payload: Vec<u8>
+    payload: Vec<FluxItem>
     gt: u64
 }
 ```

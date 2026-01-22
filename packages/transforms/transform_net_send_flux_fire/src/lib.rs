@@ -32,9 +32,12 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
             thread: flux.thread.clone(),
             token: None,
             input: serde_cbor::to_vec(&NetFlux {
+                sig: None,
+                key: None,
                 ip_addr: ip_addr.to_string(),
                 port,
                 payload,
+                gt: 0,
             })
             .unwrap(),
             cause: None,
