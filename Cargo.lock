@@ -846,8 +846,10 @@ dependencies = [
 name = "struct_net"
 version = "0.1.0"
 dependencies = [
+ "blake3",
  "rhexis-core",
  "serde",
+ "serde_bytes",
  "serde_cbor",
 ]
 
