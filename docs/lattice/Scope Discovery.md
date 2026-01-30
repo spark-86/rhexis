@@ -1,5 +1,9 @@
 # Scope Discovery
 
+## \*\*OUTDATED\*\*
+
+This is actually kinda stupid. I can't believe I wrote this, because to read anything from a scope you must already know the ushers, so there's no actual way to get here without doing a scope walk up like normal so this is all... BS 🤷🏻‍♀️
+
 ## Default Behavior
 
 As a default, scopes will automatically alias `rhex://scope.name/discovery` to the scope's discovery record.

@@ -19,6 +19,14 @@
             "payload_type": "binary",
             "required_fields": null,
             "flags": ["now", "required", "observed"]
+        },
+        {
+            "key": "system.ip_address",
+            "thread": "system.ip_address",
+            "schema": "rhex://schema.system.ip_address",
+            "payload_type": "json",
+            "required_fields": null,
+            "flags": ["now", "required", "observed"]
         }
     ],
     "effects": [
@@ -32,9 +40,9 @@
         },
         {
             "key": null,
-            "thread": "lattice.scope.remote.request",
-            "schema": "rhex://schema.lattice.scope.remote.request",
-            "payload_type": "none",
+            "thread": "net.send.flux",
+            "schema": "rhex://schema.net.send.flux",
+            "payload_type": "mixed",
             "required_fields": null,
             "flags": ["now", "optional", "inherit"]
         }

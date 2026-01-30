@@ -1,0 +1,27 @@
+{
+    "descriptor": 1,
+    "name": "transform.net.send.flux.batch",
+    "version": "0.1.0",
+    "requires": [],
+    "interacts": [
+        {
+            "key": null,
+            "thread": "net.send.flux",
+            "schema": "rhex://schema.net.send.flux",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "required", "consumed"]
+        }
+    ],
+    "effects": [
+        {
+            "key": null,
+            "thread": "net.send.flux.batches",
+            "schema": "rhex://schema.net.send.flux.batch",
+            "payload_type": "mixed",
+            "required_fields": null,
+            "flags": ["now", "required", "produced"]
+        }
+    ],
+    "bin_format": "Native"
+}

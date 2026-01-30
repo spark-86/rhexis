@@ -1,5 +1,5 @@
 [package]
-name = "transform_crypto_ed25519_generate-macos_arm64-v1"
+name = "transform_net_send_flux_batch"
 version = "0.1.0"
 edition = "2024"
 
@@ -7,8 +7,6 @@ edition = "2024"
 rhexis-core = { path = "../../../rhexis-core" }
 serde_cbor.workspace = true
 serde_json.workspace = true
-rand.workspace = true
-hex.workspace = true
 
 [lib]
 crate-type = [ "cdylib" ]

@@ -45,6 +45,8 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
         });
     }
 
+    *ctx.hpc_calls = Some(serde_cbor::to_vec(&hpc_calls).unwrap());
+
     0
 }
 

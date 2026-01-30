@@ -10,7 +10,8 @@ Flux alone handles most data states, it just lacks addressing. Net.Flux, as defi
 
 ```rust
 pub struct NetFlux {
-    hash: [u8; 32],
+    sig: [u8; 64],
+    key: [u8; 32],
     ip_addr: String,
     port: u16,
     payload: Vec<FluxItem>

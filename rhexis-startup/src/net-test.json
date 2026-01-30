@@ -1,0 +1,11 @@
+{
+    "plugins": [
+        "./lattice_transforms/transform_lattice_scope_cache_lookup-macos_arm64-v1.rhp",
+        "./transform_net_send_flux_batch-macos_arm64-v1.rhp",
+        "./transform_net_send_flux_fire-macos_arm64-v1.rhp",
+        "./hpc_net_send_flux-macos_arm64-v1.rhp",
+        "./hpc_crypto_ed25519_generate-macos_arm64-v1.rhp",
+        "./transform_crypto_ed25519_generate-macos_arm64-v1.rhp"
+    ],
+    "flux": "net.flux"
+}

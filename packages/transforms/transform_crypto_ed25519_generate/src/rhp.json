@@ -5,9 +5,8 @@
     "requires": ["crypto.ed25519.generate"],
     "interacts": [
         {
-            "alias": "crypto.ed25519.generate",
             "key": null,
-            "thread": "test_crypto",
+            "thread": "crypto.ed25519.generate",
             "schema": "rhex://schema.crypto.ed25519.generate",
             "payload_type": "None",
             "required_fields": null,

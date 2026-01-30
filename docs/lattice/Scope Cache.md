@@ -23,7 +23,7 @@ pub struct Rule {
     pub k: u16,
     pub quorum_roles: Vec<String>,
     pub min_delay: u64,
-    pub record_types: Vec<String>
+    pub record_types: Vec<String>,
     pub window: u64,
 }
 

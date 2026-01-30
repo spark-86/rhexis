@@ -5,22 +5,14 @@
     "requires": ["crypto.ed25519.sign"],
     "interacts": [
         {
-            "alias": "signed.data",
             "key": null,
+            "thread": "crypto.ed25519.sign",
             "schema": "rhex://schema.crypto.ed25519.sign",
             "payload_type": "Mixed",
             "required_fields": [],
             "flags": ["required", "consumed", "now"]
         }
     ],
-    "effects": [
-        {
-            "key": null,
-            "schema": "rhex://schema.crypto.ed25519.signed",
-            "payload_type": "Mixed",
-            "required_fields": [],
-            "flags": ["produce", "inherit"]
-        }
-    ],
+    "effects": [],
     "bin_format": "Native"
 }
