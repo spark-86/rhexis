@@ -6,6 +6,8 @@ edition = "2024"
 [dependencies]
 rhexis-core = { path = "../rhexis-core" }
 rhexis-kernel = { path = "../rhexis-kernel" }
+struct_net = { path = "../packages/struct/struct_net" }
+
 serde.workspace = true
 serde_cbor.workspace = true
 serde_json.workspace = true

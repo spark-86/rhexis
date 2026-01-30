@@ -21,7 +21,7 @@ pub extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     let input: HpcCallEnvelope = serde_cbor::from_slice(ctx.input).unwrap();
     let data_ref = serde_cbor::from_slice::<DataReference>(&input.payload).unwrap();
 
-    let filename = format!("/tmp/data/{}.rdat", hex::encode(&data_ref.logical_id));
+    let filename = format!("./data/{}.rdat", hex::encode(&data_ref.logical_id));
 
     let mut buf = Vec::new();
     let mut file = match std::fs::File::open(&filename) {

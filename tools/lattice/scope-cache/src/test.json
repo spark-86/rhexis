@@ -1,0 +1,33 @@
+[
+    {
+        "name": "test",
+        "policy": {
+            "description": "Test scope policy",
+            "rules": [
+                {
+                    "append_roles": ["keymaster", "user"],
+                    "k": 1,
+                    "quorum_roles": ["quorum", "keymaster"],
+                    "min_delay": 1,
+                    "record_types": ["test:test"],
+                    "window": 20000
+                }
+            ],
+            "eff": 0,
+            "exp": 365000000000,
+            "tags": ["test"],
+            "last_updated": 0
+        },
+        "ushers": [
+            {
+                "name": "Test usher",
+                "public_key": "dEnPFSL0nJ6wixoj2xcxWHfzLruOVwIQUadZssZeQbc",
+                "priority": 10,
+                "location": {
+                    "distance": "local"
+                },
+                "last_updated": 0
+            }
+        ]
+    }
+]

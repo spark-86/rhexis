@@ -10,6 +10,7 @@ use rhexis_core::{
 };
 use serde_cbor::Error;
 use serde_json::json;
+use struct_net::NetFlux;
 
 pub fn spawn_net_listener(addr: &str, queue: Arc<SegQueue<FluxItem>>) {
     let listener = TcpListener::bind(addr).expect("bind failed");
@@ -37,7 +38,7 @@ pub fn spawn_net_listener(addr: &str, queue: Arc<SegQueue<FluxItem>>) {
 
 fn decode_verify_flux(buf: &Vec<u8>) -> anyhow::Result<Vec<FluxItem>> {
     let mut out_flux: Vec<FluxItem> = Vec::new();
-    let decoded: Result<Vec<FluxItem>, Error> = serde_cbor::from_slice(&buf);
+    let decoded: Result<NetFlux, Error> = serde_cbor::from_slice(&buf);
 
     if decoded.is_err() {
         let mut error_flux_intent = RhexIntent::new(RhexIntent::gen_nonce());
@@ -63,7 +64,11 @@ fn decode_verify_flux(buf: &Vec<u8>) -> anyhow::Result<Vec<FluxItem>> {
             },
         })
     } else {
-        out_flux = decoded.unwrap();
+        // TODO: Verify signature on inbound Flux
+
+        // TODO: Decide if a) this identity is even allowed, and
+        // b) which flux are allowed from this identity
+        out_flux = decoded.unwrap().payload;
     };
 
     return Ok(out_flux);

@@ -18,10 +18,10 @@ members = [
     "packages/hpcs/hpc_data_put_disk-macos_arm64-v1", 
     "packages/hpcs/hpc_data_get_disk-macos_arm64-v1", 
     "packages/transforms/transform_system_membrane_watch-macos_arm64-v1",
-    "packages/hpcs/hpc_crypto_ed25519_generate-macos_arm64-v1", 
-    "packages/hpcs/hpc_crypto_ed25519_sign-macos_arm64-v1", 
-    "packages/transforms/transform_crypto_ed25519_generate-macos_arm64-v1", 
-    "packages/transforms/transform_crypto_ed25519_sign-macos_arm64-v1", 
+    "packages/hpcs/hpc_crypto_ed25519_generate", 
+    "packages/hpcs/hpc_crypto_ed25519_sign", 
+    "packages/transforms/transform_crypto_ed25519_generate", 
+    "packages/transforms/transform_crypto_ed25519_sign", 
     "packages/transforms/transform_rhex_ready-macos_arm64-v1", 
     "packages/struct/struct_rhex", 
     "packages/transforms/transform_rhex_store-macos_arm64-v1", 
@@ -60,7 +60,7 @@ members = [
     "packages/transforms/transform_rhex_builder", 
     "packages/transforms/transform_lattice_scope_cache_create", 
     "packages/transforms/transform_lattice_scope_cache_store", 
-    "packages/transforms/transform_lattice_usher_builder", "packages/hpcs/hpc_net_send_flux", "packages/struct/struct_net", "packages/transforms/transform_net_send_flux_fire", 
+    "packages/transforms/transform_lattice_usher_builder", "packages/hpcs/hpc_net_send_flux", "packages/struct/struct_net", "packages/transforms/transform_net_send_flux_fire", "packages/transforms/transform_net_send_flux_batch", "tools/lattice/scope-cache", 
 ]
 
 resolver = "3"

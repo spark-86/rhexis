@@ -30,3 +30,7 @@ target
 *.rhp
 *.flux
 *.registry
+
+# So we aren't publishing secret keys or data blobs
+*.sk
+*.rdat

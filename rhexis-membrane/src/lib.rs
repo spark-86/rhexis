@@ -1,4 +1,5 @@
-use std::{collections::HashMap, sync::Arc, thread::sleep, time::Duration};
+use std::{collections::HashMap, sync::Arc};
+// use std::{thread::sleep, time::Duration};
 
 use crossbeam::queue::SegQueue;
 use rhexis_core::{
@@ -69,7 +70,7 @@ impl Membrane for MacOSMembrane {
                 directives: &mut directives_blob,
                 diag: &mut diag,
             };
-            println!("Calling HPC capability: {}", &call.name);
+            println!("Calling HPC: {}", &call.name);
             unsafe {
                 (hpc.entry.entry)(&mut ctx);
             }
@@ -153,7 +154,7 @@ impl MacOSMembrane {
             .map(|h| (h.descriptor.capability.to_string(), h))
             .collect();
         let ingress = Arc::new(SegQueue::new());
-        let addr = "0.0.0.0:9000";
+        let addr = "0.0.0.0:1984";
         println!("Spawning net listener on {}...", addr);
         let _ = spawn_net_listener(addr, ingress.clone());
         Self {
@@ -232,7 +233,9 @@ impl MacOSMembrane {
                 done = true;
             }
 
-            sleep(Duration::from_secs(20));
+            // This was for network testing, since the CRE will spin down
+            // if idle, ergo we delayed for ingress.
+            //sleep(Duration::from_secs(20));
         }
 
         Ok(())

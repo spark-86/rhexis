@@ -19,7 +19,7 @@ pub extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     let public_key: [u8; 32] = payload[0].as_slice().try_into().unwrap();
     let hash: [u8; 32] = payload[1].as_slice().try_into().unwrap();
 
-    let filename = format!("/tmp/data/keys/{}.key", hex::encode(public_key.clone()));
+    let filename = format!("./keys/{}.sk", hex::encode(public_key.clone()));
     let keyfile = read(filename).unwrap();
     let keyfile = keyfile
         .as_slice()

@@ -1,5 +1,5 @@
 [package]
-name = "hpc_crypto_ed25519_sign-macos_arm64-v1"
+name = "hpc_crypto_ed25519_sign"
 version = "0.1.0"
 edition = "2024"
 

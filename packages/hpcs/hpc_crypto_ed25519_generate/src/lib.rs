@@ -22,10 +22,7 @@ pub extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     let signing_key = SigningKey::generate(&mut OsRng);
     let verifying_key = signing_key.verifying_key();
 
-    let key_filename = format!(
-        "/tmp/data/keys/{}.key",
-        hex::encode(&verifying_key.as_bytes())
-    );
+    let key_filename = format!("./keys/{}.sk", hex::encode(&verifying_key.as_bytes()));
     let _ = write(key_filename, signing_key.as_bytes());
 
     let out_membrane = vec![MembraneDirective::RegisterResource {

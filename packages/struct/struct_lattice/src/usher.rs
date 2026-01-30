@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Usher {
     pub name: String,
+    #[serde(with = "serde_bytes")]
     pub public_key: [u8; 32],
     pub priority: u8,
     pub location: UsherLocation,

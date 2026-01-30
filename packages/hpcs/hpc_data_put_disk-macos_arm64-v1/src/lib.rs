@@ -36,7 +36,7 @@ pub extern "C" fn hpc_entry(ctx: *mut HpcContext) -> i32 {
     let envelope: HpcCallEnvelope = serde_cbor::from_slice(ctx.input).unwrap();
     let input: DataReference = serde_cbor::from_slice(&envelope.payload).unwrap();
     // 2. Perform OS-level embodiment (HPC job)
-    let filename = format!("/tmp/data/{}.rdat", hex::encode(&input.logical_id.clone()));
+    let filename = format!("./data/{}.rdat", hex::encode(&input.logical_id.clone()));
 
     let mut file = match std::fs::OpenOptions::new()
         .create(true)
