@@ -137,7 +137,52 @@ flowchart TD
     DS2 --> End
 ```
 
-## Rhex Submittion
+## Rhex Usher Submission
+
+```mermaid
+flowchart TB
+    Start(["Stable"])
+    End(["Stable"])
+
+    F0["rhex.usher.sign"]
+    F1["lattice.scope.cache.table"]
+    F2["rhex.usher.signed (Soon)"]
+    F3["crypto.ed25519.sign"]
+    F4["net.send.flux(rhex.usher.signed (Now))"]
+    F5["crypto.ed25519.signed"]
+    F6["net.send.flux(error.rhex.usher.sign)"]
+    F7@{shape: processes, label: "rhex.quorum.sign"}
+
+    T0[["transform.lattice.rhex.usher.authorize"]]
+    T1[["transform.lattice.rhex.usher.assemble"]]
+
+    H0[("hpc.crypto.ed25519.sign")]
+    H1[("hpc.net.send.flux")]
+
+    Start -->|Incoming Flux| F0
+    subgraph Authorize
+    F0 --> T0
+    F1 --> T0
+    end
+    T0 --> F6
+    F6 --> H1
+    T0 --> F3
+    T0 --> F2
+    F3 --> H0
+    H0 --> F5
+    subgraph Sign
+    F5 --> T1
+    F5 <==>|Corr Link| F2
+    F2 --> T1
+    end
+    F1 --> T1
+    T1 --> F7
+    T1 --> F4
+    F4 --> H1
+    H1 --> End
+```
+
+## Rhex Final Submission
 
 ```mermaid
 flowchart TB
