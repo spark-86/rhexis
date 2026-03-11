@@ -16,9 +16,16 @@ The result is a system where computation emerges from **state transitions** rath
 
 ## Where to Start
 
+### Aquiring
+
+```bash
+git clone https://github.com/spark-86/rhexis
+```
+
 ### Compiling
 
 ```bash
+cd rhexis
 cargo build
 ```
 
@@ -33,8 +40,16 @@ The current demo generates flux and sends it across the network to itself. This 
 
 To build and run the demo:
 
+Linux/MacOS:
+
 ```bash
 ./demo.sh
+```
+
+Windows:
+
+```text
+.\demo.cmd
 ```
 
 The script will:
