@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# make sure the dir is there
+mkdir -p ./rhexis-startup/src/lattice_transforms
+
 echo "📦 Packing RHP: transform_lattice_scope_cache_lookup"
 ./target/debug/rhp pack \
   --plugin-type transform \
