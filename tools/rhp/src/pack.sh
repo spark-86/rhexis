@@ -15,9 +15,9 @@ DESCRIPTOR_PATH="../../packages/${PLUGIN_TYPE}s/${NAME}/src/rhp.json"
 CODE_PATH="/Users/veronica/projects/rhexis/target/debug/lib${NAME}.dylib"
 
 if [[ -n "$SUBFOLDER" ]]; then
-  OUTPUT_PATH="../../rhexis-startup/src/${SUBFOLDER}/${NAME}-macos_arm64-v1.rhp"
+  OUTPUT_PATH="../../rhexis-startup/src/${SUBFOLDER}/${NAME}-v1.rhp"
 else
-  OUTPUT_PATH="../../rhexis-startup/src/${NAME}-macos_arm64-v1.rhp"
+  OUTPUT_PATH="../../rhexis-startup/src/${NAME}-v1.rhp"
 fi
 
 echo "📦 Packing RHP:"

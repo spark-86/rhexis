@@ -10,12 +10,12 @@ use rhexis_core::{
     transform::{context::TransformContext, entry::TransformEntry},
 };
 use serde_json::json;
-use struct_lattice::{LatticeScopeLocation, usher::UsherLocation};
+use struct_lattice::{
+    scope::Scope,
+    usher::{Usher, UsherLocation},
+};
 
-fn find_closest_parent(
-    target_scope: String,
-    table: &HashMap<String, LatticeScopeLocation>,
-) -> String {
+fn find_closest_parent(target_scope: String, table: &HashMap<String, Scope>) -> String {
     let mut working = target_scope;
 
     loop {
@@ -59,7 +59,7 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
     }
 
     // Build table
-    let table: HashMap<String, LatticeScopeLocation> = match table_flux.intent.data {
+    let table: HashMap<String, Scope> = match table_flux.intent.data {
         RhexPayload::Binary { data } => serde_cbor::from_slice(&data).unwrap(),
         _ => return -3,
     };
@@ -86,29 +86,46 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
         // Entry found in the cache. Determine local/remote
         if local_entry.is_some() {
             let entry = local_entry.unwrap();
-            match entry {
-                LatticeScopeLocation::Local(location) => {
+            let mut top_usher = Usher::new("", [0; 32], 100, UsherLocation::Local);
+
+            // This absolutely must get changed as it always just picks
+            // the top priority Usher if it's remote.
+
+            for usher in entry.ushers.iter() {
+                if usher.location == UsherLocation::Local {
+                    top_usher = usher.clone();
+                    break;
+                } else if top_usher.priority > usher.priority
+                    && (usher.location != UsherLocation::Local)
+                {
+                    top_usher = usher.clone();
+                }
+            }
+
+            match top_usher.location.clone() {
+                UsherLocation::Local => {
                     out_intent.data = RhexPayload::Mixed {
                         meta: json!({
                             "distance": "local",
                             "scope": scope,
                             "status": "complete",
                         }),
-                        data: vec![serde_cbor::to_vec(&location).unwrap()],
+                        data: vec![serde_cbor::to_vec(&top_usher).unwrap()],
                     }
                 }
-                LatticeScopeLocation::Remote(location) => {
+                UsherLocation::Remote { ip_addr, port } => {
                     out_intent.data = RhexPayload::Mixed {
                         meta: json!({
                             "distance": "remote",
                             "scope": scope,
                             "status": "complete",
+                            "ip_addr": ip_addr,
+                            "port": port,
                         }),
-                        data: vec![serde_cbor::to_vec(&location).unwrap()],
+                        data: vec![serde_cbor::to_vec(&top_usher).unwrap()],
                     }
                 }
-                LatticeScopeLocation::Unknown => return -7,
-            };
+            }
 
             out_intent.schema =
                 Binding::Bound("rhex://schema.lattice.scope.lookup.result".to_string());
@@ -128,20 +145,15 @@ pub extern "C" fn transform_entry(ctx: *mut TransformContext) -> i32 {
             let closest_parent = find_closest_parent(scope.to_string(), &table);
 
             let parent_loc = table.get(&closest_parent).unwrap();
-            let contact = match parent_loc {
-                LatticeScopeLocation::Local(location) => {
-                    // I'm kinda fucking iffy on this. Like we should never be
-                    // here, right? because if we host this parent locally it
-                    // SHOULD know it's children.
-                    location.ushers.clone()
-                }
-                LatticeScopeLocation::Remote(location) => location.ushers.clone(),
-                LatticeScopeLocation::Unknown => return -5,
-            };
+            let contact = parent_loc.ushers.clone();
 
             // Should this emit another flux and have that resolve
             // usher weight? Yup. Are we gonna do that now instead
             // of overloading this transform? Nope.
+
+            // Also, from code removed, we should never be here with a 'local'
+            // location, because a parent should always know it's direct children
+            // if they are local.
             let random_contact = contact.choose(&mut rand::rng()).unwrap();
             let (remote_ip, remote_port) = match &random_contact.location {
                 UsherLocation::Remote { ip_addr, port } => (ip_addr, port),

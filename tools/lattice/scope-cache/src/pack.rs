@@ -1,5 +1,5 @@
 use base64::{Engine, engine::general_purpose};
-use std::fs::read_to_string;
+use std::{collections::HashMap, fs::read_to_string};
 use struct_lattice::{
     scope::Scope,
     usher::{Usher, UsherLocation},
@@ -10,7 +10,7 @@ use crate::Pack;
 pub fn pack_cache(args: Pack) -> Result<(), anyhow::Error> {
     let input = args.input;
     let output = args.output;
-    let mut out_scopes: Vec<Scope> = Vec::new();
+    let mut out_scopes: HashMap<String, Scope> = HashMap::new();
 
     // load file
     let src = read_to_string(input)?;
@@ -46,11 +46,16 @@ pub fn pack_cache(args: Pack) -> Result<(), anyhow::Error> {
                 last_updated: 0,
             });
         }
-        out_scopes.push(Scope {
-            name: scope["name"].as_str().unwrap().to_string(),
-            policy: serde_json::from_value(scope["policy"].clone())?,
-            ushers,
-        });
+        let name = scope["name"].as_str().unwrap().to_string();
+
+        out_scopes.insert(
+            name.clone(),
+            Scope {
+                name: name.clone(),
+                policy: serde_json::from_value(scope["policy"].clone())?,
+                ushers,
+            },
+        );
     }
 
     // serialize to CBOR

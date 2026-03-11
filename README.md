@@ -1,12 +1,54 @@
-# Rhexis - Computational Reality Engine
+# Rhexis – Computational Reality Engine
 
-Rhexis is an emergent-compute engine that treats computation the way physics treats events: as interactions between entities, states, and transformations that exist because the surrounding conditions allow them to. Instead of imperative programs or static apps, Rhexis builds reality-like systems where behavior arises from flux, schemas, and transforms responding to one another.
-The engine runs on a universal substrate—Flux—that holds all state as discrete, typed items. Transforms (verbs) observe, consume, and emit Flux in deterministic cycles, allowing complex behavior to emerge from simple rules. Rhexis kernels replay, fork, and synchronize these worlds across devices, building a deterministic lattice of computational “reality.”
-Key ideas:
-Flux: Structured, discoverable state objects that model “what exists right now.”
-Transforms: Declarative behaviors that fire when conditions in Flux become true.
-Membranes: Environment-specific shims that bootstrap a device into the lattice, load capabilities, and express hardware differences without fracturing the engine.
-Deterministic Kernel: Hashes the entire world each cycle using BLAKE3, guaranteeing replayability, auditability, and cross-node alignment.
-Lattice: A shared, sidereal-time-anchored computational fabric where realities sync, state persists, and computation becomes near-zero-cost at rest.
-The result is a computing model that feels less like running code and more like stepping into a physics engine that shapes itself around user intent. Rhexis becomes the connective tissue for distributed compute, identity, simulation, and interaction—an engine where “apps” dissolve into capabilities that assemble themselves around what the user wants to do.
-Rhexis is the backbone of the broader Cryptophysics architecture and the bridge between classical computing and emergent, reality-driven computation.
+## A New Computational Ontology
+
+Traditional programming treats **functions** as the center of computation. Functions examine state, make decisions, and mutate that state. Execution order is controlled by schedulers, event loops, or explicit calls.
+
+The Computational Reality Engine (CRE) inverts that model.
+
+In the CRE, **state is the primary object**. Computation occurs through **transforms**, which describe how one state becomes another. A transform does not run because it was called; it runs because the **conditions encoded in the data make it possible**.
+
+There is no global scheduler.
+
+Instead, transforms declare the **valence** of the data they require. When the correct state exists, the transform fires automatically and produces the next state. Each transform operates only on the data it binds to. No transform has global knowledge of the system.
+
+The result is a system where computation emerges from **state transitions** rather than ordered execution.
+
+## Where to Start
+
+### Compiling
+
+```bash
+cargo build
+```
+
+### Running the Current Demo
+
+The current demo generates flux and sends it across the network to itself. This demonstrates the basic mechanics of the system:
+
+* flux generation
+* transform execution
+* HPC packaging
+* transport and re-ingestion of state
+
+To build and run the demo:
+
+```bash
+./demo.sh
+```
+
+The script will:
+
+1. Package the required transforms and HPCs into `.rhp` files
+2. Generate the initial flux state
+3. Produce the configuration required to run the CRE
+
+After packaging completes, the script pauses for confirmation. Once started, any output you see is produced by the CRE itself as it processes flux and executes transforms.
+
+### Why It Looks Rough
+
+It is rough.
+
+This project explores a different model of computation, not a finished product. The current code demonstrates the mechanics of the system rather than a polished implementation.
+
+Think of it less as a product and more as the first working prototype of a new class of engine. Early prototypes are rarely elegant—but they prove the mechanism works.

@@ -10,7 +10,7 @@ pub struct Usher {
     pub last_updated: u64,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub enum UsherLocation {
     Local,
     Remote { ip_addr: String, port: u16 },

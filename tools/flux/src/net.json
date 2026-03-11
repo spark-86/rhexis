@@ -1,6 +1,6 @@
 [
     {
-        "name": "lattice.scope.cache.lookup.request",
+        "name": "unknown",
         "thread": "lattice.scope.cache.requests",
         "availability": "now",
         "intent": {
@@ -11,7 +11,7 @@
             "data": {
                 "kind": "Json",
                 "value": {
-                    "scope": "test"
+                    "scope": "unknown"
                 }
             }
         },
@@ -54,8 +54,8 @@
             "data": {
                 "kind": "Binary",
                 "value": {
-                    "encoding": "base64",
-                    "data": "oA=="
+                    "encoding": "file",
+                    "data": "./tools/lattice/scope-cache/src/scope.table"
                 }
             }
         },

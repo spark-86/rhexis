@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::usher::Usher;
 
-pub mod policy;
 pub mod scope;
 pub mod usher;
 

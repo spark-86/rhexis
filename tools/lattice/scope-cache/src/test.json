@@ -1,5 +1,38 @@
 [
     {
+        "name": "",
+        "policy": {
+            "description": "Root Scope Policy",
+            "rules": [
+                {
+                    "append_roles": ["keymaster", "user"],
+                    "k": 1,
+                    "quorum_roles": ["quorum", "keymaster"],
+                    "min_delay": 1,
+                    "record_types": ["test:test"],
+                    "window": 20000
+                }
+            ],
+            "eff": 0,
+            "exp": 365000000000,
+            "tags": ["root"],
+            "last_updated": 0
+        },
+        "ushers": [
+            {
+                "name": "Root usher",
+                "public_key": "pKmrUzpfVYUuHRUdNZ_abrtpvFzFB8kvDigPDSaSMNk",
+                "priority": 10,
+                "location": {
+                    "distance": "remote",
+                    "ip_addr": "127.0.0.1",
+                    "port": 1984
+                },
+                "last_updated": 0
+            }
+        ]
+    },
+    {
         "name": "test",
         "policy": {
             "description": "Test scope policy",
